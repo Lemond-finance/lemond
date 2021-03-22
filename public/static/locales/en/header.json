@@ -1,0 +1,17 @@
+{
+  "nav-home": "It’s DOMO",
+  "nav-farm": "Factory",
+  "nav-fusion": "Don’t Ask",
+  "nav-domoko": "Don’t Expect",
+  "nav-tips": "Tips",
+  "languageTextCN": "中文",
+  "languageTextEN": "English",
+  "connect-wallet": "Connect",
+  "connect-metamask": "Connect to your MetaMask Wallet",
+  "connect-walletconnect": "Scan with WalletConnect to connect",
+  "connect-disconnect": "Disconnect",
+  "connect-cancel": "Cancel",
+  "connect-retry": "Retry",
+  "email":"Your email",
+  "subscribe":"Subscribe"
+}

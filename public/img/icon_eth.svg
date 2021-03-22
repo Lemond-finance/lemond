@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="63px" height="63px" viewBox="0 0 63 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <defs>
+        <polygon id="path-1" points="0.00027 0.873 62.127 0.873 62.127 63 0.00027 63"></polygon>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="桌面端-HD" transform="translate(-130.000000, -782.000000)">
+            <g id="编组" transform="translate(130.000000, 782.000000)">
+                <g>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M62.12727,31.93605 C62.12727,49.09185 48.21957,63.00045 31.06377,63.00045 C13.90797,63.00045 0.00027,49.09185 0.00027,31.93605 C0.00027,14.78025 13.90797,0.87255 31.06377,0.87255 C48.21957,0.87255 62.12727,14.78025 62.12727,31.93605" id="Fill-1" fill="#48708C" mask="url(#mask-2)"></path>
+                </g>
+                <path d="M45,36.5472102 L31.3897922,54 L31.3897922,43.2387102 L45,36.5472102 Z M17,36.5472102 L30.5616555,43.2387102 L30.5616555,54 L17,36.5472102 Z M45,35.5405962 L31.3897922,42.5760603 L31.3897922,8 L45,35.5405962 Z M17,35.5405962 L30.5616555,8.00993072 L30.5616555,42.5760603 L17,35.5405962 Z" id="Fill-3" fill="#FEFEFE"></path>
+            </g>
+        </g>
+    </g>
+</svg>

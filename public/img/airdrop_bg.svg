@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="717px" height="717px" viewBox="0 0 717 717" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>椭圆形</title>
+    <defs>
+        <filter x="-7.5%" y="-19.9%" width="125.3%" height="139.8%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.25 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="23.5358944%" y1="0%" x2="80.4409189%" y2="102.453367%" id="linearGradient-2">
+            <stop stop-color="#F5BA5D" offset="0%"></stop>
+            <stop stop-color="#EDA340" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="桌面端-HD" transform="translate(-531.000000, -731.000000)">
+            <g id="椭圆形" filter="url(#filter-1)" transform="translate(571.000000, 831.000000)">
+                <g id="Group-3">
+                    <circle id="椭圆形" stroke="url(#linearGradient-2)" stroke-width="181" cx="318.5" cy="258.5" r="258.5"></circle>
+                    <ellipse id="椭圆形" fill="#171717" opacity="0.25" cx="215" cy="430.5" rx="161" ry="14.5"></ellipse>
+                    <ellipse id="椭圆形" fill="#0E0E0E" opacity="0.25" cx="222" cy="430.5" rx="64" ry="8.5"></ellipse>
+                    <ellipse id="椭圆形" fill="#0E0E0E" opacity="0.25" cx="64" cy="376.5" rx="64" ry="8.5"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

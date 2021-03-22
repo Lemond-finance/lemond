@@ -1,0 +1,5 @@
+{
+  "change-locale": "选择语言",
+  "error-with-status": "服务器产生了({{statusCode}})的错误",
+  "error-without-status": "服务器遇到了一个问题"
+}

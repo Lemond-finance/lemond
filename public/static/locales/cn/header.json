@@ -1,0 +1,17 @@
+{
+  "nav-home": "It’s DOMO",
+  "nav-farm": "工厂",
+  "nav-fusion": "别问",
+  "nav-domoko": "别期待",
+  "nav-tips": "小贴士",
+  "languageTextCN": "中文",
+  "languageTextEN": "English",
+  "connect-wallet": "连接钱包",
+  "connect-metamask": "连接你的小狐狸钱包",
+  "connect-walletconnect": "Scan with WalletConnect to connect",
+  "connect-disconnect": "断开",
+  "connect-cancel": "取消",
+  "connect-retry": "重试",
+  "email": "您的邮件",
+  "subscribe": "订阅"
+}

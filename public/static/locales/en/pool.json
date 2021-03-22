@@ -1,0 +1,20 @@
+{
+  "pool-burn": "Burn Fund: ",
+  "pool-earned": "Earned : ",
+  "pool-apy": "APY :",
+  "pool-tvl": "TVL :",
+  "pool-approval": "Approve",
+  "pool-deposit": "Deposit",
+  "pool-unstake": "Withdraw",
+  "pool-claim": "Claim",
+  "pool-burn-reward": "Reward you got from Burn Fund",
+  "pool-exit": "Withdraw",
+  "pool-rule1": "* When you withdraw, the contract will automagically claim DOMO for you!",
+  "pool-rule2": "* A percent of Burning Fee in this pool is ranging from 18% to 0% with rate reducing hourly. Once per 24 hours, fees in Burning fund would be prorated to qualified accounts.",
+  "pool-rule3": "* A percent of Burning Fee in this pool is ranging from 36% to 0% with rate reducing hourly. Once per 24 hours, fees in Burning fund would be prorated to qualified accounts.",
+  "pool-brun-reward": "Burn Reward: ",
+  "pool-withdraw": "Get your earned DOMO together with your deposit.",
+  "pool-harvest": "Get your earned DOMO only.",
+  "pool-lastest-burn": "Lastest Burn Rewarded",
+  "pool-total-burn": "Total Burn Rewarded"
+}

@@ -1,0 +1,151 @@
+ .walletMask{
+     font-family:Arial, Helvetica, sans-serif;
+     background-color: rgba(0, 0, 0, 0.4);
+     position: fixed;
+     top: 0;
+     left: 0;
+     right:0;
+     bottom: 0;
+     padding: 11.104px;
+     display: flex;
+     z-index: 9999;
+     -webkit-box-align: center;
+     align-items: center;
+     -webkit-box-pack: center;
+     justify-content: center;
+     pointer-events: auto;
+     &.hide {
+         display: none;
+    }
+     .walletDialog {
+         width:90%;
+         max-width: 370.138px;
+         position: relative;
+         width: 100%;
+         background-color: rgb(255, 255, 255);
+         border-radius: 10px;
+         margin: 7.403px;
+         padding: 0px;
+         opacity: 1;
+         visibility: visible;
+         pointer-events: auto;
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(236.888px, 1fr));
+         max-width: 370.138px;
+         min-width: fit-content;
+         max-height: 100%;
+         overflow: auto;
+         li {
+             width: 100%;
+             padding: 5.922px;
+             display: flex;
+             -webkit-box-pack: center;
+             justify-content: center;
+             -webkit-box-align: center;
+             align-items: center;
+             flex-direction: column;
+             cursor: pointer;
+             border: 0.8340000000000001px solid rgba(195, 195, 195, 0.14);
+             box-sizing: border-box;
+             padding: 5.922px;
+             &:hover {
+                 .walletWrapper{
+                     background-color: rgba(195, 195, 195, 0.14);
+                }
+            }
+             .walletWrapper{
+                 padding: 17.767px 11.845px;
+                 border-radius: 10px;
+                 box-sizing: border-box;
+                 width: 100%;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 flex-direction: column;
+            }
+             img {
+                 width: 33.313px;
+                 height: 33.313px;
+                 display: flex;
+                 border-radius: 50%;
+                 overflow: visible;
+                 box-shadow: none;
+                 -webkit-box-pack: center;
+                 justify-content: center;
+                 -webkit-box-align: center;
+                 align-items: center;
+            }
+             .walletTitle {
+                 width: 100%;
+                 font-size: 17.767px;
+                 font-weight: 700;
+                 margin-top: 0.5em;
+                 color: rgb(12, 12, 13);
+                 text-align: center;
+            }
+             .walletTips {
+                 color: #2c3e50;
+                 font-size: 11.845px;
+            }
+        }
+    }
+}
+ .wallet{
+     float: left;
+     font-size: 11.845px;
+     .account{
+         vertical-align: middle;
+         font-family: Arial, Helvetica, sans-serif;
+         display:inline-block;
+    }
+     .balance{
+         background: #f16a0f;
+         color:#fff;
+         border-radius: 4.166px;
+         padding: 4.166px;
+         margin: 0 7.403px;
+         vertical-align: middle;
+         display:inline-block;
+    }
+}
+ .button{
+     align-items: center;
+     background: url(../public/img/metamask.svg) #2A2F36 15px center;
+     border: 1px solid #F6BA5E;
+     background-size: auto 50%;
+     background-repeat: no-repeat;
+     border-radius: 24px;
+     box-sizing: border-box;
+     color: #F6BA5E;
+     cursor: pointer;
+     display: flex;
+     font-size: 14px;
+     height: 36px;
+     justify-content: center;
+     margin: 0px;
+     min-width: 36px;
+     outline: none;
+     padding-left: 46px;
+     padding-right: 16px;
+     white-space: nowrap;
+     display:inline-block;
+}
+ @media screen and (max-width: 500px) {
+     .wallet{
+         position: absolute;
+         right: 0;
+         .account{
+             display:none;
+        }
+         .balance{
+             display:none;
+        }
+    }
+     .button{
+        //  font-size: 0;
+        //  padding: 0 24px;
+        //  border: none;
+        //  background-color: transparent;
+    }
+}
+ 

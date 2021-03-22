@@ -1,0 +1,249 @@
+.wrapper {
+  .lend_total{
+      text-align: center;
+      padding:50px 0;
+      h1{
+          background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/lend_top_icon.svg) no-repeat center;
+          width: 200px;
+          height: 180px;
+          background-size: 100% auto;
+          display:inline-block;
+      }
+      h2{
+          color:#84878b;
+          font-size: 20px;
+      }
+      h3{
+          color: #F5BA5D;
+          font-size: 45px;
+          padding: 10px 0;
+          text-shadow: 0 0 3px rgba(255,176,53,0.81);
+      }
+  }
+  .lend_list{
+      width: 1200px;
+      margin: 0 auto;
+      li{
+          width:100%;
+          border-radius: 10px;
+          background-color: #1B1F26;
+          background-repeat: no-repeat;
+          background-position: right bottom;
+          box-sizing: border-box;
+          padding: 20px 20px;
+          display: flex;
+          align-items: center;
+          box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+          margin-bottom:20px;
+          span{
+              font-weight: bold;
+              padding: 0 25px;
+              width: 100px;
+              font-size: 24px;
+              text-align:center;
+              white-space:nowrap;
+              &.icon{
+                  width: 60px;
+                  height: 60px;
+                  padding: 0 0 0 10px;
+                  margin-right: 20px;
+              }
+              &.left{
+                  text-align:left;
+              }
+              p{
+                  display:block;
+                  &.sub_title{
+                      color:#84878b;
+                      font-weight: lighter;
+                      font-size:14px;
+                  }
+                  &.sub_titles{
+                      color:#84878b;
+                      font-weight: lighter;
+                      font-size:14px;
+                  }
+              }
+              button{
+                      color:#fff;
+                      border-radius: 20px;
+                      border:none;
+                      padding: 10px 20px;
+                      font-weight:bold;
+                      white-space:nowrap;
+                      cursor:pointer;
+                      font-size: 12px;
+                  }
+          }
+          &.usdt{
+              border:1px solid rgba(37,155,118,0.24);
+              background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/usdt_bg.svg);
+              span.icon{
+                  background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_usdt.svg) no-repeat center;
+                  background-size: 100% 100%;
+              }
+              span{
+                  button{
+                      background:#259B76;
+                  }
+              }
+          }
+          &.btc{
+              border:1px solid rgba(236,143,36,0.26);
+              background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/btc_bg.svg);
+              span.icon{
+                  background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_btc.svg) no-repeat center;
+                  background-size: 100% 100%;
+              }
+              span{
+                  button{
+                      background:#EC8F24;
+                  }
+              }
+          }
+          &.eth{
+              border:1px solid rgba(72,112,140,0.41);
+              background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/eth_bg.svg);
+              span.icon{
+                  background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_eth.svg) no-repeat center;
+                  background-size: 100% 100%;
+              }
+              span{
+                  button{
+                      background:#48708C;
+                  }
+              }
+          }
+          &.okb{
+              border:1px solid rgba(254,254,254,0.25);
+              background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/okb_bg.svg);
+              span.icon{
+                  background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_okb.svg) no-repeat center;
+                  background-size: 100% 100%;
+              }
+              span{
+                  button{
+                      background:#FEFEFE;
+                      color:#363636;
+                  }
+              }
+          }
+      }
+  }
+}
+
+@media screen and (max-width: 500px) {
+    .wrapper {
+        .lend_total{
+            padding: 30px 0;
+            h1{
+                width: 120px;
+                height: 120px;
+            }
+            h2{
+                font-size: 16px;
+    font-weight: lighter;
+            }
+            h3{
+                font-size: 36px;
+            }
+        }
+        .lend_list{
+            width: 100%;
+            padding: 0 15px;
+            box-sizing: border-box;
+            li{
+                display:block;
+                padding:10px;
+                position:relative;
+                span{
+                    display: inline-block;
+                    font-size: 18px;
+                    width: 20%;
+                    padding: 0 5px;
+                    box-sizing: border-box;
+                        vertical-align: top;
+                    &.icon{
+                        width:45px;
+                        height:45px;
+                        margin-right:10px;
+                        float: left;
+                    }
+                    &.left{
+                        font-size: 19px;
+                        padding: 0 10px;
+                        display: block;
+                        width: auto;
+                        float: none;
+                    }
+                     &.none{
+                             position: absolute;
+                            right: 10px;
+                            top: 15px;
+                            width:auto;
+                            button{
+                                padding: 7px 20px;
+                            }
+                        }
+                    p{
+                        display:block;
+                        &.sub_title{
+                        }
+                        &.sub_titles{
+                            font-size: 10px;
+                            white-space: normal;
+                            height: 30px;
+                            display: inline-block;
+                        }
+                    }
+                }
+                &.usdt{
+                    span.icon{
+                        background-position: center top !important;
+                        background-size: auto 100% !important;
+                    }
+                }
+                &.btc{
+                    border:1px solid rgba(236,143,36,0.26);
+                    background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/btc_bg.svg);
+                    span.icon{
+                        background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_btc.svg) no-repeat center;
+                        background-size: 100% 100%;
+                    }
+                    span{
+                        button{
+                            background:#EC8F24;
+                        }
+                    }
+                }
+                &.eth{
+                    border:1px solid rgba(72,112,140,0.41);
+                    background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/eth_bg.svg);
+                    span.icon{
+                        background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_eth.svg) no-repeat center;
+                        background-size: 100% 100%;
+                    }
+                    span{
+                        button{
+                            background:#48708C;
+                        }
+                    }
+                }
+                &.okb{
+                    border:1px solid rgba(254,254,254,0.25);
+                    background-image: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/okb_bg.svg);
+                    span.icon{
+                        background: url(https://tmp-lemond.oss-accelerate.aliyuncs.com/icon_okb.svg) no-repeat center;
+                        background-size: 100% 100%;
+                    }
+                    span{
+                        button{
+                            background:#FEFEFE;
+                            color:#363636;
+                        }
+                    }
+                }
+            }
+        }
+        }
+}

@@ -1,0 +1,20 @@
+{
+  "pool-burn": "燃烧基金: ",
+  "pool-earned": "已获得 : ",
+  "pool-apy": "APY :",
+  "pool-tvl": "TVL :",
+  "pool-approval": "授权",
+  "pool-deposit": "存入",
+  "pool-unstake": "取出",
+  "pool-claim": "收获",
+  "pool-burn-reward":"你从燃烧基金中获得的奖励",
+  "pool-exit": "提取",
+  "pool-rule1": "* 当你点击去除，会自动为你收获DOMO!",
+  "pool-rule2": "* 在抵押的72小时之内收获，将会被收取最高36%的燃烧费用至燃烧基金（以小时为单位线性递减）.",
+  "pool-rule3": "* Percent of Burning Fee in this pool is ranging from 36% to 0% with rate reducing hourly. Once per 24 hours, fees in Burning fund would be prorated to qualified accounts.池子内的燃烧比例从36%到0%，以小时为单位线性递减，72小时后，燃烧基金内的费用将每24小时按比例分配给符合条件的账户",
+  "pool-brun-reward": "燃烧奖励: ",
+  "pool-withdraw" : "一并提取已获得DOMO与抵押款 ",
+  "pool-harvest" : "仅提取已获得DOMO.",
+  "pool-lastest-burn": "本轮燃烧奖励",
+  "pool-total-burn": "总计燃烧奖励"
+}

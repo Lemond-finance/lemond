@@ -1,0 +1,43 @@
+[
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "base",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ilks",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "duty",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rho",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
