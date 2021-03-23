@@ -22,8 +22,8 @@ const Header = (props) => {
                             <Link href="/"><li className={activeIndex == 1 ? styles.active : ""}>Home</li></Link>
                             <Link href="/lend"><li className={activeIndex == 2 ? styles.active : ""}>Lend</li></Link>
                             <Link href="/farm"><li className={activeIndex == 3 ? styles.active : ""}>Farm</li></Link>
-                            <Link href="/fomo"><li className={activeIndex == 4 ? styles.active : ""}>Fomo</li></Link>
-                            <Link href="/about"><li className={activeIndex == 5 ? styles.active : ""}>About</li></Link>
+                            {/* <Link href="/fomo"><li className={activeIndex == 4 ? styles.active : ""}>Fomo</li></Link> */}
+                            <Link href="/about"><li className={activeIndex == 4 ? styles.active : ""}>About</li></Link>
                         </ul>
                     </div>
                     <i className={styles.toggle} onClick={()=>setToggleNav(!toggleNav)}></i>
