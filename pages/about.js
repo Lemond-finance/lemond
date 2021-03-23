@@ -54,7 +54,7 @@ const Home = ({ t }) => {
   }
 
   return (
-    <HeaderFooter  activeIndex={5}>
+    <HeaderFooter  activeIndex={4}>
       <ToastContainer />
       <Head>
         <title>{t('title')}</title>
