@@ -9,6 +9,7 @@
   "connect-wallet": "Connect",
   "connect-metamask": "Connect to your MetaMask Wallet",
   "connect-walletconnect": "Scan with WalletConnect to connect",
+  "connect-ontoconnect": "Scan with ONTO Wallet to connect",
   "connect-disconnect": "Disconnect",
   "connect-cancel": "Cancel",
   "connect-retry": "Retry",

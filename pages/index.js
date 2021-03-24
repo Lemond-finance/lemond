@@ -14,6 +14,8 @@ const Home = ({ t }) => {
   const { account, ethereum } = useWallet();
   const [count, setCount] = useState(0);
   const handleScroll = () => {setCount(count+1);};
+
+
   useEffect(()=>{
     // create
         window.addEventListener('scroll',handleScroll);

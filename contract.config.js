@@ -1,5 +1,6 @@
 import oktPool from './abi/OKTPool.json'
 import lemond from './abi/LEMD.json'
+import ONOTAirdrop from './abi/ONOTAirdrop.json'
 
 export default {
   stake:{
@@ -23,6 +24,12 @@ export default {
     okt_pool: {
       address: '0x6eF0adF5dB077FE8A69f94D25e4EF29a0726e779',
       abi: oktPool
+    }
+  },
+  airdrop: {
+    onto: {
+      address: '0x29CC41E332468b0D8a4a06BE07FDb4dD2400c0dD',
+      abi: ONOTAirdrop
     }
   }
 }
