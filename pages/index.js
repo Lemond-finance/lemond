@@ -66,7 +66,7 @@ const Home = ({ t }) => {
             <p>Besides <b>OKExChain</b> testing bounty. <b>Lemond</b> is also holding Airdrop Carnival to get your bag served.</p>
             <p>Massive <b>$LEMD</b> in the box!</p>
             <p>Suit up for our Juicy Candies.</p>
-            <p className={styles.btns}>Episode ① <Link href="/farm"><button>Get Airdrop >></button></Link> </p>
+            <p className={styles.btns}>Episode ① <Link href="/farm" disabled><button>Ended</button></Link> </p>
             <p className={styles.btns}>Episode ② <button disabled>Comming soon</button> </p>
             <p className={styles.btns}>Episode ③ <button disabled>Comming soon</button> </p>
           </div>

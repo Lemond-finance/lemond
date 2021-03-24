@@ -248,9 +248,7 @@ const Home = ({ t,router }) => {
                 <h4><CountUp start={1000000} end={lemondBalance} separator=","  decimal="."  decimal="," prefix=""/> LEMD</h4>
             </div>
             <div className={styles.farm_car}></div>
-            <div className={styles.compound_time}>
-                Mining
-            </div>
+            <div className={styles.compound_time}>Tanked up</div>
         </div>
         <div className={styles.farm_list}>
             <h1>
