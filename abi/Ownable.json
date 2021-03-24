@@ -1,6 +1,7 @@
 [
   {
     "inputs": [],
+    "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -24,6 +25,22 @@
     "type": "event"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "isOwner",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -33,17 +50,21 @@
         "type": "address"
       }
     ],
+    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
+    "constant": false,
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
+    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
+    "constant": false,
     "inputs": [
       {
         "internalType": "address",
@@ -53,6 +74,7 @@
     ],
     "name": "transferOwnership",
     "outputs": [],
+    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   }

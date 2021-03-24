@@ -6,6 +6,12 @@ import classNames from 'classnames/bind';
 import styles from '../styles/wallet.less'
 import metamaskIcon from '../public/img/metamask.svg'
 import walletconnectIcon from '../public/img/walletconnect.svg'
+import ontoIcon from '../public/img/onto.svg'
+import ontoBG from '../public/img/onto_bg.png'
+import '../styles/react-confirm-alert.less'
+import { confirmAlert } from 'react-confirm-alert'
+import tokenConfig from '../contract.config.js'
+import Web3,{utils} from 'web3'
 
 const cx = classNames.bind(styles);
 
@@ -26,13 +32,13 @@ const WalletMask = (props) => {
                         <div className={styles.walletTips}>{t('connect-metamask')}</div>
                     </div>
                 </li>
-                {/* <li onClick={() => connectWallet('walletconnect')}>
+                <li onClick={() => connectWallet()}>
                     <div className={styles.walletWrapper}>
-                        <img src={walletconnectIcon} className={styles.walletIcon} />
-                        <div className={styles.walletTitle}>WalletConnect</div>
-                        <div className={styles.walletTips}>{t('connect-walletconnect')}</div>
+                        <img src={ontoIcon} className={styles.walletIcon} />
+                        <div className={styles.walletTitle}>ONTO Wallet</div>
+                        <div className={styles.walletTips}>{t('connect-ontoconnect')}</div>
                     </div>
-                </li> */}
+                </li>
             </ul>
         </div>
     </>)
@@ -40,13 +46,86 @@ const WalletMask = (props) => {
 
 const Wallet = ({t}) => {
     const wallet = useWallet()
+    const { account, ethereum } = wallet
     const blockNumber = wallet.getBlockNumber()
-    const activate = connector => wallet.connect(connector)
+    const [showBox,setShowBox] = useState(false)
+
+    const web3 = new Web3(ethereum)
+    const ontoAirdropConfig = tokenConfig.airdrop.onto
+    const ontoAirdropContract = new web3.eth.Contract(
+        ontoAirdropConfig.abi,
+        ontoAirdropConfig.address
+    )
+
+    const activate = connector => {
+        const appVersion = navigator.appVersion
+        if(appVersion.indexOf("Chrome") != -1){
+            // localStorage.setItem("alreadyGot","true")
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className={styles.confirmAlert}>
+                            <img width="400" src={ontoBG} />
+                             <p className={styles.center}>
+                                  <button onClick={()=>{
+                                        onClose()
+                                        setShowBox(true)
+                                    }}> OK </button>
+                              </p>
+                        </div>
+                    )
+                }
+            })
+            wallet.connect(connector)
+            return
+        }
+        else{
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className={styles.confirmAlert}>
+                            <h1>Please use ONTO wallet to connect.</h1>
+                            <p className={styles.center}>
+                                <button onClick={onClose}> OK </button>
+                            </p>
+                        </div>
+                    )
+                }
+            })
+            return
+        }
+        wallet.connect(connector)
+    }
+
     const formatAddress = (address) => { 
         return address.substr(0, 4) + '...' + address.substr(address.length - 4, 4) 
     }
 
+    const getOntoReward = async() => {
+          if(localStorage.getItem("alreadyGot") == "true"){
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className={styles.confirmAlert}>
+                            <h1>Already got reward.</h1>
+                            <p className={styles.center}>
+                                <button onClick={onClose}> OK </button>
+                            </p>
+                        </div>
+                    )
+                }
+            })
+            return
+        }
+        const auth = utils.keccak256(account)
+        console.log(auth)
+        await ontoAirdropContract.methods.unpack(auth).send({ from: account })
+        localStorage.setItem("alreadyGot","true")
+    }
+
     return <div className={styles.wallet}>
+
+        {!!showBox && <div onClick={()=>getOntoReward()} className={styles.box}></div>}
 
         {wallet.account && (<span className={styles.account}>{formatAddress(wallet.account)}</span>)}
 
