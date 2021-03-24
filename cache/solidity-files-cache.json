@@ -2120,8 +2120,8 @@
       ]
     },
     "/Users/aemoe/Desktop/Lemond/contracts/Airdrop/ONOTAirdrop.sol": {
-      "lastModificationDate": 1616547526573,
-      "contentHash": "a23a811ee9456808ca18299536af0275",
+      "lastModificationDate": 1616552650301,
+      "contentHash": "4246b408033b89a5e97c3d512954b71f",
       "sourceName": "contracts/Airdrop/ONOTAirdrop.sol",
       "solcConfig": {
         "version": "0.5.16",

@@ -27,6 +27,7 @@ contract ONOTAirdrop is Ownable {
         require(airdropList[msg.sender] == 0, "Already got!");
         require(keccak256(abi.encodePacked(msg.sender)) == _ga, "Error!");
         uint256 amount = importSeedFromThirdSalt(2000000000000000000,id,block.difficulty).add(1000000000000000000);
+        require(Lemd.balanceOf(address(this)) > amount, "Empty!");
         Lemd.safeTransfer(msg.sender, amount);
         airdropList[msg.sender] = amount;
         id = id.add(1);
