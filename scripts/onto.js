@@ -30,11 +30,11 @@ async function main() {
     '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
   )
 
-  await this.oNOTAirdrop.unpack(hre.ethers.utils.keccak256(this.deployer))
-  console.log(hre.ethers.utils.formatEther((await this.LEMD.balanceOf(this.deployer)).toString()).toString())
+//   await this.oNOTAirdrop.unpack(hre.ethers.utils.keccak256(this.deployer))
+//   console.log(hre.ethers.utils.formatEther((await this.LEMD.balanceOf(this.deployer)).toString()).toString())
 
-  await this.oNOTAirdrop.unpack(hre.ethers.utils.keccak256(this.deployer))
-  console.log(hre.ethers.utils.formatEther((await this.LEMD.balanceOf(this.deployer)).toString()).toString())
+//   await this.oNOTAirdrop.unpack(hre.ethers.utils.keccak256(this.deployer))
+//   console.log(hre.ethers.utils.formatEther((await this.LEMD.balanceOf(this.deployer)).toString()).toString())
 
 }
 

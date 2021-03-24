@@ -58,42 +58,41 @@ const Wallet = ({t}) => {
     )
 
     const activate = connector => {
-        const appVersion = navigator.appVersion
-        if(appVersion.indexOf("Chrome") != -1){
-            // localStorage.setItem("alreadyGot","true")
-            confirmAlert({
-                customUI: ({ onClose }) => {
-                    return (
-                        <div className={styles.confirmAlert}>
-                            <img width="400" src={ontoBG} />
-                             <p className={styles.center}>
-                                  <button onClick={()=>{
-                                        onClose()
-                                        setShowBox(true)
-                                    }}> OK </button>
-                              </p>
-                        </div>
-                    )
-                }
-            })
-            wallet.connect(connector)
-            return
-        }
-        else{
-            confirmAlert({
-                customUI: ({ onClose }) => {
-                    return (
-                        <div className={styles.confirmAlert}>
-                            <h1>Please use ONTO wallet to connect.</h1>
-                            <p className={styles.center}>
-                                <button onClick={onClose}> OK </button>
-                            </p>
-                        </div>
-                    )
-                }
-            })
-            return
-        }
+        // const appVersion = navigator.appVersion
+        // if(appVersion.indexOf("Chrome") != -1){
+        //     confirmAlert({
+        //         customUI: ({ onClose }) => {
+        //             return (
+        //                 <div className={styles.confirmAlert}>
+        //                     <img width="400" src={ontoBG} />
+        //                      <p className={styles.center}>
+        //                           <button onClick={()=>{
+        //                                 onClose()
+        //                                 setShowBox(true)
+        //                             }}> OK </button>
+        //                       </p>
+        //                 </div>
+        //             )
+        //         }
+        //     })
+        //     wallet.connect(connector)
+        //     return
+        // }
+        // else{
+        //     confirmAlert({
+        //         customUI: ({ onClose }) => {
+        //             return (
+        //                 <div className={styles.confirmAlert}>
+        //                     <h1>Please use ONTO wallet to connect.</h1>
+        //                     <p className={styles.center}>
+        //                         <button onClick={onClose}> OK </button>
+        //                     </p>
+        //                 </div>
+        //             )
+        //         }
+        //     })
+        //     return
+        // }
         wallet.connect(connector)
     }
 
