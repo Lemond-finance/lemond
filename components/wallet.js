@@ -56,7 +56,7 @@ const Wallet = ({t}) => {
     const activate = async connector => {
         if( connector == "onto"){
             const appVersion = navigator.appVersion
-            if(appVersion.indexOf("Mobile") != 0){
+            if(appVersion.indexOf("Mobile") != -1){
                 confirmAlert({
                     closeOnClickOutside: false,
                     customUI: ({ onClose }) => {
