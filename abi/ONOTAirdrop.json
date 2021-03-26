@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "_lemd",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_starttime",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -174,6 +179,21 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "starttime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
