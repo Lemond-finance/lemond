@@ -32,7 +32,7 @@ const WalletMask = (props) => {
                         <div className={styles.walletTips}>{t('connect-metamask')}</div>
                     </div>
                 </li>
-                <li onClick={() => connectWallet()}>
+                <li onClick={() => connectWallet('onto')}>
                     <div className={styles.walletWrapper}>
                         <img src={ontoIcon} className={styles.walletIcon} />
                         <div className={styles.walletTitle}>ONTO Wallet</div>
@@ -49,6 +49,7 @@ const Wallet = ({t}) => {
     const { account, ethereum } = wallet
     const blockNumber = wallet.getBlockNumber()
     const [showBox,setShowBox] = useState(false)
+    const [ontoIcon,setOntoIcon] = useState(false)
 
     const web3 = new Web3(ethereum)
     const ontoAirdropConfig = tokenConfig.airdrop.onto
@@ -93,7 +94,14 @@ const Wallet = ({t}) => {
         //     })
         //     return
         // }
-        wallet.connect(connector)
+        
+        if( connector == "onto"){
+            setOntoIcon(true)
+            wallet.connect()
+        }
+        else{
+            wallet.connect(connector)
+        }
     }
 
     const formatAddress = (address) => { 
@@ -140,19 +148,19 @@ const Wallet = ({t}) => {
                         //         ? 'Connection error: the user rejected the activation'
                         //         : wallet.error.name}
                         // </span>
-                        <button className={styles.button} onClick={wallet.reset()}>{t('connect-retry')}</button>
+                        <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={wallet.reset()}>{t('connect-retry')}</button>
                 )
             }
 
             if (wallet.status === 'connecting') {
                 return (
-                        <button className={styles.button} onClick={() => wallet.reset()}>{t('connect-cancel')}</button>
+                        <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={() => wallet.reset()}>{t('connect-cancel')}</button>
                 )
             }
 
             if (wallet.status === 'connected') {
                 return (
-                        <button className={styles.button} onClick={() => wallet.reset()}>{t('connect-disconnect')}</button>
+                        <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={() => wallet.reset()}>{t('connect-disconnect')}</button>
                 )
             }
 
