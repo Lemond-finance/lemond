@@ -1,17 +1,19 @@
 import { Component, useEffect, useState } from 'react';
-import { utils as ethersUtils } from 'ethers'
+import { ethers,utils as ethersUtils } from 'ethers'
 import { ConnectionRejectedError, UseWalletProvider, useWallet } from 'use-wallet'
 import { withTranslation } from '../i18n'
 import classNames from 'classnames/bind';
 import styles from '../styles/wallet.less'
 import metamaskIcon from '../public/img/metamask.svg'
 import walletconnectIcon from '../public/img/walletconnect.svg'
-import ontoIcon from '../public/img/onto.svg'
+import ontoIcons from '../public/img/onto.svg'
 import ontoBG from '../public/img/onto_bg.png'
 import '../styles/react-confirm-alert.less'
 import { confirmAlert } from 'react-confirm-alert'
 import tokenConfig from '../contract.config.js'
 import Web3,{utils} from 'web3'
+import { toastConfig } from '../libs/utils'
+import { ToastContainer, toast } from 'react-toastify'
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +36,7 @@ const WalletMask = (props) => {
                 </li>
                 <li onClick={() => connectWallet('onto')}>
                     <div className={styles.walletWrapper}>
-                        <img src={ontoIcon} className={styles.walletIcon} />
+                        <img src={ontoIcons} className={styles.walletIcon} />
                         <div className={styles.walletTitle}>ONTO Wallet</div>
                         <div className={styles.walletTips}>{t('connect-ontoconnect')}</div>
                     </div>
@@ -51,53 +53,45 @@ const Wallet = ({t}) => {
     const [showBox,setShowBox] = useState(false)
     const [ontoIcon,setOntoIcon] = useState(false)
 
-    const web3 = new Web3(ethereum)
-    const ontoAirdropConfig = tokenConfig.airdrop.onto
-    const ontoAirdropContract = new web3.eth.Contract(
-        ontoAirdropConfig.abi,
-        ontoAirdropConfig.address
-    )
-
-    const activate = connector => {
-        // const appVersion = navigator.appVersion
-        // if(appVersion.indexOf("Chrome") != -1){
-        //     confirmAlert({
-        //         customUI: ({ onClose }) => {
-        //             return (
-        //                 <div className={styles.confirmAlert}>
-        //                     <img width="400" src={ontoBG} />
-        //                      <p className={styles.center}>
-        //                           <button onClick={()=>{
-        //                                 onClose()
-        //                                 setShowBox(true)
-        //                             }}> OK </button>
-        //                       </p>
-        //                 </div>
-        //             )
-        //         }
-        //     })
-        //     wallet.connect(connector)
-        //     return
-        // }
-        // else{
-        //     confirmAlert({
-        //         customUI: ({ onClose }) => {
-        //             return (
-        //                 <div className={styles.confirmAlert}>
-        //                     <h1>Please use ONTO wallet to connect.</h1>
-        //                     <p className={styles.center}>
-        //                         <button onClick={onClose}> OK </button>
-        //                     </p>
-        //                 </div>
-        //             )
-        //         }
-        //     })
-        //     return
-        // }
-        
+    const activate = async connector => {
         if( connector == "onto"){
-            setOntoIcon(true)
-            wallet.connect()
+            const appVersion = navigator.appVersion
+            if(appVersion.indexOf("Mobile") != -1){
+                confirmAlert({
+                    closeOnClickOutside: false,
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className={styles.confirmAlert}>
+                                <img width="400" src={ontoBG} />
+                                <p className={styles.center}>
+                                    <button onClick={()=>{
+                                            onClose()
+                                            setShowBox(true)
+                                        }}> OK </button>
+                                </p>
+                            </div>
+                        )
+                    }
+                })
+                setOntoIcon(true)
+                return
+            }
+            else{
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className={styles.confirmAlert}>
+                                <h1>Please use ONTO wallet to connect.</h1>
+                                <p className={styles.center}>
+                                    <button onClick={onClose}> OK </button>
+                                </p>
+                            </div>
+                        )
+                    }
+                })
+                return
+            }
+        
         }
         else{
             wallet.connect(connector)
@@ -124,14 +118,20 @@ const Wallet = ({t}) => {
             })
             return
         }
-        const auth = utils.keccak256(account)
-        console.log(auth)
-        await ontoAirdropContract.methods.unpack(auth).send({ from: account })
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        console.log(provider)
+        const signer = provider.getSigner()
+        const onotAccount = (await provider.listAccounts())[0]
+        const ontoAirdropConfig = tokenConfig.airdrop.onto
+        const contract = new ethers.Contract( ontoAirdropConfig.address, ontoAirdropConfig.abi, signer)
+        const auth = ethersUtils.keccak256(onotAccount)
+        const result = await contract.unpack(auth)
+        toast.dark('🚀 Get reward success!', toastConfig)
         localStorage.setItem("alreadyGot","true")
     }
 
     return <div className={styles.wallet}>
-
+        <ToastContainer />
         {!!showBox && <div onClick={()=>getOntoReward()} className={styles.box}></div>}
 
         {wallet.account && (<span className={styles.account}>{formatAddress(wallet.account)}</span>)}
@@ -139,6 +139,8 @@ const Wallet = ({t}) => {
         {wallet.account && (
             <span className={styles.balance}> {wallet.balance === '-1' ? '...' : `${parseFloat(ethersUtils.formatEther(wallet.balance)).toFixed(2)} OKT`} </span>
         )}
+
+        {ontoIcon && <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={() => setOntoIcon(false)}>{t('connect-disconnect')}</button> }
 
         {(() => {
             if (wallet.error?.name) {
@@ -166,7 +168,7 @@ const Wallet = ({t}) => {
 
             return (
                 <div>
-                    <WalletMask connectWallet={(type) => activate(type)} t={t}/>
+                    {!ontoIcon && <WalletMask connectWallet={(type) => activate(type)} t={t}/>}
                 </div>
             )
         })()}

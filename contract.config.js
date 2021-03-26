@@ -28,7 +28,7 @@ export default {
   },
   airdrop: {
     onto: {
-      address: '0x29CC41E332468b0D8a4a06BE07FDb4dD2400c0dD',
+      address: '0xDb63743aC2fc520217C2ef99F282163bfDcA70bf',
       abi: ONOTAirdrop
     }
   }

@@ -20,7 +20,8 @@
     "react-tooltip": "^4.2.10",
     "react-top-loading-bar": "^2.0.1",
     "use-wallet": "^0.8.0",
-    "web3": "^1.3.0"
+    "web3": "^1.3.4",
+    "json-circular-stringify":"1.0.1"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
