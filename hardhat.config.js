@@ -33,7 +33,8 @@ module.exports = {
     },
     okexchain: {
       url: 'https://exchaintest.okexcn.com/',
-      accounts: [mnemonic]
+      accounts: [mnemonic],
+      timeout: 200000
     },
     rinkeby: {
       url: 'https://rinkeby.infura.io/v3/3970ae72d3db40f6a6dfad8544b4da1c',
