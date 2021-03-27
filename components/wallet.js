@@ -112,7 +112,6 @@ const Wallet = ({t}) => {
     }
 
     const getOntoReward = async() => {
-          localStorage.setItem("alreadyGot","false")
           if(localStorage.getItem("alreadyGot") == "true"){
             confirmAlert({
                 customUI: ({ onClose }) => {
@@ -132,6 +131,7 @@ const Wallet = ({t}) => {
         console.log(auth)
         await window.ontoAirdropContract.methods.unpack(auth).send({ from: window.ontoaccount })
         toast.dark('🚀 Get reward success!', toastConfig)
+        localStorage.setItem("alreadyGot","true")
     }
 
     return <div className={styles.wallet}>
