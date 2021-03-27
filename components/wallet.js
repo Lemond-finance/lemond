@@ -53,10 +53,11 @@ const Wallet = ({t}) => {
     const [showBox,setShowBox] = useState(false)
     const [ontoIcon,setOntoIcon] = useState(false)
 
+
     const activate = async connector => {
         if( connector == "onto"){
             const appVersion = navigator.appVersion
-            if(appVersion.indexOf("Mobile") != -1){
+            if(appVersion.indexOf("Mobile") != 0){
                 confirmAlert({
                     closeOnClickOutside: false,
                     customUI: ({ onClose }) => {
@@ -74,6 +75,14 @@ const Wallet = ({t}) => {
                     }
                 })
                 setOntoIcon(true)
+                const web3 = new Web3(window.ethereum)
+                const ontoAirdropConfig = tokenConfig.airdrop.onto
+                window.ontoAirdropContract = new web3.eth.Contract(
+                    ontoAirdropConfig.abi,
+                    ontoAirdropConfig.address
+                )
+                window.ontoaccount = (await web3.eth.getAccounts())[0]
+                console.log(window.ontoaccount)
                 return
             }
             else{
@@ -103,6 +112,7 @@ const Wallet = ({t}) => {
     }
 
     const getOntoReward = async() => {
+          localStorage.setItem("alreadyGot","false")
           if(localStorage.getItem("alreadyGot") == "true"){
             confirmAlert({
                 customUI: ({ onClose }) => {
@@ -118,16 +128,10 @@ const Wallet = ({t}) => {
             })
             return
         }
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        console.log(provider)
-        const signer = provider.getSigner()
-        const onotAccount = (await provider.listAccounts())[0]
-        const ontoAirdropConfig = tokenConfig.airdrop.onto
-        const contract = new ethers.Contract( ontoAirdropConfig.address, ontoAirdropConfig.abi, signer)
-        const auth = ethersUtils.keccak256(onotAccount)
-        const result = await contract.unpack(auth)
+        const auth = utils.keccak256(window.ontoaccount)
+        console.log(auth)
+        await window.ontoAirdropContract.methods.unpack(auth).send({ from: window.ontoaccount })
         toast.dark('🚀 Get reward success!', toastConfig)
-        localStorage.setItem("alreadyGot","true")
     }
 
     return <div className={styles.wallet}>
