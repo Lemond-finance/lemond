@@ -1,32 +1,5 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "baseRatePerYear",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "multiplierPerYear",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "jumpMultiplierPerYear",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "kink_",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -58,7 +31,25 @@
     "type": "event"
   },
   {
-    "constant": true,
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "baseRatePerBlock",
     "outputs": [
@@ -68,12 +59,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "blocksPerYear",
     "outputs": [
@@ -83,12 +72,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [
       {
         "internalType": "uint256",
@@ -114,12 +101,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [
       {
         "internalType": "uint256",
@@ -150,27 +135,38 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "isInterestRateModel",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "baseRatePerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "multiplierPerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "jumpMultiplierPerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "kink_",
+        "type": "uint256"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "jumpMultiplierPerBlock",
     "outputs": [
@@ -180,12 +176,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "kink",
     "outputs": [
@@ -195,12 +189,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "multiplierPerBlock",
     "outputs": [
@@ -210,12 +202,71 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "baseRatePerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "multiplierPerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "jumpMultiplierPerYear",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "kink_",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateJumpRateModel",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -241,7 +292,6 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "pure",
     "type": "function"
   }

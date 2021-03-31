@@ -70,6 +70,13 @@ const Home = ({ t }) => {
             <p className={styles.btns}>Episode ② <button disabled>Comming soon</button> </p>
             <p className={styles.btns}>Episode ③ <button disabled>Comming soon</button> </p>
           </div>
+          <div className={styles.partners}>
+            <h1>Partners</h1>
+            <ul>
+              <li className={styles.tp}></li>
+              <li className={styles.onto}></li>
+            </ul>
+          </div>
       </div>
 
       <script>
