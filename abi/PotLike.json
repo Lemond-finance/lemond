@@ -1,6 +1,5 @@
 [
   {
-    "constant": true,
     "inputs": [],
     "name": "chi",
     "outputs": [
@@ -10,12 +9,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [],
     "name": "drip",
     "outputs": [
@@ -25,12 +22,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "dsr",
     "outputs": [
@@ -40,12 +35,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "uint256",
@@ -55,12 +48,10 @@
     ],
     "name": "exit",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "uint256",
@@ -70,12 +61,10 @@
     ],
     "name": "join",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -91,12 +80,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
     "name": "rho",
     "outputs": [
@@ -106,7 +93,6 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   }

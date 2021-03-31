@@ -1,0 +1,143 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      }
+    ],
+    "name": "getTokenConfigBySymbol",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "cToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "underlying",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "symbolHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "baseUnit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum CompoundPriceOracleInterface.PriceSource",
+            "name": "priceSource",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "fixedPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "uniswapMarket",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isUniswapReversed",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct CompoundPriceOracleInterface.CTokenConfig",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "underlying",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenConfigByUnderlying",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "cToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "underlying",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "symbolHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "baseUnit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum CompoundPriceOracleInterface.PriceSource",
+            "name": "priceSource",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "fixedPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "uniswapMarket",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isUniswapReversed",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct CompoundPriceOracleInterface.CTokenConfig",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "cToken",
+        "type": "address"
+      }
+    ],
+    "name": "getUnderlyingPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

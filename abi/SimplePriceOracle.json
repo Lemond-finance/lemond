@@ -3,6 +3,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "asset",
@@ -25,13 +44,18 @@
         "internalType": "uint256",
         "name": "newPriceMantissa",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
       }
     ],
     "name": "PricePosted",
     "type": "event"
   },
   {
-    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -39,7 +63,31 @@
         "type": "address"
       }
     ],
-    "name": "assetPrices",
+    "name": "get",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "getPrice",
     "outputs": [
       {
         "internalType": "uint256",
@@ -47,16 +95,14 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [
       {
-        "internalType": "contract CToken",
-        "name": "cToken",
+        "internalType": "contract PToken",
+        "name": "pToken",
         "type": "address"
       }
     ],
@@ -68,27 +114,37 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [],
-    "name": "isPriceOracle",
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "address",
         "name": "",
-        "type": "bool"
+        "type": "address"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": false,
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -101,29 +157,39 @@
         "type": "uint256"
       }
     ],
-    "name": "setDirectPrice",
+    "name": "setPrice",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
-        "internalType": "contract CToken",
-        "name": "cToken",
+        "internalType": "contract PToken",
+        "name": "pToken",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "underlyingPriceMantissa",
+        "name": "price",
         "type": "uint256"
       }
     ],
     "name": "setUnderlyingPrice",
     "outputs": [],
-    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }

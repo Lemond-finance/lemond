@@ -8,6 +8,7 @@ import metamaskIcon from '../public/img/metamask.svg'
 import walletconnectIcon from '../public/img/walletconnect.svg'
 import ontoIcons from '../public/img/onto.svg'
 import ontoBG from '../public/img/onto_end_bg.png'
+import tpIcons from '../public/img/tp_icon.png'
 import '../styles/react-confirm-alert.less'
 import { confirmAlert } from 'react-confirm-alert'
 import tokenConfig from '../contract.config.js'
@@ -39,6 +40,13 @@ const WalletMask = (props) => {
                         <div className={styles.walletTips}>{t('connect-ontoconnect')}</div>
                     </div>
                 </li>
+                <li onClick={() => connectWallet('tp')}>
+                    <div className={styles.walletWrapper}>
+                        <img src={tpIcons} className={styles.walletIcon} />
+                        <div className={styles.walletTitle}>TokenPocket Wallet</div>
+                        <div className={styles.walletTips}>{t('connect-tpconnect')}</div>
+                    </div>
+                </li>
             </ul>
         </div>
     </>)
@@ -49,6 +57,7 @@ const Wallet = ({t}) => {
     const { account, ethereum } = wallet
     const blockNumber = wallet.getBlockNumber()
     const [ontoIcon, setOntoIcon] = useState(false)
+    const [tpIcon, setTpIcon] = useState(false)
 
     const activate = async connector => {
         setOntoIcon(false)
@@ -67,6 +76,10 @@ const Wallet = ({t}) => {
                     }
             })
             setOntoIcon(true)
+            wallet.connect()
+        }
+        else if(connector == "tp"){
+            setTpIcon(true)
             wallet.connect()
         }
         else{
@@ -89,19 +102,19 @@ const Wallet = ({t}) => {
         {(() => {
             if (wallet.error?.name) {
                 return (
-                    <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={wallet.reset()}>{t('connect-retry')}</button>
+                    <button className={cx(styles.button, { onto: !!ontoIcon }, { tp: !!tpIcon })} onClick={wallet.reset()}>{t('connect-retry')}</button>
                 )
             }
 
             if (wallet.status === 'connecting') {
                 return (
-                        <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={() => wallet.reset()}>{t('connect-cancel')}</button>
+                        <button className={cx(styles.button, { onto: !!ontoIcon }, { tp: !!tpIcon })} onClick={() => wallet.reset()}>{t('connect-cancel')}</button>
                 )
             }
 
             if (wallet.status === 'connected') {
                 return (
-                        <button className={cx(styles.button, { onto: !!ontoIcon })} onClick={() => wallet.reset()}>{t('connect-disconnect')}</button>
+                        <button className={cx(styles.button, { onto: !!ontoIcon }, { tp: !!tpIcon })} onClick={() => wallet.reset()}>{t('connect-disconnect')}</button>
                 )
             }
 

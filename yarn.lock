@@ -1091,6 +1091,14 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@chainlink/contracts@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@chainlink/contracts/-/contracts-0.1.6.tgz#e4795565c723f99adaf6e97382cfb41dff0bcf91"
+  integrity sha512-RXKMm+3ADEi1c4/XsXy2Z1m0KQh7H6Nn0FWXmCgXRIorOBt7dvh52c0c41ONJfIhHB/tGeoXnp4lPnZEDqkocA==
+  optionalDependencies:
+    "@truffle/contract" "^4.2.29"
+    ethers "^4.0.45"
+
 "@chaitanyapotti/random-id@^1.0.3":
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/@chaitanyapotti/random-id/download/@chaitanyapotti/random-id-1.0.3.tgz#f52f647cfe9f79fc7723ea2b01b0ad3889204002"
@@ -1681,15 +1689,20 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@openzeppelin/contracts-ethereum-package@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@openzeppelin/contracts-ethereum-package/-/contracts-ethereum-package-3.0.0.tgz#d5db971a177c3b37733db2ee4ebdb79c67575d64"
+  integrity sha512-Xg33RtX7FGbSK/YnroLhcGNAvH30/C84NRW8KvbSdXXYiLA8YqM1bOA9sAeLjmQxXqYUn/YL4AUVTgDnG51NOw==
+
 "@openzeppelin/contracts-upgradeable@^3.4.0":
   version "3.4.1"
   resolved "https://registry.npm.taobao.org/@openzeppelin/contracts-upgradeable/download/@openzeppelin/contracts-upgradeable-3.4.1.tgz#38dfdfa86fda0a088c6fcdebe6870cfaf897b471"
   integrity sha1-ON/fqG/aCgiMb83r5ocM+viXtHE=
 
-"@openzeppelin/contracts@^3.4.0":
+"@openzeppelin/contracts@^3.0.0":
   version "3.4.1"
-  resolved "https://registry.npm.taobao.org/@openzeppelin/contracts/download/@openzeppelin/contracts-3.4.1.tgz#03c891fec7f93be0ae44ed74e57a122a38732ce7"
-  integrity sha1-A8iR/sf5O+CuRO105XoSKjhzLOc=
+  resolved "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-3.4.1.tgz#03c891fec7f93be0ae44ed74e57a122a38732ce7"
+  integrity sha512-cUriqMauq1ylzP2TxePNdPqkwI7Le3Annh4K9rrpvKfSBB/bdW+Iu1ihBaTIABTAAJ85LmKL5SSPPL9ry8d1gQ==
 
 "@openzeppelin/hardhat-upgrades@^1.6.0":
   version "1.6.0"
@@ -1963,6 +1976,28 @@
   dependencies:
     source-map-support "^0.5.19"
 
+"@truffle/blockchain-utils@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@truffle/blockchain-utils/-/blockchain-utils-0.0.28.tgz#6e2c7695c013bcce89af0f05de88210a25f7344a"
+  integrity sha512-Q3vtGzDAGI3q2OQV1rUX/HYGJ0PB4RKbrgnwSV3YLc01YOkv4baF5ZJbMxtgLDhJQap1llrN59u2BOAa+jVCsg==
+
+"@truffle/codec@^0.10.2":
+  version "0.10.2"
+  resolved "https://registry.npmjs.org/@truffle/codec/-/codec-0.10.2.tgz#b59746c91124b56370011ac1e1ac9a489b35b3eb"
+  integrity sha512-m396zHfF5ee8zv0O0SctVt0/FxGPv/x9pTm24BHlDz540S6wiWwarBb20QF4sXfJ7lwe6ZfwtyQHExuszCENlg==
+  dependencies:
+    big.js "^5.2.2"
+    bn.js "^5.1.3"
+    cbor "^5.1.0"
+    debug "^4.3.1"
+    lodash.clonedeep "^4.5.0"
+    lodash.escaperegexp "^4.1.2"
+    lodash.partition "^4.6.0"
+    lodash.sum "^4.0.2"
+    semver "^7.3.4"
+    utf8 "^3.0.0"
+    web3-utils "1.2.9"
+
 "@truffle/codec@^0.7.1":
   version "0.7.1"
   resolved "https://registry.npm.taobao.org/@truffle/codec/download/@truffle/codec-0.7.1.tgz#2ef0fa40109040796afbebb8812c872122100ae4"
@@ -1981,7 +2016,7 @@
     utf8 "^3.0.0"
     web3-utils "1.2.9"
 
-"@truffle/contract-schema@^3.2.5":
+"@truffle/contract-schema@^3.2.5", "@truffle/contract-schema@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npm.taobao.org/@truffle/contract-schema/download/@truffle/contract-schema-3.3.4.tgz#95f0265cac7de7bcaa0542f5fe671a7896011bfe"
   integrity sha1-lfAmXKx957yqBUL1/mcaeJYBG/4=
@@ -1989,6 +2024,25 @@
     ajv "^6.10.0"
     crypto-js "^3.1.9-1"
     debug "^4.3.1"
+
+"@truffle/contract@^4.2.29":
+  version "4.3.12"
+  resolved "https://registry.npmjs.org/@truffle/contract/-/contract-4.3.12.tgz#9c1fed962fae17a8fe1895c6e80314a00dc62cce"
+  integrity sha512-gnOkZe28k/pwPkl4Ke9mj7UwLHDr6nq1ZitZOhukXvq5mf6Ll9hsHhGCwlzKnxdwKHHUpJ/1saqp6OjXOiJYEw==
+  dependencies:
+    "@truffle/blockchain-utils" "^0.0.28"
+    "@truffle/contract-schema" "^3.3.4"
+    "@truffle/debug-utils" "^5.0.12"
+    "@truffle/error" "^0.0.12"
+    "@truffle/interface-adapter" "^0.4.20"
+    bignumber.js "^7.2.1"
+    ethereum-ens "^0.8.0"
+    ethers "^4.0.32"
+    web3 "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-promievent "1.2.9"
+    web3-eth-abi "1.2.9"
+    web3-utils "1.2.9"
 
 "@truffle/debug-utils@^4.2.9":
   version "4.2.14"
@@ -2002,10 +2056,28 @@
     highlight.js "^9.15.8"
     highlightjs-solidity "^1.0.18"
 
+"@truffle/debug-utils@^5.0.12":
+  version "5.0.12"
+  resolved "https://registry.npmjs.org/@truffle/debug-utils/-/debug-utils-5.0.12.tgz#82ff52cef545ca8c0274292fb97d473253df1570"
+  integrity sha512-NkdSLjAvyylZAOJeywYHzCWHkrAm0kVPVkZZUtsej0wAvzqqL6FWV/jy9wKtpAv5hYhCQBU9BKrPdfdTnE6dYA==
+  dependencies:
+    "@truffle/codec" "^0.10.2"
+    "@trufflesuite/chromafi" "^2.2.2"
+    bn.js "^5.1.3"
+    chalk "^2.4.2"
+    debug "^4.3.1"
+    highlight.js "^10.4.0"
+    highlightjs-solidity "^1.0.21"
+
 "@truffle/error@^0.0.11":
   version "0.0.11"
   resolved "https://registry.npm.taobao.org/@truffle/error/download/@truffle/error-0.0.11.tgz#2789c0042d7e796dcbb840c7a9b5d2bcd8e0e2d8"
   integrity sha1-J4nABC1+eW3LuEDHqbXSvNjg4tg=
+
+"@truffle/error@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.npmjs.org/@truffle/error/-/error-0.0.12.tgz#83e02e6ffe1d154fe274141d90038a91fd1e186d"
+  integrity sha512-kZqqnPR9YDJG7KCDOcN1qH16Qs0oz1PzF0Y93AWdhXuL9S9HYo/RUUeqGKbPpRBEZldQUS8aa4EzfK08u5pu6g==
 
 "@truffle/interface-adapter@^0.4.16":
   version "0.4.19"
@@ -2017,7 +2089,16 @@
     source-map-support "^0.5.19"
     web3 "1.2.9"
 
-"@trufflesuite/chromafi@^2.2.1":
+"@truffle/interface-adapter@^0.4.20":
+  version "0.4.20"
+  resolved "https://registry.npmjs.org/@truffle/interface-adapter/-/interface-adapter-0.4.20.tgz#cf3f176e6fe14321bf164d502bf8d05e50209eb5"
+  integrity sha512-GcdtXjU+Mhx/WuD3Af1thojHilhUAWtKfoNF09oEDyGSrS0QEWq9s9kOFjrfTFJrK+g0I6VXMrU2sIido96NBA==
+  dependencies:
+    bn.js "^5.1.3"
+    ethers "^4.0.32"
+    web3 "1.2.9"
+
+"@trufflesuite/chromafi@^2.2.1", "@trufflesuite/chromafi@^2.2.2":
   version "2.2.2"
   resolved "https://registry.npm.taobao.org/@trufflesuite/chromafi/download/@trufflesuite/chromafi-2.2.2.tgz#d3fc507aa8504faffc50fb892cedcfe98ff57f77"
   integrity sha1-0/xQeqhQT6/8UPuJLO3P6Y/1f3c=
@@ -4231,6 +4312,14 @@ caseless@~0.12.0:
   resolved "https://registry.npm.taobao.org/caseless/download/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+cbor@^5.1.0:
+  version "5.2.0"
+  resolved "https://registry.npmjs.org/cbor/-/cbor-5.2.0.tgz#4cca67783ccd6de7b50ab4ed62636712f287a67c"
+  integrity sha512-5IMhi9e1QU76ppa5/ajP1BmMWZ2FHkhAhjeVKQ/EFCgYSEaeVaoGtL7cxJskf9oCCk+XjzaIdc3IuU/dbA/o2A==
+  dependencies:
+    bignumber.js "^9.0.1"
+    nofilter "^1.0.4"
+
 cbor@^7.0.0:
   version "7.0.3"
   resolved "https://registry.npm.taobao.org/cbor/download/cbor-7.0.3.tgz#216d292f2aedd1bb61414a8f949b63e4de11b33b"
@@ -6265,7 +6354,7 @@ ethers@4.0.47:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^4.0.0-beta.1, ethers@^4.0.32:
+ethers@^4.0.0-beta.1, ethers@^4.0.32, ethers@^4.0.45:
   version "4.0.48"
   resolved "https://registry.npm.taobao.org/ethers/download/ethers-4.0.48.tgz#330c65b8133e112b0613156e57e92d9009d8fbbe"
   integrity sha1-MwxluBM+ESsGExVuV+ktkAnY+74=
@@ -7268,6 +7357,11 @@ heap@0.2.6:
   resolved "https://registry.npm.taobao.org/heap/download/heap-0.2.6.tgz#087e1f10b046932fc8594dd9e6d378afc9d1e5ac"
   integrity sha1-CH4fELBGky/IWU3Z5tN4r8nR5aw=
 
+highlight.js@^10.4.0:
+  version "10.7.1"
+  resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-10.7.1.tgz#a8ec4152db24ea630c90927d6cae2a45f8ecb955"
+  integrity sha512-S6G97tHGqJ/U8DsXcEdnACbirtbx58Bx9CzIVeYli8OuswCfYI/LsXH2EiGcoGio1KAC3x4mmUwulOllJ2ZyRA==
+
 highlight.js@^10.4.1:
   version "10.6.0"
   resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-10.6.0.tgz#0073aa71d566906965ba6e1b7be7b2682f5e18b6"
@@ -7278,7 +7372,7 @@ highlight.js@^9.15.8:
   resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
   integrity sha1-0Yo1mGfzeME41oGe38KorNXymCU=
 
-highlightjs-solidity@^1.0.18:
+highlightjs-solidity@^1.0.18, highlightjs-solidity@^1.0.21:
   version "1.0.21"
   resolved "https://registry.npm.taobao.org/highlightjs-solidity/download/highlightjs-solidity-1.0.21.tgz#6d257215b5b635231d4d0c523f2c419bbff6fe42"
   integrity sha1-bSVyFbW2NSMdTQxSPyxBm7/2/kI=
@@ -8118,6 +8212,13 @@ json-buffer@3.0.0:
   resolved "https://registry.npm.taobao.org/json-buffer/download/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=
 
+json-circular-stringify@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/json-circular-stringify/-/json-circular-stringify-1.0.1.tgz#90c6394c038c656e24940089e908bc1dcbca2688"
+  integrity sha512-JX0zH0kyi6N419lEcf9CH2/TeQjWUe+d/4aIIlBzp1tOBEpU2i8jIqu0YyO9JIiEJl07+6mK7W6vpvDmUcFueg==
+  dependencies:
+    json-stringify-safe "^5.0.1"
+
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/json-parse-better-errors/download/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -8188,7 +8289,7 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
-json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.npm.taobao.org/json-stringify-safe/download/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
@@ -9515,6 +9616,11 @@ nodemon@^2.0.6:
     touch "^3.1.0"
     undefsafe "^2.0.3"
     update-notifier "^4.1.0"
+
+nofilter@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/nofilter/-/nofilter-1.0.4.tgz#78d6f4b6a613e7ced8b015cec534625f7667006e"
+  integrity sha512-N8lidFp+fCz+TD51+haYdbDGrcBWwuHX40F5+z0qkUjMJ5Tp+rdSuAkMJ9N9eoolDlEVTf6u5icM+cNKkKW2mA==
 
 nofilter@^2.0.3:
   version "2.0.3"
@@ -11384,6 +11490,13 @@ semver@^7.3.2:
   version "7.3.4"
   resolved "https://registry.npm.taobao.org/semver/download/semver-7.3.4.tgz?cache=0&sync_timestamp=1606854311104&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
   integrity sha1-J6qn0uTKdkUvmNOt0JOnLJQ+3Jc=
+  dependencies:
+    lru-cache "^6.0.0"
+
+semver@^7.3.4:
+  version "7.3.5"
+  resolved "https://registry.npmjs.org/semver/-/semver-7.3.5.tgz#0b621c879348d8998e4b0e4be94b3f12e6018ef7"
+  integrity sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==
   dependencies:
     lru-cache "^6.0.0"
 

@@ -1,6 +1,5 @@
 [
   {
-    "constant": true,
     "inputs": [],
     "name": "base",
     "outputs": [
@@ -10,12 +9,10 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": true,
     "inputs": [
       {
         "internalType": "bytes32",
@@ -36,7 +33,6 @@
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   }

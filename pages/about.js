@@ -70,9 +70,10 @@ const Home = ({ t }) => {
 <p>Token: LEMD<br />
 Total Supply: <b>1,000,000,000</b><br />
  <b>60%</b> Loan Mining + Liquidity Mining<br />
- <b>20%</b> Team incentive + Project Operation<br />
  <b>15%</b> DAO Governance<br />
- <b>5%</b>   Eco-incentive + Initial Liquidity</p>
+ <b>10%</b> Team Incentive<br />
+ <b>10%</b> Team Incentive<br />
+ <b>5%</b>  Eco-incentive + Initial Liquidity</p>
 
 <p>LEMD Token Contract:  <b>0xE667d8bD182D165D2E71cF72315bD117f6940094</b></p>
 

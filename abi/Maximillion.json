@@ -2,32 +2,28 @@
   {
     "inputs": [
       {
-        "internalType": "contract CEther",
-        "name": "cEther_",
+        "internalType": "contract PEther",
+        "name": "pEther_",
         "type": "address"
       }
     ],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
-    "constant": true,
     "inputs": [],
-    "name": "cEther",
+    "name": "pEther",
     "outputs": [
       {
-        "internalType": "contract CEther",
+        "internalType": "contract PEther",
         "name": "",
         "type": "address"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "address",
@@ -37,12 +33,10 @@
     ],
     "name": "repayBehalf",
     "outputs": [],
-    "payable": true,
     "stateMutability": "payable",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "address",
@@ -50,14 +44,13 @@
         "type": "address"
       },
       {
-        "internalType": "contract CEther",
-        "name": "cEther_",
+        "internalType": "contract PEther",
+        "name": "pEther_",
         "type": "address"
       }
     ],
     "name": "repayBehalfExplicit",
     "outputs": [],
-    "payable": true,
     "stateMutability": "payable",
     "type": "function"
   }

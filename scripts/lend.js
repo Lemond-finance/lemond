@@ -8,75 +8,103 @@ const { ethers, upgrades } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const web3 = require('web3')
 
-const FakeDai = artifacts.require("./FakeDai")
-const FakeCDai = artifacts.require("./FakeCDai")
-const FakeCEther = artifacts.require("./FakeCEther")
-const FakeComptroller = artifacts.require("./FakeComptroller")
-const FakeCDaiInterestRateModel = artifacts.require("./FakeCDaiInterestRateModel")
-const FakeCEtherInterestRateModel = artifacts.require("./FakeCEtherInterestRateModel")
+const MockErc20 = artifacts.require('MockERC20')
+const Comptroller = artifacts.require("Comptroller")
+const JumpRateModel = artifacts.require('JumpRateModel')
+const PEther = artifacts.require('PEther')
+const PERC20 = artifacts.require('PERC20')
+const SimplePriceOracle = artifacts.require('SimplePriceOracle')
 
 async function main() {
-  await hre.run('compile')
+    await hre.run('compile')
 
-  this.deployer = (await ethers.getSigners())[0].address
-  console.log('deployer address',this.deployer)
+    this.deployer = (await ethers.getSigners())[0].address
+    console.log('deployer address',this.deployer)
 
-  // 1. Deploy DAI token contract
-  this.fakeDai = await FakeDai.new()
-  console.log('FakeDai', this.fakeDai.address)
+    this.comptroller = await Comptroller.new()
+    this.comptroller.initialize()
+    this.DAI = await MockErc20.new('DAI', 'DAI', hre.ethers.utils.parseEther('100000'),8)
+    this.BAT = await MockErc20.new('BAT', 'BAT', hre.ethers.utils.parseEther('10000000000'),18)
+    this.jumpRateModel = await JumpRateModel.new()
+    this.jumpRateModel.initialize(
+        hre.ethers.utils.parseEther('0.05'),
+        hre.ethers.utils.parseEther('0.45'),
+        hre.ethers.utils.parseEther('0.25'),
+        hre.ethers.utils.parseEther('0.95')
+    )
+    this.priceOracle = await SimplePriceOracle.new()
+    this.priceOracle.initialize()
+    this.pEther = await PEther.new()
+    this.pEther.initialize(
+        this.comptroller.address, 
+        this.jumpRateModel.address, 
+        hre.ethers.utils.parseEther('200000000'),
+        'pETH',
+        'pETH',
+        '18'
+    )
+    this.pDAI = await PERC20.new()
+    this.pDAI.initialize(
+        this.DAI.address, 
+        this.comptroller.address, 
+        this.jumpRateModel.address, 
+        hre.ethers.utils.parseEther('200000000'),
+        'pDAI',
+        'pDAI',
+        '18'
+    )
+    this.pBAT = await PERC20.new()
+    this.pBAT.initialize(
+        this.BAT.address, 
+        this.comptroller.address, 
+        this.jumpRateModel.address, 
+        hre.ethers.utils.parseEther('200000000'),
+        'pBAT',
+        'pBAT',
+        '18'
+    )
 
-  // 2. Deploy Interest Model contracts for cDAI and cETH
-  this.fakeCDaiInterestRateModel = await FakeCDaiInterestRateModel.new()
-  console.log("FakeCDaiInterestRateModel",this.fakeCDaiInterestRateModel.address)
-  this.fakeCEtherInterestRateModel = await FakeCEtherInterestRateModel.new()
-  console.log("FakeCEtherInterestRateModel",this.fakeCEtherInterestRateModel.address)
+    const eth_address = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+    await this.priceOracle.setPrice(eth_address, hre.ethers.utils.parseEther('460'))
+    await this.priceOracle.setPrice(this.DAI.address, hre.ethers.utils.parseEther('1'))
+    await this.priceOracle.setPrice(this.BAT.address, hre.ethers.utils.parseEther('0.0005'))
+    await this.comptroller._setPriceOracle(this.priceOracle.address)
 
-  // 3. Deploy Comptroller contract
-  this.fakeComptroller = await FakeComptroller.new()
-  console.log("FakeComptroller",this.fakeComptroller.address)
+    await this.comptroller._setDistributeWpcPaused(true)
 
-  // 4. Deploy cDAI contract
-  this.fakeCDai = await FakeCDai.new( 
-    fakeDai.address, 
-    fakeComptroller.address, 
-    fakeCDaiInterestRateModel.address
-  )
-  console.log("FakeCDai",this.fakeCDai.address)
+    await this.comptroller._supportMarket(this.pEther.address)
+    await this.comptroller._supportMarket(this.pDAI.address)
+    await this.comptroller._supportMarket(this.pBAT.address)
 
-  // 5. Deploy cEther contract
-  this.fakeCEther = await FakeCEther.new(
-    fakeComptroller.address, 
-    fakeCEtherInterestRateModel.address
-  )
-  console.log("FakeCEther",this.fakeCEther.address)
+    await this.comptroller._setMaxAssets('10')
+    await this.comptroller._setCollateralFactor(this.pDAI.address,hre.ethers.utils.parseEther('0.6'))
+    await this.comptroller._setCollateralFactor(this.pBAT.address,hre.ethers.utils.parseEther('0.6'))
+    await this.comptroller._setCollateralFactor(this.pEther.address,hre.ethers.utils.parseEther('0.75'))
+    await this.comptroller._setCloseFactor(hre.ethers.utils.parseEther('0.5'))
+    await this.comptroller._setLiquidationIncentive(hre.ethers.utils.parseEther('1.05'))
 
-  // 6. Activate cToken markets
-  this.fakeComptroller._supportMarket(this.fakeCDai.address)
-  this.fakeComptroller._supportMarket(this.fakeCEther.address)
-  console.log("SupportMarket Finish")
+    await this.comptroller.enterMarkets([
+            this.pEther.address,
+            this.pDAI.address,
+            this.pBAT.address
+    ])
 
-  // test1 mint cETH
-  await this.fakeCEther.mint({
-     value: hre.ethers.utils.parseEther("1")
-  })
-  console.log("CEther",(await this.fakeCEther.balanceOf(this.deployer)).toString())
+    await this.pEther.mint({
+        value: hre.ethers.utils.parseEther('10')
+    })
+    
+    await this.DAI.approve(this.pDAI.address, hre.ethers.utils.parseEther('50000'))
+    await this.pDAI.mint(hre.ethers.utils.parseEther('50000'))
+    
+    await this.BAT.approve(this.pBAT.address, hre.ethers.utils.parseEther('10000000000'))
+    await this.pBAT.mint(hre.ethers.utils.parseEther('10000000000'))
 
-  // test2 approve Cdai
-  await this.fakeDai.approve(
-    this.fakeCDai.address,
-    '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-  )
-  console.log("approve")
+    await this.priceOracle.setPrice(this.BAT.address, hre.ethers.utils.parseEther('0.0002'))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
-  // test3 mint cDai
-  console.log("Dai",(await this.fakeDai.balanceOf(this.deployer)).toString())
-  await this.fakeCDai.mint( hre.ethers.utils.parseEther("2000"))
-  console.log("cDai",(await this.fakeCDai.balanceOf(this.deployer)).toString())
-  
-  // test4 enterMarkets
-  await this.fakeComptroller.enterMarkets(this.fakeCEther.address)
-  console.log("enterMarkets")
-
+    console.log("End")
 }
 
 main()
