@@ -33,18 +33,18 @@ const WalletMask = (props) => {
                         <div className={styles.walletTips}>{t('connect-metamask')}</div>
                     </div>
                 </li>
-                <li onClick={() => connectWallet('onto')}>
-                    <div className={styles.walletWrapper}>
-                        <img src={ontoIcons} className={styles.walletIcon} />
-                        <div className={styles.walletTitle}>ONTO Wallet</div>
-                        <div className={styles.walletTips}>{t('connect-ontoconnect')}</div>
-                    </div>
-                </li>
                 <li onClick={() => connectWallet('tp')}>
                     <div className={styles.walletWrapper}>
                         <img src={tpIcons} className={styles.walletIcon} />
                         <div className={styles.walletTitle}>TokenPocket Wallet</div>
                         <div className={styles.walletTips}>{t('connect-tpconnect')}</div>
+                    </div>
+                </li>
+                <li onClick={() => connectWallet('onto')}>
+                    <div className={styles.walletWrapper}>
+                        <img src={ontoIcons} className={styles.walletIcon} />
+                        <div className={styles.walletTitle}>ONTO Wallet</div>
+                        <div className={styles.walletTips}>{t('connect-ontoconnect')}</div>
                     </div>
                 </li>
             </ul>
