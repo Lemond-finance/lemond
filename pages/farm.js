@@ -244,8 +244,8 @@ const Home = ({ t,router }) => {
             <div className={styles.farm_text}>
                 <h1>LEMD Genesis Mining</h1>
                 <h2>Get your Lemond Box fulfilled with Juicy APY.</h2>
-                <h3>Remaining Airdrops</h3>
-                <h4><CountUp start={1000000} end={lemondBalance} separator=","  decimal="."  decimal="," prefix=""/> LEMD</h4>
+                <h3>Total Value Locked</h3>
+                <h4>$<CountUp start={0} end={7254094987.10} separator=","  decimal="."  decimal="," prefix=""/></h4>
             </div>
             <div className={styles.farm_car}></div>
             <div className={styles.compound_time}>Tanked up</div>

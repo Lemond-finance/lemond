@@ -1,0 +1,115 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_breeder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_notBeforeBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_targetToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_comptroller",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "breeder",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract CTokenInterface",
+        "name": "oldLpToken",
+        "type": "address"
+      }
+    ],
+    "name": "migrate",
+    "outputs": [
+      {
+        "internalType": "contract PERC20",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "notBeforeBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract CTokenInterface",
+        "name": "oldLpToken",
+        "type": "address"
+      }
+    ],
+    "name": "replaceMigrate",
+    "outputs": [
+      {
+        "internalType": "contract PERC20",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "targetToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
