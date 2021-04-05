@@ -2,25 +2,25 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "../token/WePiggyToken.sol";
+import "../token/LemdToken.sol";
 
 // funding holder. Will call by gnosis-safe
 contract FundingHolder is Ownable {
 
-    // The WePiggyToken !
-    WePiggyToken public piggy;
+    // The LemdToken !
+    LemdToken public lemd;
 
-    constructor(WePiggyToken _piggy) public {
-        piggy = _piggy;
+    constructor(LemdToken _lemd) public {
+        lemd = _lemd;
     }
 
     // only owner can call this function.
     function transfer(address _to, uint256 _amount) public onlyOwner {
-        uint256 piggyBal = piggy.balanceOf(address(this));
-        if (_amount > piggyBal) {
-            piggy.transfer(_to, piggyBal);
+        uint256 lemdBal = lemd.balanceOf(address(this));
+        if (_amount > lemdBal) {
+            lemd.transfer(_to, lemdBal);
         } else {
-            piggy.transfer(_to, _amount);
+            lemd.transfer(_to, _amount);
         }
     }
 

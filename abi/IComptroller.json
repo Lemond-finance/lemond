@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -32,7 +32,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -55,7 +55,7 @@
     "inputs": [
       {
         "internalType": "address[]",
-        "name": "pTokens",
+        "name": "lTokens",
         "type": "address[]"
       }
     ],
@@ -74,7 +74,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenAddress",
+        "name": "lTokenAddress",
         "type": "address"
       }
     ],
@@ -93,12 +93,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -132,12 +132,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -170,12 +170,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -204,7 +204,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -233,7 +233,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -261,7 +261,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -290,7 +290,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -318,7 +318,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -352,7 +352,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -385,12 +385,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
@@ -424,12 +424,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
@@ -457,7 +457,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -491,7 +491,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {

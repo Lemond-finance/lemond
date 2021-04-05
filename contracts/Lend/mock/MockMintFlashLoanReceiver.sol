@@ -1,7 +1,7 @@
 pragma solidity 0.6.12;
 
 import "../flashloan/IFlashLoanReceiver.sol";
-import "../token/PERC20.sol";
+import "../token/LERC20.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
@@ -25,8 +25,8 @@ contract MockMintFlashLoanReceiver is IFlashLoanReceiver {
         address pUsdt = address(0x34ab3D31e47df3250c742B39F3790c823B9627F2);
         erc20.safeApprove(pUsdt, amount);
 
-        PERC20 pErc20 = PERC20(pUsdt);
-        pErc20.mint(amount);
+        LERC20 lErc20 = LERC20(pUsdt);
+        lErc20.mint(amount);
 
         erc20.safeTransfer(sender, amount);
 

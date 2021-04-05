@@ -2,7 +2,7 @@ pragma solidity ^0.6.0;
 
 import "./IFlashLoanReceiver.sol";
 import "./IFlashloan.sol";
-import "../token/IPToken.sol";
+import "../token/ILToken.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol";
@@ -61,7 +61,7 @@ contract Flashloan is IFlashloan, OwnableUpgradeSafe {
         transferInternal(_destination, _reserve, _amount);
     }
 
-    function flashloan(address _pToken, address _receiver, address _reserve, uint256 _amount, bytes memory _params) external override {
+    function flashloan(address _lToken, address _receiver, address _reserve, uint256 _amount, bytes memory _params) external override {
 
         address payable caller = msg.sender;
         require(activeCaller[caller], "Action require an active caller");
@@ -90,8 +90,8 @@ contract Flashloan is IFlashloan, OwnableUpgradeSafe {
 
         transferInternal(caller, _reserve, _amount);
 
-        IPToken pToken = IPToken(_pToken);
-        updateStateOnFlashLoan(pToken, _reserve, availableLiquidityBefore, amountFee);
+        ILToken lToken = ILToken(_lToken);
+        updateStateOnFlashLoan(lToken, _reserve, availableLiquidityBefore, amountFee);
 
         emit FlashLoan(_receiver, _reserve, _amount, amountFee, block.timestamp);
 
@@ -101,7 +101,7 @@ contract Flashloan is IFlashloan, OwnableUpgradeSafe {
         return 0;
     }
 
-    function updateStateOnFlashLoan(IPToken pToken, address _reserve, uint256 availableLiquidityBefore, uint256 amountFee) internal {
+    function updateStateOnFlashLoan(ILToken lToken, address _reserve, uint256 availableLiquidityBefore, uint256 amountFee) internal {
     }
 
     function transferInternal(address payable _destination, address _reserve, uint256 _amount) internal {

@@ -6,8 +6,8 @@
     {
       "inputs": [
         {
-          "internalType": "contract PToken",
-          "name": "_pToken",
+          "internalType": "contract LToken",
+          "name": "_lToken",
           "type": "address"
         }
       ],

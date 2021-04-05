@@ -10,8 +10,8 @@
 pragma solidity ^0.6.0;
 
 /**
-  * @title wepiggy's IInterestRateModel Interface
-  * @author wepiggy
+  * @title welemd's IInterestRateModel Interface
+  * @author welemd
   */
 interface IInterestRateModel {
     /**

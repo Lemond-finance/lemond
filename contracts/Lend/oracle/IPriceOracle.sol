@@ -9,14 +9,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
-import "../token/PToken.sol";
+import "../token/LToken.sol";
 
 interface IPriceOracle {
     /**
      * @notice Get the underlying price of a asset
-     * @param _pToken The asset to get the underlying price of
+     * @param _lToken The asset to get the underlying price of
      * @return The underlying asset price.
      *  Zero means the price is unavailable.
      */
-    function getUnderlyingPrice(PToken _pToken) external view returns (uint);
+    function getUnderlyingPrice(LToken _lToken) external view returns (uint);
 }

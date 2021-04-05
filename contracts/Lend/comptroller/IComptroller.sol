@@ -14,136 +14,136 @@ interface IComptroller {
     /*** Assets You Are In ***/
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Add assets to be included in account liquidity calculation
-     * @param pTokens The list of addresses of the cToken markets to be enabled
+     * @param lTokens The list of addresses of the cToken markets to be enabled
      * @return Success indicator for whether each corresponding market was entered
      */
-    function enterMarkets(address[] calldata pTokens) external returns (uint[] memory);
+    function enterMarkets(address[] calldata lTokens) external returns (uint[] memory);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Removes asset from sender's account liquidity calculation
      * @dev Sender must not have an outstanding borrow balance in the asset,
      *  or be providing necessary collateral for an outstanding borrow.
-     * @param pTokenAddress The address of the asset to be removed
+     * @param lTokenAddress The address of the asset to be removed
      * @return Whether or not the account successfully exited the market
      */
-    function exitMarket(address pTokenAddress) external returns (uint);
+    function exitMarket(address lTokenAddress) external returns (uint);
 
     /*** Policy Hooks ***/
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the account should be allowed to mint tokens in the given market
-     * @param pToken The market to verify the mint against
+     * @param lToken The market to verify the mint against
      * @param minter The account which would get the minted tokens
      * @param mintAmount The amount of underlying being supplied to the market in exchange for tokens
      * @return 0 if the mint is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
     function mintAllowed(
-        address pToken,
+        address lToken,
         address minter,
         uint mintAmount
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates mint and reverts on rejection. May emit logs.
-     * @param pToken Asset being minted
+     * @param lToken Asset being minted
      * @param minter The address minting the tokens
      * @param mintAmount The amount of the underlying asset being minted
      * @param mintTokens The number of tokens being minted
      */
     function mintVerify(
-        address pToken,
+        address lToken,
         address minter,
         uint mintAmount,
         uint mintTokens
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the account should be allowed to redeem tokens in the given market
-     * @param pToken The market to verify the redeem against
+     * @param lToken The market to verify the redeem against
      * @param redeemer The account which would redeem the tokens
      * @param redeemTokens The number of cTokens to exchange for the underlying asset in the market
      * @return 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
     function redeemAllowed(
-        address pToken,
+        address lToken,
         address redeemer,
         uint redeemTokens
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates redeem and reverts on rejection. May emit logs.
-     * @param pToken Asset being redeemed
+     * @param lToken Asset being redeemed
      * @param redeemer The address redeeming the tokens
      * @param redeemAmount The amount of the underlying asset being redeemed
      * @param redeemTokens The number of tokens being redeemed
      */
     function redeemVerify(
-        address pToken,
+        address lToken,
         address redeemer,
         uint redeemAmount,
         uint redeemTokens
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the account should be allowed to borrow the underlying asset of the given market
-     * @param pToken The market to verify the borrow against
+     * @param lToken The market to verify the borrow against
      * @param borrower The account which would borrow the asset
      * @param borrowAmount The amount of underlying the account would borrow
      * @return 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
     function borrowAllowed(
-        address pToken,
+        address lToken,
         address borrower,
         uint borrowAmount
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates borrow and reverts on rejection. May emit logs.
-     * @param pToken Asset whose underlying is being borrowed
+     * @param lToken Asset whose underlying is being borrowed
      * @param borrower The address borrowing the underlying
      * @param borrowAmount The amount of the underlying asset requested to borrow
      */
     function borrowVerify(
-        address pToken,
+        address lToken,
         address borrower,
         uint borrowAmount
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the account should be allowed to repay a borrow in the given market
-     * @param pToken The market to verify the repay against
+     * @param lToken The market to verify the repay against
      * @param payer The account which would repay the asset
      * @param borrower The account which would borrowed the asset
      * @param repayAmount The amount of the underlying asset the account would repay
      * @return 0 if the repay is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
     function repayBorrowAllowed(
-        address pToken,
+        address lToken,
         address payer,
         address borrower,
         uint repayAmount
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates repayBorrow and reverts on rejection. May emit logs.
-     * @param pToken Asset being repaid
+     * @param lToken Asset being repaid
      * @param payer The address repaying the borrow
      * @param borrower The address of the borrower
      * @param repayAmount The amount of underlying being repaid
      */
     function repayBorrowVerify(
-        address pToken,
+        address lToken,
         address payer,
         address borrower,
         uint repayAmount,
@@ -151,34 +151,34 @@ interface IComptroller {
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the liquidation should be allowed to occur
-     * @param pTokenBorrowed Asset which was borrowed by the borrower
-     * @param pTokenCollateral Asset which was used as collateral and will be seized
+     * @param lTokenBorrowed Asset which was borrowed by the borrower
+     * @param lTokenCollateral Asset which was used as collateral and will be seized
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param repayAmount The amount of underlying being repaid
      */
     function liquidateBorrowAllowed(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address liquidator,
         address borrower,
         uint repayAmount
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates liquidateBorrow and reverts on rejection. May emit logs.
-     * @param pTokenBorrowed Asset which was borrowed by the borrower
-     * @param pTokenCollateral Asset which was used as collateral and will be seized
+     * @param lTokenBorrowed Asset which was borrowed by the borrower
+     * @param lTokenCollateral Asset which was used as collateral and will be seized
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param repayAmount The amount of underlying being repaid
      */
     function liquidateBorrowVerify(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address liquidator,
         address borrower,
         uint repayAmount,
@@ -186,65 +186,65 @@ interface IComptroller {
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the seizing of assets should be allowed to occur
-     * @param pTokenCollateral Asset which was used as collateral and will be seized
-     * @param pTokenBorrowed Asset which was borrowed by the borrower
+     * @param lTokenCollateral Asset which was used as collateral and will be seized
+     * @param lTokenBorrowed Asset which was borrowed by the borrower
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param seizeTokens The number of collateral tokens to seize
      */
     function seizeAllowed(
-        address pTokenCollateral,
-        address pTokenBorrowed,
+        address lTokenCollateral,
+        address lTokenBorrowed,
         address liquidator,
         address borrower,
         uint seizeTokens
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates seize and reverts on rejection. May emit logs.
-     * @param pTokenCollateral Asset which was used as collateral and will be seized
-     * @param pTokenBorrowed Asset which was borrowed by the borrower
+     * @param lTokenCollateral Asset which was used as collateral and will be seized
+     * @param lTokenBorrowed Asset which was borrowed by the borrower
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param seizeTokens The number of collateral tokens to seize
      */
     function seizeVerify(
-        address pTokenCollateral,
-        address pTokenBorrowed,
+        address lTokenCollateral,
+        address lTokenBorrowed,
         address liquidator,
         address borrower,
         uint seizeTokens
     ) external;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Checks if the account should be allowed to transfer tokens in the given market
-     * @param pToken The market to verify the transfer against
+     * @param lToken The market to verify the transfer against
      * @param src The account which sources the tokens
      * @param dst The account which receives the tokens
-     * @param transferTokens The number of pTokens to transfer
+     * @param transferTokens The number of lTokens to transfer
      * @return 0 if the transfer is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
     function transferAllowed(
-        address pToken,
+        address lToken,
         address src,
         address dst,
         uint transferTokens
     ) external returns (uint);
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Validates transfer and reverts on rejection. May emit logs.
-     * @param pToken Asset being transferred
+     * @param lToken Asset being transferred
      * @param src The account which sources the tokens
      * @param dst The account which receives the tokens
-     * @param transferTokens The number of pTokens to transfer
+     * @param transferTokens The number of lTokens to transfer
      */
     function transferVerify(
-        address pToken,
+        address lToken,
         address src,
         address dst,
         uint transferTokens
@@ -253,17 +253,17 @@ interface IComptroller {
     /*** Liquidity/Liquidation Calculations ***/
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
     * @notice Calculate number of tokens of collateral asset to seize given an underlying amount
     * @dev Used in liquidation (called in cToken.liquidateBorrowFresh)
-    * @param pTokenBorrowed The address of the borrowed cToken
-    * @param pTokenCollateral The address of the collateral cToken
+    * @param lTokenBorrowed The address of the borrowed cToken
+    * @param lTokenCollateral The address of the collateral cToken
     * @param repayAmount The amount of cTokenBorrowed underlying to convert into cTokenCollateral tokens
     * @return (errorCode, number of cTokenCollateral tokens to be seized in a liquidation)
     */
     function liquidateCalculateSeizeTokens(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         uint repayAmount
     ) external view returns (uint, uint);
 }

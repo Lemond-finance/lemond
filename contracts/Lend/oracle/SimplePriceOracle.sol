@@ -9,9 +9,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
-import "../token/PERC20.sol";
+import "../token/LERC20.sol";
 import "./IPriceOracle.sol";
-import "../token/PToken.sol";
+import "../token/LToken.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol";
 
@@ -34,18 +34,18 @@ contract SimplePriceOracle is IPriceOracle, OwnableUpgradeSafe {
     }
 
 
-    function getUnderlyingPrice(PToken pToken) public override view returns (uint) {
-        if (compareStrings(pToken.symbol(), "pETH")) {
+    function getUnderlyingPrice(LToken lToken) public override view returns (uint) {
+        if (compareStrings(lToken.symbol(), "pETH")) {
             return data[_pETHUnderlying].price;
         } else {
-            return data[address(PERC20(address(pToken)).underlying())].price;
+            return data[address(LERC20(address(lToken)).underlying())].price;
         }
     }
 
-    function setUnderlyingPrice(PToken pToken, uint price) public onlyOwner {
+    function setUnderlyingPrice(LToken lToken, uint price) public onlyOwner {
         address asset = _pETHUnderlying;
-        if (!compareStrings(pToken.symbol(), "pETH")) {
-            asset = address(PERC20(address(pToken)).underlying());
+        if (!compareStrings(lToken.symbol(), "pETH")) {
+            asset = address(LERC20(address(lToken)).underlying());
         }
         uint bt = block.timestamp;
         data[asset] = Datum(bt, price);

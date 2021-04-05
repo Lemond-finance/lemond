@@ -10,11 +10,11 @@
 pragma solidity 0.6.12;
 
 import "../oracle/IPriceOracle.sol";
-import "../token/PToken.sol";
+import "../token/LToken.sol";
 
 contract ComptrollerStorage {
 
-    //PIGGY-MODIFY:Copy and modify from ComptrollerV1Storage
+    //LEMD-MODIFY:Copy and modify from ComptrollerV1Storage
 
     /**
      * @notice Oracle which gives the price of any given asset
@@ -37,13 +37,13 @@ contract ComptrollerStorage {
     uint256 public maxAssets;
 
     /**
-     * PIGGY-MODIFY:
+     * LEMD-MODIFY:
      * @notice Per-account mapping of "assets you are in", capped by maxAssets
      */
-    mapping(address => PToken[]) public accountAssets;
+    mapping(address => LToken[]) public accountAssets;
 
     /**
-     * PIGGY-MODIFY: Copy and modify from ComptrollerV2Storage
+     * LEMD-MODIFY: Copy and modify from ComptrollerV2Storage
      */
     struct Market {
         // @notice Whether or not this market is listed
@@ -56,12 +56,12 @@ contract ComptrollerStorage {
         // @notice Per-market mapping of "accounts in this asset"
         mapping(address => bool) accountMembership;
 
-        // @notice Whether or not this market receives WPC
+        // @notice Whether or not this market receives LEMD
         bool isMinted;
     }
 
     /**
-     * @notice Official mapping of pTokens -> Market metadata
+     * @notice Official mapping of lTokens -> Market metadata
      * @dev Used e.g. to determine if a market is supported
      */
     mapping(address => Market) public markets;
@@ -76,12 +76,12 @@ contract ComptrollerStorage {
     bool public _borrowGuardianPaused;
     bool public transferGuardianPaused;
     bool public seizeGuardianPaused;
-    mapping(address => bool) public pTokenMintGuardianPaused;
-    mapping(address => bool) public pTokenBorrowGuardianPaused;
-    bool public distributeWpcPaused;
+    mapping(address => bool) public lTokenMintGuardianPaused;
+    mapping(address => bool) public lTokenBorrowGuardianPaused;
+    bool public distributeLemdPaused;
 
 
-    //PIGGY-MODIFY: Copy and modify from ComptrollerV4Storage
+    //LEMD-MODIFY: Copy and modify from ComptrollerV4Storage
 
     // @notice The borrowCapGuardian can set borrowCaps to any number for any market. Lowering the borrow cap could disable borrowing on the given market.
     address public borrowCapGuardian;
@@ -90,8 +90,8 @@ contract ComptrollerStorage {
     mapping(address => uint256) public borrowCaps;
 
 
-    //PIGGY-MODIFY: Copy and modify from ComptrollerV3Storage
+    //LEMD-MODIFY: Copy and modify from ComptrollerV3Storage
     /// @notice A list of all markets
-    PToken[] public allMarkets;
+    LToken[] public allMarkets;
 
 }

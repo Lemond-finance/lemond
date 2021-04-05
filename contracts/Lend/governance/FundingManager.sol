@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "../token/WePiggyToken.sol";
+import "../token/LemdToken.sol";
 
 contract FundingManager is Ownable {
 
@@ -15,24 +15,24 @@ contract FundingManager is Ownable {
         address addr;
     }
 
-    // The WePiggyToken !
-    WePiggyToken public piggy;
+    // The LemdToken !
+    LemdToken public lemd;
 
     // Info of each funding.
     FundingHolderInfo[] public fundingHolders;
 
-    constructor(WePiggyToken _piggy) public {
-        piggy = _piggy;
+    constructor(LemdToken _lemd) public {
+        lemd = _lemd;
     }
 
 
-    // Safe piggy transfer function, just in case if rounding error causes pool to not have enough PiggyToken.
-    function safePiggyTransfer(address _to, uint256 _amount) internal {
-        uint256 piggyBal = piggy.balanceOf(address(this));
-        if (_amount > piggyBal) {
-            piggy.transfer(_to, piggyBal);
+    // Safe lemd transfer function, just in case if rounding error causes pool to not have enough LemdToken.
+    function safeLemdTransfer(address _to, uint256 _amount) internal {
+        uint256 lemdBal = lemd.balanceOf(address(this));
+        if (_amount > lemdBal) {
+            lemd.transfer(_to, lemdBal);
         } else {
-            piggy.transfer(_to, _amount);
+            lemd.transfer(_to, _amount);
         }
     }
 
@@ -60,18 +60,18 @@ contract FundingManager is Ownable {
     // Return the pool pending balance.
     function getPendingBalance(uint256 pid) public view returns (uint256){
         FundingHolderInfo storage fhi = fundingHolders[pid];
-        uint256 piggyBal = piggy.balanceOf(address(this));
-        uint _amount = piggyBal.mul(fhi.ratio).div(100);
+        uint256 lemdBal = lemd.balanceOf(address(this));
+        uint _amount = lemdBal.mul(fhi.ratio).div(100);
         return _amount;
     }
 
-    //claim wpc. every can call this function, but transfer token to
+    //claim lemd. every can call this function, but transfer token to
     function claim() public {
-        uint256 piggyBal = piggy.balanceOf(address(this));
+        uint256 lemdBal = lemd.balanceOf(address(this));
         for (uint256 i = 0; i < fundingHolders.length; i++) {
             FundingHolderInfo storage fhi = fundingHolders[i];
-            uint _amount = piggyBal.mul(fhi.ratio).div(100);
-            safePiggyTransfer(fhi.addr, _amount);
+            uint _amount = lemdBal.mul(fhi.ratio).div(100);
+            safeLemdTransfer(fhi.addr, _amount);
         }
 
     }

@@ -13,27 +13,27 @@ import "./ComptrollerStorage.sol";
 import "./IComptroller.sol";
 import "../libs/ErrorReporter.sol";
 import "../libs/Exponential.sol";
-import "../token/PToken.sol";
+import "../token/LToken.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
-import "../farm/PiggyDistribution.sol";
+import "../farm/LemdDistribution.sol";
 
-//PIGGY-MODIFY: Modified some methods and fields according to WePiggy's business logic
+//LEMD-MODIFY: Modified some methods and fields according to WeLemd's business logic
 contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReporter, Exponential, OwnableUpgradeSafe {
 
     // @notice Emitted when an admin supports a market
-    event MarketListed(PToken pToken);
+    event MarketListed(LToken lToken);
 
     // @notice Emitted when an account enters a market
-    event MarketEntered(PToken pToken, address account);
+    event MarketEntered(LToken lToken, address account);
 
     // @notice Emitted when an account exits a market
-    event MarketExited(PToken pToken, address account);
+    event MarketExited(LToken lToken, address account);
 
     // @notice Emitted when close factor is changed by admin
     event NewCloseFactor(uint oldCloseFactorMantissa, uint newCloseFactorMantissa);
 
     // @notice Emitted when a collateral factor is changed by admin
-    event NewCollateralFactor(PToken pToken, uint oldCollateralFactorMantissa, uint newCollateralFactorMantissa);
+    event NewCollateralFactor(LToken lToken, uint oldCollateralFactorMantissa, uint newCollateralFactorMantissa);
 
     // @notice Emitted when liquidation incentive is changed by admin
     event NewLiquidationIncentive(uint oldLiquidationIncentiveMantissa, uint newLiquidationIncentiveMantissa);
@@ -51,18 +51,18 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     event ActionPaused(string action, bool pauseState);
 
     // @notice Emitted when an action is paused on a market
-    event ActionPaused(PToken pToken, string action, bool pauseState);
+    event ActionPaused(LToken lToken, string action, bool pauseState);
 
-    /// @notice Emitted when borrow cap for a pToken is changed
-    event NewBorrowCap(PToken indexed pToken, uint newBorrowCap);
+    /// @notice Emitted when borrow cap for a lToken is changed
+    event NewBorrowCap(LToken indexed lToken, uint newBorrowCap);
 
     /// @notice Emitted when borrow cap guardian is changed
     event NewBorrowCapGuardian(address oldBorrowCapGuardian, address newBorrowCapGuardian);
 
-    event NewPiggyDistribution(IPiggyDistribution oldPiggyDistribution, IPiggyDistribution newPiggyDistribution);
+    event NewLemdDistribution(ILemdDistribution oldLemdDistribution, ILemdDistribution newLemdDistribution);
 
-    /// @notice Emitted when mint cap for a pToken is changed
-    event NewMintCap(PToken indexed pToken, uint newMintCap);
+    /// @notice Emitted when mint cap for a lToken is changed
+    event NewMintCap(LToken indexed lToken, uint newMintCap);
 
     // closeFactorMantissa must be strictly greater than this value
     uint internal constant closeFactorMinMantissa = 0.05e18;
@@ -79,8 +79,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     // liquidationIncentiveMantissa must be no greater than this value
     uint internal constant liquidationIncentiveMaxMantissa = 1.5e18;
 
-    // for distribute wpc
-    IPiggyDistribution piggyDistribution;
+    // for distribute lemd
+    ILemdDistribution lemdDistribution;
 
     mapping(address => uint256) public mintCaps;
 
@@ -93,13 +93,13 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
 
     /*** Assets You Are In ***/
 
-    function enterMarkets(address[] memory pTokens) public override(IComptroller) returns (uint[] memory)  {
-        uint len = pTokens.length;
+    function enterMarkets(address[] memory lTokens) public override(IComptroller) returns (uint[] memory)  {
+        uint len = lTokens.length;
 
         uint[] memory results = new uint[](len);
         for (uint i = 0; i < len; i++) {
-            PToken pToken = PToken(pTokens[i]);
-            results[i] = uint(addToMarketInternal(pToken, msg.sender));
+            LToken lToken = LToken(lTokens[i]);
+            results[i] = uint(addToMarketInternal(lToken, msg.sender));
         }
 
         return results;
@@ -107,12 +107,12 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
 
     /**
      * @notice Add the market to the borrower's "assets in" for liquidity calculations
-     * @param pToken The market to enter
+     * @param lToken The market to enter
      * @param borrower The address of the account to modify
      * @return Success indicator for whether the market was entered
      */
-    function addToMarketInternal(PToken pToken, address borrower) internal returns (Error) {
-        Market storage marketToJoin = markets[address(pToken)];
+    function addToMarketInternal(LToken lToken, address borrower) internal returns (Error) {
+        Market storage marketToJoin = markets[address(lToken)];
 
         // market is not listed, cannot join
         if (!marketToJoin.isListed) {
@@ -130,18 +130,18 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         }
 
         marketToJoin.accountMembership[borrower] = true;
-        accountAssets[borrower].push(pToken);
+        accountAssets[borrower].push(lToken);
 
-        emit MarketEntered(pToken, borrower);
+        emit MarketEntered(lToken, borrower);
 
         return Error.NO_ERROR;
     }
 
-    function exitMarket(address pTokenAddress) external override(IComptroller) returns (uint) {
-        PToken pToken = PToken(pTokenAddress);
+    function exitMarket(address lTokenAddress) external override(IComptroller) returns (uint) {
+        LToken lToken = LToken(lTokenAddress);
 
-        // Get sender tokensHeld and amountOwed underlying from the pToken
-        (uint oErr, uint tokensHeld, uint amountOwed,) = pToken.getAccountSnapshot(msg.sender);
+        // Get sender tokensHeld and amountOwed underlying from the lToken
+        (uint oErr, uint tokensHeld, uint amountOwed,) = lToken.getAccountSnapshot(msg.sender);
         require(oErr == 0, "exitMarket: getAccountSnapshot failed");
 
         // Fail if the sender has a borrow balance
@@ -150,28 +150,28 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         }
 
         // Fail if the sender is not permitted to redeem all of their tokens
-        uint allowed = redeemAllowedInternal(pTokenAddress, msg.sender, tokensHeld);
+        uint allowed = redeemAllowedInternal(lTokenAddress, msg.sender, tokensHeld);
         if (allowed != 0) {
             return failOpaque(Error.REJECTION, FailureInfo.EXIT_MARKET_REJECTION, allowed);
         }
 
-        Market storage marketToExit = markets[address(pToken)];
+        Market storage marketToExit = markets[address(lToken)];
 
         // Return true if the sender is not already ‘in’ the market
         if (!marketToExit.accountMembership[msg.sender]) {
             return uint(Error.NO_ERROR);
         }
 
-        // Set pToken account membership to false
+        // Set lToken account membership to false
         delete marketToExit.accountMembership[msg.sender];
 
-        // Delete pToken from the account’s list of assets
+        // Delete lToken from the account’s list of assets
         // load into memory for faster iteration
-        PToken[] memory userAssetList = accountAssets[msg.sender];
+        LToken[] memory userAssetList = accountAssets[msg.sender];
         uint len = userAssetList.length;
         uint assetIndex = len;
         for (uint i = 0; i < len; i++) {
-            if (userAssetList[i] == pToken) {
+            if (userAssetList[i] == lToken) {
                 assetIndex = i;
                 break;
             }
@@ -181,11 +181,11 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         assert(assetIndex < len);
 
         // copy last item in list to location of item to be removed, reduce length by 1
-        PToken[] storage storedList = accountAssets[msg.sender];
+        LToken[] storage storedList = accountAssets[msg.sender];
         storedList[assetIndex] = storedList[storedList.length - 1];
         storedList.pop();
 
-        emit MarketExited(pToken, msg.sender);
+        emit MarketExited(lToken, msg.sender);
 
         return uint(Error.NO_ERROR);
     }
@@ -196,40 +196,40 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     * @param account The address of the account to pull assets for
     * @return A dynamic list with the assets the account has entered
     */
-    function getAssetsIn(address account) external view returns (PToken[] memory) {
-        PToken[] memory assetsIn = accountAssets[account];
+    function getAssetsIn(address account) external view returns (LToken[] memory) {
+        LToken[] memory assetsIn = accountAssets[account];
         return assetsIn;
     }
 
     /**
      * @notice Returns whether the given account is entered in the given asset
      * @param account The address of the account to check
-     * @param pToken The pToken to check
+     * @param lToken The lToken to check
      * @return True if the account is in the asset, otherwise false.
      */
-    function checkMembership(address account, PToken pToken) external view returns (bool) {
-        return markets[address(pToken)].accountMembership[account];
+    function checkMembership(address account, LToken lToken) external view returns (bool) {
+        return markets[address(lToken)].accountMembership[account];
     }
 
     /*** Policy Hooks ***/
 
-    function mintAllowed(address pToken, address minter, uint mintAmount) external override(IComptroller) returns (uint){
+    function mintAllowed(address lToken, address minter, uint mintAmount) external override(IComptroller) returns (uint){
 
         // Pausing is a very serious situation - we revert to sound the alarms
-        require(!pTokenMintGuardianPaused[pToken], "mint is paused");
+        require(!lTokenMintGuardianPaused[lToken], "mint is paused");
 
         //Shh - currently unused. It's written here to eliminate compile-time alarms.
         minter;
         mintAmount;
 
-        if (!markets[pToken].isListed) {
+        if (!markets[lToken].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
-        uint mintCap = mintCaps[pToken];
+        uint mintCap = mintCaps[lToken];
         if (mintCap != 0) {
-            uint totalSupply = PToken(pToken).totalSupply();
-            uint exchangeRate = PToken(pToken).exchangeRateStored();
+            uint totalSupply = LToken(lToken).totalSupply();
+            uint exchangeRate = LToken(lToken).exchangeRateStored();
             (MathError mErr, uint balance) = mulScalarTruncate(Exp({mantissa : exchangeRate}), totalSupply);
             require(mErr == MathError.NO_ERROR, "balance could not be calculated");
             (MathError mathErr, uint nextTotalMints) = addUInt(balance, mintAmount);
@@ -237,57 +237,57 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
             require(nextTotalMints < mintCap, "market mint cap reached");
         }
 
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeMintWpc(pToken, minter, false);
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeMintLemd(lToken, minter, false);
         }
 
         return uint(Error.NO_ERROR);
     }
 
-    function mintVerify(address pToken, address minter, uint mintAmount, uint mintTokens) external override(IComptroller) {
+    function mintVerify(address lToken, address minter, uint mintAmount, uint mintTokens) external override(IComptroller) {
 
         //Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pToken;
+        lToken;
         minter;
         mintAmount;
         mintTokens;
 
     }
 
-    function redeemAllowed(address pToken, address redeemer, uint redeemTokens) external override(IComptroller) returns (uint){
+    function redeemAllowed(address lToken, address redeemer, uint redeemTokens) external override(IComptroller) returns (uint){
 
-        uint allowed = redeemAllowedInternal(pToken, redeemer, redeemTokens);
+        uint allowed = redeemAllowedInternal(lToken, redeemer, redeemTokens);
         if (allowed != uint(Error.NO_ERROR)) {
             return allowed;
         }
 
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeRedeemWpc(pToken, redeemer, false);
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeRedeemLemd(lToken, redeemer, false);
         }
 
         return uint(Error.NO_ERROR);
     }
 
     /**
-    * PIGGY-MODIFY:
+    * LEMD-MODIFY:
     * @notice Checks if the account should be allowed to redeem tokens in the given market
-    * @param pToken The market to verify the redeem against
+    * @param lToken The market to verify the redeem against
     * @param redeemer The account which would redeem the tokens
-    * @param redeemTokens The number of pTokens to exchange for the underlying asset in the market
+    * @param redeemTokens The number of lTokens to exchange for the underlying asset in the market
     * @return 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
     */
-    function redeemAllowedInternal(address pToken, address redeemer, uint redeemTokens) internal view returns (uint) {
-        if (!markets[pToken].isListed) {
+    function redeemAllowedInternal(address lToken, address redeemer, uint redeemTokens) internal view returns (uint) {
+        if (!markets[lToken].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
         /* If the redeemer is not 'in' the market, then we can bypass the liquidity check */
-        if (!markets[pToken].accountMembership[redeemer]) {
+        if (!markets[lToken].accountMembership[redeemer]) {
             return uint(Error.NO_ERROR);
         }
 
         /* Otherwise, perform a hypothetical liquidity check to guard against shortfall */
-        (Error err, , uint shortfall) = getHypotheticalAccountLiquidityInternal(redeemer, PToken(pToken), redeemTokens, 0);
+        (Error err, , uint shortfall) = getHypotheticalAccountLiquidityInternal(redeemer, LToken(lToken), redeemTokens, 0);
         if (err != Error.NO_ERROR) {
             return uint(err);
         }
@@ -298,52 +298,52 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         return uint(Error.NO_ERROR);
     }
 
-    function redeemVerify(address pToken, address redeemer, uint redeemAmount, uint redeemTokens) external override(IComptroller) {
+    function redeemVerify(address lToken, address redeemer, uint redeemAmount, uint redeemTokens) external override(IComptroller) {
         //Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pToken;
+        lToken;
         redeemer;
         redeemAmount;
         redeemTokens;
     }
 
-    function borrowAllowed(address pToken, address borrower, uint borrowAmount) external override(IComptroller) returns (uint) {
+    function borrowAllowed(address lToken, address borrower, uint borrowAmount) external override(IComptroller) returns (uint) {
 
         // Pausing is a very serious situation - we revert to sound the alarms
-        require(!pTokenBorrowGuardianPaused[pToken], "borrow is paused");
+        require(!lTokenBorrowGuardianPaused[lToken], "borrow is paused");
 
-        if (!markets[pToken].isListed) {
+        if (!markets[lToken].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
-        if (!markets[pToken].accountMembership[borrower]) {
+        if (!markets[lToken].accountMembership[borrower]) {
 
-            // only pTokens may call borrowAllowed if borrower not in market
-            require(msg.sender == pToken, "sender must be pToken");
+            // only lTokens may call borrowAllowed if borrower not in market
+            require(msg.sender == lToken, "sender must be lToken");
 
             // attempt to add borrower to the market
-            Error err = addToMarketInternal(PToken(msg.sender), borrower);
+            Error err = addToMarketInternal(LToken(msg.sender), borrower);
             if (err != Error.NO_ERROR) {
                 return uint(err);
             }
 
             // it should be impossible to break the important invariant
-            assert(markets[pToken].accountMembership[borrower]);
+            assert(markets[lToken].accountMembership[borrower]);
         }
 
-        if (oracle.getUnderlyingPrice(PToken(pToken)) == 0) {
+        if (oracle.getUnderlyingPrice(LToken(lToken)) == 0) {
             return uint(Error.PRICE_ERROR);
         }
 
-        uint borrowCap = borrowCaps[pToken];
+        uint borrowCap = borrowCaps[lToken];
         // Borrow cap of 0 corresponds to unlimited borrowing
         if (borrowCap != 0) {
-            uint totalBorrows = PToken(pToken).totalBorrows();
+            uint totalBorrows = LToken(lToken).totalBorrows();
             (MathError mathErr, uint nextTotalBorrows) = addUInt(totalBorrows, borrowAmount);
             require(mathErr == MathError.NO_ERROR, "total borrows overflow");
             require(nextTotalBorrows < borrowCap, "market borrow cap reached");
         }
 
-        (Error err, , uint shortfall) = getHypotheticalAccountLiquidityInternal(borrower, PToken(pToken), 0, borrowAmount);
+        (Error err, , uint shortfall) = getHypotheticalAccountLiquidityInternal(borrower, LToken(lToken), 0, borrowAmount);
         if (err != Error.NO_ERROR) {
             return uint(err);
         }
@@ -351,25 +351,25 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
             return uint(Error.INSUFFICIENT_LIQUIDITY);
         }
 
-        //distribute wpc
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeBorrowWpc(pToken, borrower, false);
+        //distribute lemd
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeBorrowLemd(lToken, borrower, false);
         }
 
         return uint(Error.NO_ERROR);
 
     }
 
-    function borrowVerify(address pToken, address borrower, uint borrowAmount) external override(IComptroller) {
+    function borrowVerify(address lToken, address borrower, uint borrowAmount) external override(IComptroller) {
         //Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pToken;
+        lToken;
         borrower;
         borrowAmount;
     }
 
-    function repayBorrowAllowed(address pToken, address payer, address borrower, uint repayAmount) external override(IComptroller) returns (uint) {
+    function repayBorrowAllowed(address lToken, address payer, address borrower, uint repayAmount) external override(IComptroller) returns (uint) {
 
-        if (!markets[pToken].isListed) {
+        if (!markets[lToken].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
@@ -378,18 +378,18 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         borrower;
         repayAmount;
 
-        //distribute wpc
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeRepayBorrowWpc(pToken, borrower, false);
+        //distribute lemd
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeRepayBorrowLemd(lToken, borrower, false);
         }
 
         return uint(Error.NO_ERROR);
     }
 
-    function repayBorrowVerify(address pToken, address payer, address borrower, uint repayAmount, uint borrowerIndex) external override(IComptroller) {
+    function repayBorrowVerify(address lToken, address payer, address borrower, uint repayAmount, uint borrowerIndex) external override(IComptroller) {
 
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pToken;
+        lToken;
         payer;
         borrower;
         repayAmount;
@@ -397,8 +397,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     }
 
     function liquidateBorrowAllowed(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address liquidator,
         address borrower,
         uint repayAmount
@@ -407,7 +407,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
         liquidator;
 
-        if (!markets[pTokenBorrowed].isListed || !markets[pTokenCollateral].isListed) {
+        if (!markets[lTokenBorrowed].isListed || !markets[lTokenCollateral].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
@@ -421,7 +421,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         }
 
         /* The liquidator may not repay more than what is allowed by the closeFactor */
-        uint borrowBalance = PToken(pTokenBorrowed).borrowBalanceStored(borrower);
+        uint borrowBalance = LToken(lTokenBorrowed).borrowBalanceStored(borrower);
         (MathError mathErr, uint maxClose) = mulScalarTruncate(Exp({mantissa : closeFactorMantissa}), borrowBalance);
         if (mathErr != MathError.NO_ERROR) {
             return uint(Error.MATH_ERROR);
@@ -434,8 +434,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     }
 
     function liquidateBorrowVerify(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address liquidator,
         address borrower,
         uint repayAmount,
@@ -443,8 +443,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     ) external override(IComptroller) {
 
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pTokenBorrowed;
-        pTokenCollateral;
+        lTokenBorrowed;
+        lTokenCollateral;
         liquidator;
         borrower;
         repayAmount;
@@ -453,8 +453,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     }
 
     function seizeAllowed(
-        address pTokenCollateral,
-        address pTokenBorrowed,
+        address lTokenCollateral,
+        address lTokenBorrowed,
         address liquidator,
         address borrower,
         uint seizeTokens
@@ -465,40 +465,40 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
         seizeTokens;
 
-        if (!markets[pTokenCollateral].isListed || !markets[pTokenBorrowed].isListed) {
+        if (!markets[lTokenCollateral].isListed || !markets[lTokenBorrowed].isListed) {
             return uint(Error.MARKET_NOT_LISTED);
         }
 
-        if (PToken(pTokenCollateral).comptroller() != PToken(pTokenBorrowed).comptroller()) {
+        if (LToken(lTokenCollateral).comptroller() != LToken(lTokenBorrowed).comptroller()) {
             return uint(Error.COMPTROLLER_MISMATCH);
         }
 
-        //distribute wpc
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeSeizeWpc(pTokenCollateral, borrower, liquidator, false);
+        //distribute lemd
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeSeizeLemd(lTokenCollateral, borrower, liquidator, false);
         }
 
         return uint(Error.NO_ERROR);
     }
 
     function seizeVerify(
-        address pTokenCollateral,
-        address pTokenBorrowed,
+        address lTokenCollateral,
+        address lTokenBorrowed,
         address liquidator,
         address borrower,
         uint seizeTokens
     ) external override(IComptroller) {
 
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pTokenCollateral;
-        pTokenBorrowed;
+        lTokenCollateral;
+        lTokenBorrowed;
         liquidator;
         borrower;
         seizeTokens;
     }
 
     function transferAllowed(
-        address pToken,
+        address lToken,
         address src,
         address dst,
         uint transferTokens
@@ -508,27 +508,27 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
 
         // Currently the only consideration is whether or not
         //  the src is allowed to redeem this many tokens
-        uint allowed = redeemAllowedInternal(pToken, src, transferTokens);
+        uint allowed = redeemAllowedInternal(lToken, src, transferTokens);
         if (allowed != uint(Error.NO_ERROR)) {
             return allowed;
         }
 
-        //distribute wpc
-        if (distributeWpcPaused == false) {
-            piggyDistribution.distributeTransferWpc(pToken, src, dst, false);
+        //distribute lemd
+        if (distributeLemdPaused == false) {
+            lemdDistribution.distributeTransferLemd(lToken, src, dst, false);
         }
 
         return uint(Error.NO_ERROR);
     }
 
     function transferVerify(
-        address pToken,
+        address lToken,
         address src,
         address dst,
         uint transferTokens
     ) external override(IComptroller) {
         // Shh - currently unused. It's written here to eliminate compile-time alarms.
-        pToken;
+        lToken;
         src;
         dst;
         transferTokens;
@@ -538,13 +538,13 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
 
     /**
      * @dev Local vars for avoiding stack-depth limits in calculating account liquidity.
-     *  Note that `pTokenBalance` is the number of pTokens the account owns in the market,
+     *  Note that `lTokenBalance` is the number of lTokens the account owns in the market,
      *  whereas `borrowBalance` is the amount of underlying that the account has borrowed.
      */
     struct AccountLiquidityLocalVars {
         uint sumCollateral;
         uint sumBorrowPlusEffects;
-        uint pTokenBalance;
+        uint lTokenBalance;
         uint borrowBalance;
         uint exchangeRateMantissa;
         uint oraclePriceMantissa;
@@ -561,7 +561,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
      *          account shortfall below collateral requirements)
      */
     function getAccountLiquidity(address account) public view returns (uint, uint, uint) {
-        (Error err, uint liquidity, uint shortfall) = getHypotheticalAccountLiquidityInternal(account, PToken(0), 0, 0);
+        (Error err, uint liquidity, uint shortfall) = getHypotheticalAccountLiquidityInternal(account, LToken(0), 0, 0);
         return (uint(err), liquidity, shortfall);
     }
 
@@ -573,12 +573,12 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
      *          account shortfall below collateral requirements)
      */
     function getAccountLiquidityInternal(address account) internal view returns (Error, uint, uint) {
-        return getHypotheticalAccountLiquidityInternal(account, PToken(0), 0, 0);
+        return getHypotheticalAccountLiquidityInternal(account, LToken(0), 0, 0);
     }
 
     /**
      * @notice Determine what the account liquidity would be if the given amounts were redeemed/borrowed
-     * @param pTokenModify The market to hypothetically redeem/borrow in
+     * @param lTokenModify The market to hypothetically redeem/borrow in
      * @param account The account to determine liquidity for
      * @param redeemTokens The number of tokens to hypothetically redeem
      * @param borrowAmount The amount of underlying to hypothetically borrow
@@ -588,10 +588,10 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
      */
     function getHypotheticalAccountLiquidity(
         address account,
-        address pTokenModify,
+        address lTokenModify,
         uint redeemTokens,
         uint borrowAmount) public view returns (uint, uint, uint) {
-        (Error err, uint liquidity, uint shortfall) = getHypotheticalAccountLiquidityInternal(account, PToken(pTokenModify), redeemTokens, borrowAmount);
+        (Error err, uint liquidity, uint shortfall) = getHypotheticalAccountLiquidityInternal(account, LToken(lTokenModify), redeemTokens, borrowAmount);
         return (uint(err), liquidity, shortfall);
     }
 
@@ -599,10 +599,10 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     /**
      * @notice Determine what the account liquidity would be if the given amounts were redeemed/borrowed
      * @param account The account to determine liquidity for
-     * @param pTokenModify The market to hypothetically redeem/borrow in
+     * @param lTokenModify The market to hypothetically redeem/borrow in
      * @param redeemTokens The number of tokens to hypothetically redeem
      * @param borrowAmount The amount of underlying to hypothetically borrow
-     * @dev Note that we calculate the exchangeRateStored for each collateral pToken using stored data,
+     * @dev Note that we calculate the exchangeRateStored for each collateral lToken using stored data,
      *  without calculating accumulated interest.
      * @return (possible error code,
                 hypothetical account liquidity in excess of collateral requirements,
@@ -610,7 +610,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
      */
     function getHypotheticalAccountLiquidityInternal(
         address account,
-        PToken pTokenModify,
+        LToken lTokenModify,
         uint redeemTokens,
         uint borrowAmount) internal view returns (Error, uint, uint) {
 
@@ -619,12 +619,12 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         MathError mErr;
 
         // For each asset the account is in
-        PToken[] memory assets = accountAssets[account];
+        LToken[] memory assets = accountAssets[account];
         for (uint i = 0; i < assets.length; i++) {
-            PToken asset = assets[i];
+            LToken asset = assets[i];
 
-            // Read the balances and exchange rate from the pToken
-            (oErr, vars.pTokenBalance, vars.borrowBalance, vars.exchangeRateMantissa) = asset.getAccountSnapshot(account);
+            // Read the balances and exchange rate from the lToken
+            (oErr, vars.lTokenBalance, vars.borrowBalance, vars.exchangeRateMantissa) = asset.getAccountSnapshot(account);
             if (oErr != 0) {// semi-opaque error code, we assume NO_ERROR == 0 is invariant between upgrades
                 return (Error.SNAPSHOT_ERROR, 0, 0);
             }
@@ -639,14 +639,14 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
             vars.oraclePrice = Exp({mantissa : vars.oraclePriceMantissa});
 
             // Pre-compute a conversion factor from tokens -> usd (normalized price value)
-            // pTokenPrice = oraclePrice * exchangeRate
+            // lTokenPrice = oraclePrice * exchangeRate
             (mErr, vars.tokensToDenom) = mulExp3(vars.collateralFactor, vars.exchangeRate, vars.oraclePrice);
             if (mErr != MathError.NO_ERROR) {
                 return (Error.MATH_ERROR, 0, 0);
             }
 
-            // sumCollateral += tokensToDenom * pTokenBalance
-            (mErr, vars.sumCollateral) = mulScalarTruncateAddUInt(vars.tokensToDenom, vars.pTokenBalance, vars.sumCollateral);
+            // sumCollateral += tokensToDenom * lTokenBalance
+            (mErr, vars.sumCollateral) = mulScalarTruncateAddUInt(vars.tokensToDenom, vars.lTokenBalance, vars.sumCollateral);
             if (mErr != MathError.NO_ERROR) {
                 return (Error.MATH_ERROR, 0, 0);
             }
@@ -657,8 +657,8 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
                 return (Error.MATH_ERROR, 0, 0);
             }
 
-            // Calculate effects of interacting with pTokenModify
-            if (asset == pTokenModify) {
+            // Calculate effects of interacting with lTokenModify
+            if (asset == lTokenModify) {
                 // redeem effect
                 // sumBorrowPlusEffects += tokensToDenom * redeemTokens
                 (mErr, vars.sumBorrowPlusEffects) = mulScalarTruncateAddUInt(vars.tokensToDenom, redeemTokens, vars.sumBorrowPlusEffects);
@@ -684,13 +684,13 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     }
 
     function liquidateCalculateSeizeTokens(
-        address pTokenBorrowed,
-        address pTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         uint actualRepayAmount
     ) external override(IComptroller) view returns (uint, uint) {
         /* Read oracle prices for borrowed and collateral markets */
-        uint priceBorrowedMantissa = oracle.getUnderlyingPrice(PToken(pTokenBorrowed));
-        uint priceCollateralMantissa = oracle.getUnderlyingPrice(PToken(pTokenCollateral));
+        uint priceBorrowedMantissa = oracle.getUnderlyingPrice(LToken(lTokenBorrowed));
+        uint priceCollateralMantissa = oracle.getUnderlyingPrice(LToken(lTokenCollateral));
         if (priceBorrowedMantissa == 0 || priceCollateralMantissa == 0) {
             return (uint(Error.PRICE_ERROR), 0);
         }
@@ -703,7 +703,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         *
         * Note: reverts on error
         */
-        uint exchangeRateMantissa = PToken(pTokenCollateral).exchangeRateStored();
+        uint exchangeRateMantissa = LToken(lTokenCollateral).exchangeRateStored();
 
         uint seizeTokens;
         Exp memory numerator;
@@ -785,14 +785,14 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     /**
       * @notice Sets the collateralFactor for a market
       * @dev Admin function to set per-market collateralFactor
-      * @param pToken The market to set the factor on
+      * @param lToken The market to set the factor on
       * @param newCollateralFactorMantissa The new collateral factor, scaled by 1e18
       * @return uint 0=success, otherwise a failure. (See ErrorReporter for details)
       */
-    function _setCollateralFactor(PToken pToken, uint newCollateralFactorMantissa) external onlyOwner returns (uint) {
+    function _setCollateralFactor(LToken lToken, uint newCollateralFactorMantissa) external onlyOwner returns (uint) {
 
         // Verify market is listed
-        Market storage market = markets[address(pToken)];
+        Market storage market = markets[address(lToken)];
         if (!market.isListed) {
             return fail(Error.MARKET_NOT_LISTED, FailureInfo.SET_COLLATERAL_FACTOR_NO_EXISTS);
         }
@@ -806,7 +806,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         }
 
         // If collateral factor != 0, fail if price == 0
-        if (newCollateralFactorMantissa != 0 && oracle.getUnderlyingPrice(pToken) == 0) {
+        if (newCollateralFactorMantissa != 0 && oracle.getUnderlyingPrice(lToken) == 0) {
             return fail(Error.PRICE_ERROR, FailureInfo.SET_COLLATERAL_FACTOR_WITHOUT_PRICE);
         }
 
@@ -815,7 +815,7 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         market.collateralFactorMantissa = newCollateralFactorMantissa;
 
         // Emit event with asset, old collateral factor, and new collateral factor
-        emit NewCollateralFactor(pToken, oldCollateralFactorMantissa, newCollateralFactorMantissa);
+        emit NewCollateralFactor(lToken, oldCollateralFactorMantissa, newCollateralFactorMantissa);
 
         return uint(Error.NO_ERROR);
     }
@@ -870,48 +870,48 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
     /**
       * @notice Add the market to the markets mapping and set it as listed
       * @dev Admin function to set isListed and add support for the market
-      * @param pToken The address of the market (token) to list
+      * @param lToken The address of the market (token) to list
       * @return uint 0=success, otherwise a failure. (See enum Error for details)
       */
-    function _supportMarket(PToken pToken) external onlyOwner returns (uint) {
+    function _supportMarket(LToken lToken) external onlyOwner returns (uint) {
 
-        if (markets[address(pToken)].isListed) {
+        if (markets[address(lToken)].isListed) {
             return fail(Error.MARKET_ALREADY_LISTED, FailureInfo.SUPPORT_MARKET_EXISTS);
         }
 
-        markets[address(pToken)] = Market({isListed : true, isMinted : false, collateralFactorMantissa : 0});
+        markets[address(lToken)] = Market({isListed : true, isMinted : false, collateralFactorMantissa : 0});
 
-        _addMarketInternal(address(pToken));
+        _addMarketInternal(address(lToken));
 
-        emit MarketListed(pToken);
+        emit MarketListed(lToken);
 
         return uint(Error.NO_ERROR);
     }
 
-    function _addMarketInternal(address pToken) internal onlyOwner {
+    function _addMarketInternal(address lToken) internal onlyOwner {
         for (uint i = 0; i < allMarkets.length; i ++) {
-            require(allMarkets[i] != PToken(pToken), "market already added");
+            require(allMarkets[i] != LToken(lToken), "market already added");
         }
-        allMarkets.push(PToken(pToken));
+        allMarkets.push(LToken(lToken));
     }
 
     /**
-      * @notice Set the given borrow caps for the given pToken markets. Borrowing that brings total borrows to or above borrow cap will revert.
+      * @notice Set the given borrow caps for the given lToken markets. Borrowing that brings total borrows to or above borrow cap will revert.
       * @dev Admin or borrowCapGuardian function to set the borrow caps. A borrow cap of 0 corresponds to unlimited borrowing.
-      * @param pTokens The addresses of the markets (tokens) to change the borrow caps for
+      * @param lTokens The addresses of the markets (tokens) to change the borrow caps for
       * @param newBorrowCaps The new borrow cap values in underlying to be set. A value of 0 corresponds to unlimited borrowing.
       */
-    function _setMarketBorrowCaps(PToken[] calldata pTokens, uint[] calldata newBorrowCaps) external {
+    function _setMarketBorrowCaps(LToken[] calldata lTokens, uint[] calldata newBorrowCaps) external {
         require(msg.sender == owner() || msg.sender == borrowCapGuardian, "only owner or borrow cap guardian can set borrow caps");
 
-        uint numMarkets = pTokens.length;
+        uint numMarkets = lTokens.length;
         uint numBorrowCaps = newBorrowCaps.length;
 
         require(numMarkets != 0 && numMarkets == numBorrowCaps, "invalid input");
 
         for (uint i = 0; i < numMarkets; i++) {
-            borrowCaps[address(pTokens[i])] = newBorrowCaps[i];
-            emit NewBorrowCap(pTokens[i], newBorrowCaps[i]);
+            borrowCaps[address(lTokens[i])] = newBorrowCaps[i];
+            emit NewBorrowCap(lTokens[i], newBorrowCaps[i]);
         }
     }
 
@@ -950,23 +950,23 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         return uint(Error.NO_ERROR);
     }
 
-    function _setMintPaused(PToken pToken, bool state) public returns (bool) {
-        require(markets[address(pToken)].isListed, "cannot pause a market that is not listed");
+    function _setMintPaused(LToken lToken, bool state) public returns (bool) {
+        require(markets[address(lToken)].isListed, "cannot pause a market that is not listed");
         require(msg.sender == pauseGuardian || msg.sender == owner(), "only pause guardian and owner can pause");
         require(msg.sender == owner() || state == true, "only owner can unpause");
 
-        pTokenMintGuardianPaused[address(pToken)] = state;
-        emit ActionPaused(pToken, "Mint", state);
+        lTokenMintGuardianPaused[address(lToken)] = state;
+        emit ActionPaused(lToken, "Mint", state);
         return state;
     }
 
-    function _setBorrowPaused(PToken pToken, bool state) public returns (bool) {
-        require(markets[address(pToken)].isListed, "cannot pause a market that is not listed");
+    function _setBorrowPaused(LToken lToken, bool state) public returns (bool) {
+        require(markets[address(lToken)].isListed, "cannot pause a market that is not listed");
         require(msg.sender == pauseGuardian || msg.sender == owner(), "only pause guardian and owner can pause");
         require(msg.sender == owner() || state == true, "only owner can unpause");
 
-        pTokenBorrowGuardianPaused[address(pToken)] = state;
-        emit ActionPaused(pToken, "Borrow", state);
+        lTokenBorrowGuardianPaused[address(lToken)] = state;
+        emit ActionPaused(lToken, "Borrow", state);
         return state;
     }
 
@@ -988,60 +988,60 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         return state;
     }
 
-    function _setDistributeWpcPaused(bool state) public returns (bool) {
+    function _setDistributeLemdPaused(bool state) public returns (bool) {
         require(msg.sender == pauseGuardian || msg.sender == owner(), "only pause guardian and owner can pause");
         require(msg.sender == owner() || state == true, "only owner can unpause");
 
-        distributeWpcPaused = state;
-        emit ActionPaused("DistributeWpc", state);
+        distributeLemdPaused = state;
+        emit ActionPaused("DistributeLemd", state);
         return state;
     }
 
     /**
-     * @notice Sets a new price piggyDistribution for the comptroller
-     * @dev Admin function to set a new piggy distribution
+     * @notice Sets a new price lemdDistribution for the comptroller
+     * @dev Admin function to set a new lemd distribution
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function _setPiggyDistribution(IPiggyDistribution newPiggyDistribution) public onlyOwner returns (uint) {
+    function _setLemdDistribution(ILemdDistribution newLemdDistribution) public onlyOwner returns (uint) {
 
-        IPiggyDistribution oldPiggyDistribution = piggyDistribution;
+        ILemdDistribution oldLemdDistribution = lemdDistribution;
 
-        piggyDistribution = newPiggyDistribution;
+        lemdDistribution = newLemdDistribution;
 
-        emit NewPiggyDistribution(oldPiggyDistribution, newPiggyDistribution);
+        emit NewLemdDistribution(oldLemdDistribution, newLemdDistribution);
 
         return uint(Error.NO_ERROR);
     }
 
-    function getAllMarkets() public view returns (PToken[] memory){
+    function getAllMarkets() public view returns (LToken[] memory){
         return allMarkets;
     }
 
-    function isMarketMinted(address pToken) public view returns (bool){
-        return markets[pToken].isMinted;
+    function isMarketMinted(address lToken) public view returns (bool){
+        return markets[lToken].isMinted;
     }
 
-    function isMarketListed(address pToken) public view returns (bool){
-        return markets[pToken].isListed;
+    function isMarketListed(address lToken) public view returns (bool){
+        return markets[lToken].isListed;
     }
 
-    function _setMarketMinted(address pToken, bool status) public {
+    function _setMarketMinted(address lToken, bool status) public {
 
-        require(msg.sender == address(piggyDistribution) || msg.sender == owner(), "only PiggyDistribution or owner can update");
+        require(msg.sender == address(lemdDistribution) || msg.sender == owner(), "only LemdDistribution or owner can update");
 
-        markets[pToken].isMinted = status;
+        markets[lToken].isMinted = status;
     }
 
-    function _setMarketMintCaps(PToken[] calldata pTokens, uint[] calldata newMintCaps) external onlyOwner {
+    function _setMarketMintCaps(LToken[] calldata lTokens, uint[] calldata newMintCaps) external onlyOwner {
 
-        uint numMarkets = pTokens.length;
+        uint numMarkets = lTokens.length;
         uint numMintCaps = newMintCaps.length;
 
         require(numMarkets != 0 && numMarkets == numMintCaps, "invalid input");
 
         for (uint i = 0; i < numMarkets; i++) {
-            mintCaps[address(pTokens[i])] = newMintCaps[i];
-            emit NewBorrowCap(pTokens[i], newMintCaps[i]);
+            mintCaps[address(lTokens[i])] = newMintCaps[i];
+            emit NewBorrowCap(lTokens[i], newMintCaps[i]);
         }
     }
 
