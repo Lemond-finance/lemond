@@ -2,6 +2,7 @@ require('@nomiclabs/hardhat-waffle')
 require('hardhat-abi-exporter')
 require('@openzeppelin/hardhat-upgrades')
 require('@nomiclabs/hardhat-truffle5')
+require("@nomiclabs/hardhat-etherscan")
 
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim()
@@ -32,28 +33,30 @@ module.exports = {
       allowUnlimitedContractSize: true,
     },
     okexchain: {
-      url: 'https://exchaintest.okexcn.com/',
+      url: 'https://exchaintest.okexcn.com',
       accounts: [mnemonic],
-      timeout: 200000
+      timeout: 20000
     },
     rinkeby: {
       url: 'https://rinkeby.infura.io/v3/3970ae72d3db40f6a6dfad8544b4da1c',
-      accounts: [mnemonic]
+      accounts: [mnemonic],
+      timeout: 20000
     },
+    ropsten: {
+      url: 'https://ropsten.infura.io/v3/3970ae72d3db40f6a6dfad8544b4da1c',
+      accounts: [mnemonic],
+      timeout: 20000
+    },
+    bsc: {
+      url: 'https://data-seed-prebsc-2-s1.binance.org:8545',
+      accounts: [mnemonic],
+      timeout: 200000
+    }
   },
   solidity: {
     compilers: [
       {
         version: '0.6.12',
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: '0.6.2',
         settings: {
           optimizer: {
             enabled: true,
@@ -78,16 +81,7 @@ module.exports = {
             runs: 200,
           },
         },
-      },
-      // {
-      //   version: '0.4.24',
-      //   settings: {
-      //     optimizer: {
-      //       enabled: true,
-      //       runs: 200,
-      //     },
-      //   },
-      // },
+      } 
     ],
   },
   paths: {
@@ -105,4 +99,7 @@ module.exports = {
     flat: true,
     // only: ['ERC20'],
   },
+  etherscan: {
+    apiKey: "XARD1DFR8AU129FVP25A33FRD6AE1EQSU3"
+  }
 }
