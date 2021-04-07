@@ -113,6 +113,7 @@ const Home = ({ t }) => {
                       <li className={styles.zb}></li>
                       <li className={styles.hoo}></li>
                       <li className={styles.bkex}></li>
+                      <li className={styles.coinshub}></li>
                       <li className={styles.bigone}></li>
                       <li className={styles.crypto_venture_capital}></li>
                       <li className={styles.roots_cap}></li>
