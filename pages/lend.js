@@ -1,18 +1,23 @@
-import Head from "next/head";
-import { useEffect } from "react";
-import useWallet from "use-wallet";
-import { Link, withTranslation } from "../i18n";
-import HeaderFooter from "../layout/HeaderFooter";
-import classNames from "classnames/bind";
-import styles from "../styles/lend.less";
-import { confirmAlert } from "react-confirm-alert";
-import { ToastContainer, toast } from "react-toastify";
-import { toastConfig } from "../libs/utils";
-const cx = classNames.bind(styles);
-import Web3 from "web3";
+import Head from "next/head"
+import { useEffect, useState } from "react"
+import useWallet from "use-wallet"
+import { Link, withTranslation } from "../i18n"
+import HeaderFooter from "../layout/HeaderFooter"
+import classNames from "classnames/bind"
+import styles from "../styles/lend.less"
+import { confirmAlert } from "react-confirm-alert"
+import { ToastContainer, toast } from "react-toastify"
+import { toastConfig } from "../libs/utils"
+import tokenConfig from "../contract.config.js"
+const cx = classNames.bind(styles)
+import Web3 from "web3"
 
 const Home = ({ t }) => {
-    const { account, ethereum } = useWallet();
+    const { account, ethereum } = useWallet()
+    const [showLendBox, setShowLendBox] = useState(false)
+
+    const web3 = new Web3(ethereum)
+    const poolConfig = tokenConfig.pool.okt_pool
 
     const showDialog = () => {
         confirmAlert({
@@ -28,12 +33,12 @@ const Home = ({ t }) => {
                     onClick: () => alert("Click No"),
                 },
             ],
-        });
-    };
+        })
+    }
 
     const showAlert = () => {
-        toast.dark("🚀 Waiting for open!", toastConfig);
-    };
+        toast.dark("🚀 Waiting for open!", toastConfig)
+    }
 
     return (
         <HeaderFooter activeIndex={2}>
@@ -105,7 +110,10 @@ const Home = ({ t }) => {
                             </p>
                         </span>
                         <span className={styles.none}>
-                            <button onClick={() => showAlert()}>
+                            <button
+                                onClick={() => showAlert()}
+                                // onClick={() => setShowLendBox(true)}
+                            >
                                 Deposit / Borrow
                             </button>
                         </span>
@@ -213,13 +221,21 @@ const Home = ({ t }) => {
                         </span>
                     </li>
                 </ul>
-                <div className={styles.mask}>
+                <div
+                    className={cx(styles.mask, { hide: !showLendBox })}
+                    onClick={() => {
+                        setShowLendBox(false)
+                    }}
+                >
                     <div
                         className={cx(
                             styles.lend_box,
                             styles.approve,
-                            styles.usdt
+                            styles.usdt,
                         )}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                        }}
                     >
                         <div className={styles.title}>
                             <i className={styles.icon_usdt}></i>
@@ -345,11 +361,11 @@ const Home = ({ t }) => {
                 </div>
             </div>
         </HeaderFooter>
-    );
-};
+    )
+}
 
 Home.getInitialProps = async () => ({
     namespacesRequired: ["common", "header", "home"],
-});
+})
 
-export default withTranslation("home")(Home);
+export default withTranslation("home")(Home)

@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.6.12;
 
 import "./IFlashLoanReceiver.sol";
 import "./IFlashloan.sol";
