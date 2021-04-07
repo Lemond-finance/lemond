@@ -23,8 +23,8 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -73,8 +73,8 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -92,8 +92,8 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -111,8 +111,8 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -124,8 +124,8 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -181,8 +181,8 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -199,6 +199,25 @@
       }
     ],
     "name": "NewCollateralFactor",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "contract ILemdDistribution",
+        "name": "oldLemdDistribution",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "contract ILemdDistribution",
+        "name": "newLemdDistribution",
+        "type": "address"
+      }
+    ],
+    "name": "NewLemdDistribution",
     "type": "event"
   },
   {
@@ -243,6 +262,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "contract LToken",
+        "name": "lToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newMintCap",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewMintCap",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "oldPauseGuardian",
@@ -256,25 +294,6 @@
       }
     ],
     "name": "NewPauseGuardian",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "contract IPiggyDistribution",
-        "name": "oldPiggyDistribution",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "contract IPiggyDistribution",
-        "name": "newPiggyDistribution",
-        "type": "address"
-      }
-    ],
-    "name": "NewPiggyDistribution",
     "type": "event"
   },
   {
@@ -357,8 +376,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -400,8 +419,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -429,12 +448,31 @@
         "type": "bool"
       }
     ],
-    "name": "_setDistributeWpcPaused",
+    "name": "_setDistributeLemdPaused",
     "outputs": [
       {
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ILemdDistribution",
+        "name": "newLemdDistribution",
+        "type": "address"
+      }
+    ],
+    "name": "_setLemdDistribution",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -462,8 +500,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken[]",
-        "name": "pTokens",
+        "internalType": "contract LToken[]",
+        "name": "lTokens",
         "type": "address[]"
       },
       {
@@ -480,8 +518,26 @@
   {
     "inputs": [
       {
+        "internalType": "contract LToken[]",
+        "name": "lTokens",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "newMintCaps",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "_setMarketMintCaps",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -517,8 +573,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -547,25 +603,6 @@
       }
     ],
     "name": "_setPauseGuardian",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IPiggyDistribution",
-        "name": "newPiggyDistribution",
-        "type": "address"
-      }
-    ],
-    "name": "_setPiggyDistribution",
     "outputs": [
       {
         "internalType": "uint256",
@@ -636,8 +673,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -668,7 +705,7 @@
     "name": "accountAssets",
     "outputs": [
       {
-        "internalType": "contract PToken",
+        "internalType": "contract LToken",
         "name": "",
         "type": "address"
       }
@@ -687,7 +724,7 @@
     "name": "allMarkets",
     "outputs": [
       {
-        "internalType": "contract PToken",
+        "internalType": "contract LToken",
         "name": "",
         "type": "address"
       }
@@ -699,7 +736,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -760,7 +797,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -787,8 +824,8 @@
         "type": "address"
       },
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -818,7 +855,7 @@
   },
   {
     "inputs": [],
-    "name": "distributeWpcPaused",
+    "name": "distributeLemdPaused",
     "outputs": [
       {
         "internalType": "bool",
@@ -833,7 +870,7 @@
     "inputs": [
       {
         "internalType": "address[]",
-        "name": "pTokens",
+        "name": "lTokens",
         "type": "address[]"
       }
     ],
@@ -852,7 +889,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenAddress",
+        "name": "lTokenAddress",
         "type": "address"
       }
     ],
@@ -901,7 +938,7 @@
     "name": "getAllMarkets",
     "outputs": [
       {
-        "internalType": "contract PToken[]",
+        "internalType": "contract LToken[]",
         "name": "",
         "type": "address[]"
       }
@@ -920,7 +957,7 @@
     "name": "getAssetsIn",
     "outputs": [
       {
-        "internalType": "contract PToken[]",
+        "internalType": "contract LToken[]",
         "name": "",
         "type": "address[]"
       }
@@ -937,7 +974,7 @@
       },
       {
         "internalType": "address",
-        "name": "pTokenModify",
+        "name": "lTokenModify",
         "type": "address"
       },
       {
@@ -983,7 +1020,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -1002,7 +1039,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -1021,12 +1058,50 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "lTokenBorrowGuardianPaused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "lTokenMintGuardianPaused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -1060,12 +1135,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -1098,12 +1173,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
@@ -1187,7 +1262,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1216,7 +1291,26 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mintCaps",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1267,44 +1361,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pTokenBorrowGuardianPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pTokenMintGuardianPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "pauseGuardian",
     "outputs": [
@@ -1321,7 +1377,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1350,7 +1406,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1385,7 +1441,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1419,7 +1475,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1452,12 +1508,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
@@ -1504,12 +1560,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pTokenCollateral",
+        "name": "lTokenCollateral",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "pTokenBorrowed",
+        "name": "lTokenBorrowed",
         "type": "address"
       },
       {
@@ -1537,7 +1593,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {
@@ -1597,7 +1653,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "pToken",
+        "name": "lToken",
         "type": "address"
       },
       {

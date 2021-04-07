@@ -41,7 +41,7 @@
     "name": "accountAssets",
     "outputs": [
       {
-        "internalType": "contract PToken",
+        "internalType": "contract LToken",
         "name": "",
         "type": "address"
       }
@@ -60,7 +60,7 @@
     "name": "allMarkets",
     "outputs": [
       {
-        "internalType": "contract PToken",
+        "internalType": "contract LToken",
         "name": "",
         "type": "address"
       }
@@ -115,7 +115,45 @@
   },
   {
     "inputs": [],
-    "name": "distributeWpcPaused",
+    "name": "distributeLemdPaused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "lTokenBorrowGuardianPaused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "lTokenMintGuardianPaused",
     "outputs": [
       {
         "internalType": "bool",
@@ -189,44 +227,6 @@
         "internalType": "contract IPriceOracle",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pTokenBorrowGuardianPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pTokenMintGuardianPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",

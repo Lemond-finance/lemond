@@ -101,8 +101,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       }
     ],
@@ -165,8 +165,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PToken",
-        "name": "pToken",
+        "internalType": "contract LToken",
+        "name": "lToken",
         "type": "address"
       },
       {

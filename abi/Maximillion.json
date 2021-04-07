@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract PEther",
-        "name": "pEther_",
+        "internalType": "contract LEther",
+        "name": "lEther_",
         "type": "address"
       }
     ],
@@ -12,10 +12,10 @@
   },
   {
     "inputs": [],
-    "name": "pEther",
+    "name": "lEther",
     "outputs": [
       {
-        "internalType": "contract PEther",
+        "internalType": "contract LEther",
         "name": "",
         "type": "address"
       }
@@ -44,8 +44,8 @@
         "type": "address"
       },
       {
-        "internalType": "contract PEther",
-        "name": "pEther_",
+        "internalType": "contract LEther",
+        "name": "lEther_",
         "type": "address"
       }
     ],

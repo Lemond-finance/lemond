@@ -3,195 +3,345 @@
 //
 // When running the script with `hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-const hre = require('hardhat')
-const { ethers, upgrades } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const web3 = require('web3')
+const hre = require("hardhat")
+const { ethers, upgrades } = require("hardhat")
+const BigNumber = require("bignumber.js")
+const web3 = require("web3")
 
-const MockErc20 = artifacts.require('MockERC20')
+const MockErc20 = artifacts.require("MockERC20")
 const Comptroller = artifacts.require("Comptroller")
-const JumpRateModel = artifacts.require('JumpRateModel')
-const PEther = artifacts.require('PEther')
-const PERC20 = artifacts.require('PERC20')
-const SimplePriceOracle = artifacts.require('SimplePriceOracle')
-const PiggyDistribution = artifacts.require('PiggyDistribution')
-const PiggyToken = artifacts.require('WePiggyToken')
-const PiggyBreeder = artifacts.require('PiggyBreeder')
+const JumpRateModel = artifacts.require("JumpRateModel")
+const LEther = artifacts.require("LEther")
+const LERC20 = artifacts.require("LERC20")
+const SimplePriceOracle = artifacts.require("SimplePriceOracle")
+const LemdDistribution = artifacts.require("LemdDistribution")
+const LemdToken = artifacts.require("LemdToken")
+const LemdBreeder = artifacts.require("LemdBreeder")
+
+const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms))
 
 async function main() {
-    await hre.run('compile')
+    await hre.run("compile")
 
     this.deployer = (await ethers.getSigners())[0].address
-    console.log('deployer address',this.deployer)
-
-    const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
+    console.log("deployer address", this.deployer)
 
     // Mock ERC20s
-    this.WBTC = await MockErc20.new('WBTC', 'WBTC', hre.ethers.utils.parseEther('100000000'),8)
-    this.DAI = await MockErc20.new('DAI', 'DAI', hre.ethers.utils.parseEther('100000000'),18)
-    this.USDT = await MockErc20.new('USDT', 'USDT', hre.ethers.utils.parseEther('100000000'),6)
-    this.USDC = await MockErc20.new('USDC', 'USDC', hre.ethers.utils.parseEther('100000000'),6)
+    this.WBTC = await MockErc20.new(
+        "WBTC",
+        "WBTC",
+        hre.ethers.utils.parseEther("100000000"),
+        8,
+    )
+    // await hre.run("verify:verify", { address: this.WBTC.address, constructorArguments: ['WBTC', 'WBTC', hre.ethers.utils.parseEther('100000000'),8] })
+    // npx hardhat verify --network bsc 0x95BAC1812D5ffccB72Ba64195EE6868769965D59 "WBTC" "WBTC" "100000000000000000000000000" 8
+    this.DAI = await MockErc20.new(
+        "DAI",
+        "DAI",
+        hre.ethers.utils.parseEther("100000000"),
+        18,
+    )
+    this.USDT = await MockErc20.new(
+        "USDT",
+        "USDT",
+        hre.ethers.utils.parseEther("100000000"),
+        6,
+    )
+    this.USDC = await MockErc20.new(
+        "USDC",
+        "USDC",
+        hre.ethers.utils.parseEther("100000000"),
+        6,
+    )
+    console.log(
+        "ERC20s",
+        this.WBTC.address,
+        this.DAI.address,
+        this.USDT.address,
+        this.USDC.address,
+    )
 
-    // WPC Token
-    this.piggyToken = await PiggyToken.new()
+    // LEMD Token
+    this.lemdToken = await LemdToken.new()
+    console.log("lemdToken", this.lemdToken.address)
 
-    // PiggyBreeder
-    this.piggyBreeder = await PiggyBreeder.new(this.piggyToken.address, this.deployer, '1000000000000000000', '0', '100', '5760', '999', '39')
+    // LemdBreeder
+    this.lemdBreeder = await LemdBreeder.new(
+        this.lemdToken.address,
+        this.deployer,
+        "1000000000000000000",
+        "0",
+        "100",
+        "5760",
+        "999",
+        "39",
+    )
+    console.log("lemdBreeder", this.lemdBreeder.address)
 
-    // Grant miner role to piggyBreeder
-    await this.piggyToken.grantRole(this.deployer, this.piggyBreeder.address)
+    // Grant miner role to lemdBreeder
+    await this.lemdToken.grantRole(
+        "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6",
+        this.lemdBreeder.address,
+    )
+    console.log("lemdToken grantRole", this.lemdBreeder.address)
 
     // Price oracle
     this.priceOracle = await SimplePriceOracle.new()
     await this.priceOracle.initialize()
+    console.log("priceOracle", this.priceOracle.address)
 
     // Comptroller
     this.comptroller = await Comptroller.new()
     await this.comptroller.initialize()
+    console.log("comptroller", this.comptroller.address)
 
     // JumpRateModel
     this.jumpRateModel = await JumpRateModel.new()
     await this.jumpRateModel.initialize(
-        hre.ethers.utils.parseEther('0.05'),
-        hre.ethers.utils.parseEther('0.45'),
-        hre.ethers.utils.parseEther('0.25'),
-        hre.ethers.utils.parseEther('0.95')
+        hre.ethers.utils.parseEther("0.05"),
+        hre.ethers.utils.parseEther("0.45"),
+        hre.ethers.utils.parseEther("0.25"),
+        hre.ethers.utils.parseEther("0.95"),
     )
+    console.log("jumpRateModel", this.jumpRateModel.address)
 
-    // pTokens
-    this.pEther = await PEther.new()
-    this.pEther.initialize(
-        this.comptroller.address, 
-        this.jumpRateModel.address, 
-        hre.ethers.utils.parseEther('200000000'),
-        'pETH',
-        'pETH',
-        '18'
+    // lTokens
+    this.lEther = await LEther.new()
+    await this.lEther.initialize(
+        this.comptroller.address,
+        this.jumpRateModel.address,
+        hre.ethers.utils.parseEther("200000000"),
+        "lETH",
+        "lETH",
+        "18",
     )
-
-    this.pDAI = await PERC20.new()
-    this.pDAI.initialize(
+    this.lDAI = await LERC20.new()
+    await this.lDAI.initialize(
         this.DAI.address,
-        this.comptroller.address, 
-        this.jumpRateModel.address, 
-        hre.ethers.utils.parseEther('200000000'),
-        'pDAI',
-        'pDAI',
-        '8'
+        this.comptroller.address,
+        this.jumpRateModel.address,
+        hre.ethers.utils.parseEther("200000000"),
+        "lDAI",
+        "lDAI",
+        "8",
     )
-
-    this.pUSDT = await PERC20.new()
-    this.pUSDT.initialize(
+    this.lUSDT = await LERC20.new()
+    await this.lUSDT.initialize(
         this.USDT.address,
-        this.comptroller.address, 
-        this.jumpRateModel.address, 
-        hre.ethers.utils.parseEther('200000000'),
-        'pUSDT',
-        'pUSDT',
-        '8'
+        this.comptroller.address,
+        this.jumpRateModel.address,
+        hre.ethers.utils.parseEther("200000000"),
+        "lUSDT",
+        "lUSDT",
+        "8",
     )
-
-    this.pUSDC = await PERC20.new()
-    this.pUSDC.initialize(
+    this.lUSDC = await LERC20.new()
+    await this.lUSDC.initialize(
         this.USDC.address,
-        this.comptroller.address, 
-        this.jumpRateModel.address, 
-        hre.ethers.utils.parseEther('200000000'),
-        'pUSDC',
-        'pUSDC',
-        '8'
+        this.comptroller.address,
+        this.jumpRateModel.address,
+        hre.ethers.utils.parseEther("200000000"),
+        "lUSDC",
+        "lUSDC",
+        "8",
     )
-
-    this.pwBTC = await PERC20.new()
-    this.pwBTC.initialize(
+    this.lwBTC = await LERC20.new()
+    await this.lwBTC.initialize(
         this.WBTC.address,
-        this.comptroller.address, 
-        this.jumpRateModel.address, 
-        hre.ethers.utils.parseEther('200000000'),
-        'pwBTC',
-        'pwBTC',
-        '8'
+        this.comptroller.address,
+        this.jumpRateModel.address,
+        hre.ethers.utils.parseEther("200000000"),
+        "lwBTC",
+        "lwBTC",
+        "8",
+    )
+    console.log(
+        "lTokens",
+        this.lEther.address,
+        this.lDAI.address,
+        this.lUSDC.address,
+        this.lUSDT.address,
+        this.lwBTC.address,
     )
 
     // set Price
-    const eth_address = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-    await this.priceOracle.setPrice(eth_address, hre.ethers.utils.parseEther('1950'))
-    await this.priceOracle.setPrice(this.DAI.address, hre.ethers.utils.parseEther('1'))
-    await this.priceOracle.setPrice(this.USDT.address, hre.ethers.utils.parseEther('1'))
-    await this.priceOracle.setPrice(this.USDC.address, hre.ethers.utils.parseEther('1'))
-    await this.priceOracle.setPrice(this.WBTC.address, hre.ethers.utils.parseEther('60000'))
+    const eth_address = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    await this.priceOracle.setPrice(
+        eth_address,
+        hre.ethers.utils.parseEther("2000"),
+    )
+    await this.priceOracle.setPrice(
+        this.DAI.address,
+        hre.ethers.utils.parseEther("1"),
+    )
+    await this.priceOracle.setPrice(
+        this.USDT.address,
+        hre.ethers.utils.parseEther("1"),
+    )
+    await this.priceOracle.setPrice(
+        this.USDC.address,
+        hre.ethers.utils.parseEther("1"),
+    )
+    await this.priceOracle.setPrice(
+        this.WBTC.address,
+        hre.ethers.utils.parseEther("60000"),
+    )
     await this.comptroller._setPriceOracle(this.priceOracle.address)
+    console.log("set Price")
 
-    // pToken setReserveFactor
-    await this.pEther._setReserveFactor(hre.ethers.utils.parseEther('0.1'))
-    await this.pDAI._setReserveFactor(hre.ethers.utils.parseEther('0.05'))
-    await this.pUSDC._setReserveFactor(hre.ethers.utils.parseEther('0.2'))
-    await this.pUSDT._setReserveFactor(hre.ethers.utils.parseEther('0.1'))
-    await this.pwBTC._setReserveFactor(hre.ethers.utils.parseEther('0.1'))
+    // lToken setReserveFactor
+    await this.lEther._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
+    await this.lDAI._setReserveFactor(hre.ethers.utils.parseEther("0.05"))
+    await this.lUSDC._setReserveFactor(hre.ethers.utils.parseEther("0.2"))
+    await this.lUSDT._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
+    await this.lwBTC._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
+    console.log("setReserveFactor")
+
+    // LemdDistribution
+    this.lemdDistribution = await LemdDistribution.new()
+    await this.lemdDistribution.initialize(
+        this.lemdToken.address,
+        this.lemdBreeder.address,
+        this.comptroller.address,
+    )
+    console.log(this.lemdDistribution.address)
 
     // comptroller Config
-    await this.comptroller._setMaxAssets('20')
-    await this.comptroller._supportMarket(this.pEther.address)
-    await this.comptroller._supportMarket(this.pDAI.address)
-    await this.comptroller._supportMarket(this.pUSDC.address)
-    await this.comptroller._supportMarket(this.pUSDT.address)
-    await this.comptroller._supportMarket(this.pwBTC.address)
-    await this.comptroller._setCollateralFactor(this.pEther.address,hre.ethers.utils.parseEther('0.75'))
-    await this.comptroller._setCollateralFactor(this.pDAI.address,hre.ethers.utils.parseEther('0.75'))
-    await this.comptroller._setCollateralFactor(this.pUSDC.address,hre.ethers.utils.parseEther('0'))
-    await this.comptroller._setCollateralFactor(this.pUSDT.address,hre.ethers.utils.parseEther('0.75'))
-    await this.comptroller._setCollateralFactor(this.pwBTC.address,hre.ethers.utils.parseEther('0.6'))
-    await this.comptroller._setCloseFactor(hre.ethers.utils.parseEther('0.5'))
-    await this.comptroller._setDistributeWpcPaused(true)
-
-    // PiggyDistribution
-    
-    this.piggyDistribution = await PiggyDistribution.new()
-    await this.piggyDistribution.initialize(this.piggyToken.address, this.piggyBreeder.address, this.comptroller.address)
-    await this.comptroller._setPiggyDistribution(this.piggyDistribution.address)
-    await this.piggyDistribution._addWpcMarkets([this.pEther.address])
-
-    this.Mock = await MockErc20.new('Mock', 'Mock', hre.ethers.utils.parseEther('100000000'),18)
-    await this.piggyBreeder.add('1000', this.Mock.address, ZERO_ADDR, false)
-    await this.Mock.transfer(this.piggyDistribution.address, hre.ethers.utils.parseEther('100'))
-    await this.piggyDistribution._stakeTokenToPiggyBreeder(this.Mock.address, 0)
-
-
-    // Add Pool
-    await this.piggyBreeder.add('1000', this.pEther.address, ZERO_ADDR, false)
-    await this.piggyBreeder.add('1000', this.pDAI.address, ZERO_ADDR, false)
-    await this.piggyBreeder.add('1000', this.pUSDT.address, ZERO_ADDR, false)
-    await this.piggyBreeder.add('1000', this.pUSDC.address, ZERO_ADDR, false)
-    await this.piggyBreeder.add('1000', this.pwBTC.address, ZERO_ADDR, false)
-
-
-    // await this.comptroller._setLiquidationIncentive(hre.ethers.utils.parseEther('1.05'))
-
+    await this.comptroller._setMaxAssets("20")
+    await this.comptroller._supportMarket(this.lEther.address)
+    await this.comptroller._supportMarket(this.lDAI.address)
+    await this.comptroller._supportMarket(this.lUSDC.address)
+    await this.comptroller._supportMarket(this.lUSDT.address)
+    await this.comptroller._supportMarket(this.lwBTC.address)
+    await this.comptroller._setCollateralFactor(
+        this.lEther.address,
+        hre.ethers.utils.parseEther("0.75"),
+    )
+    await this.comptroller._setCollateralFactor(
+        this.lDAI.address,
+        hre.ethers.utils.parseEther("0.75"),
+    )
+    await this.comptroller._setCollateralFactor(
+        this.lUSDC.address,
+        hre.ethers.utils.parseEther("0"),
+    )
+    await this.comptroller._setCollateralFactor(
+        this.lUSDT.address,
+        hre.ethers.utils.parseEther("0.75"),
+    )
+    await this.comptroller._setCollateralFactor(
+        this.lwBTC.address,
+        hre.ethers.utils.parseEther("0.6"),
+    )
+    await this.comptroller._setCloseFactor(hre.ethers.utils.parseEther("0.5"))
+    await this.comptroller._setLiquidationIncentive(
+        hre.ethers.utils.parseEther("1.05"),
+    )
+    await this.comptroller._setLemdDistribution(this.lemdDistribution.address)
+    await this.comptroller._setDistributeLemdPaused(true)
     await this.comptroller.enterMarkets([
-            this.pEther.address,
-            this.pDAI.address,
-            this.pUSDT.address,
-            this.pUSDC.address,
-            this.pwBTC.address,
+        this.lEther.address,
+        this.lDAI.address,
+        this.lUSDT.address,
+        this.lUSDC.address,
+        this.lwBTC.address,
     ])
+    console.log("comptroller Config")
 
-    await this.pEther.mint({
-        value: hre.ethers.utils.parseEther('1')
+    // set lTokens speed and set lemdDistribution config
+    await this.lemdDistribution._setLemdSpeed(
+        this.lEther.address,
+        hre.ethers.utils.parseEther("1"),
+    )
+    await this.comptroller._setDistributeLemdPaused(false)
+    await this.lemdDistribution._setEnableAll(true)
+
+    /* Lend Test */
+    await this.lemdToken.grantRole(
+        "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6",
+        this.deployer,
+    )
+    await this.lemdToken.mint(
+        this.lemdDistribution.address,
+        hre.ethers.utils.parseEther("1000"),
+    )
+    await this.lEther.mint({
+        value: hre.ethers.utils.parseEther("1"),
     })
-    
-    await this.DAI.approve(this.pDAI.address, hre.ethers.utils.parseEther('50000'))
-    await this.pDAI.mint(hre.ethers.utils.parseEther('50000'))
+    console.log(
+        "lEther deplayer",
+        (await this.lEther.balanceOf(this.deployer)).toString(),
+    )
+    await delay(5000)
+    await this.lEther.mint({
+        value: hre.ethers.utils.parseEther("1"),
+    })
+    await this.lEther.mint({
+        value: hre.ethers.utils.parseEther("1"),
+    })
+    await delay(5000)
+    console.log(
+        "LemdBreeder lemdToken",
+        (
+            await this.lemdToken.balanceOf(this.lemdDistribution.address)
+        ).toString(),
+    )
+    console.log(
+        "deplyer lemdToken",
+        (await this.lemdToken.balanceOf(this.deployer)).toString(),
+    )
 
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    await this.DAI.approve(
+        this.lDAI.address,
+        hre.ethers.utils.parseEther("50000"),
+    )
+
+    console.log(
+        "pendingLemdAccrued",
+        (
+            await this.lemdDistribution.pendingLemdAccrued(
+                this.deployer,
+                true,
+                true,
+            )
+        ).toString(),
+    )
+
+    await this.lDAI.mint(hre.ethers.utils.parseEther("50000"))
+    console.log(
+        (
+            await this.comptroller.getAccountLiquidity(this.deployer)
+        )[1].toString(),
+    )
+
+    await this.lDAI.borrow(hre.ethers.utils.parseEther("1000"))
+    console.log(
+        (
+            await this.comptroller.getAccountLiquidity(this.deployer)
+        )[1].toString(),
+    )
+
+    /** Stake Pool Test **/
+    // Add Stake Pool
+    // const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
+    // await this.lemdBreeder.add('1000', this.lEther.address, ZERO_ADDR, false)
+    // console.log(JSON.parse(JSON.stringify(await this.lemdBreeder.poolInfo(0))))
+    // await this.lemdBreeder.add('1000', this.lDAI.address, ZERO_ADDR, false)
+    // await this.lemdBreeder.add('1000', this.lUSDT.address, ZERO_ADDR, false)
+    // await this.lemdBreeder.add('1000', this.lUSDC.address, ZERO_ADDR, false)
+    // await this.lemdBreeder.add('1000', this.lwBTC.address, ZERO_ADDR, false)
+
+    // await this.lemdDistribution.claimLemd(this.deployer)
+    // console.log("pendingLemd",(await this.lemdBreeder.allPendingLemd(this.lemdDistribution.address)).toString())
+    // console.log("pendingLemd",(await this.lemdBreeder.allPendingLemd(this.deployer)).toString())
+    // console.log("lemdAccrued",(await this.lemdDistribution.lemdAccrued(this.deployer)).toString())
 
     console.log("End")
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  })
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error)
+        process.exit(1)
+    })

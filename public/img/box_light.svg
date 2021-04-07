@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="290px" height="216px" viewBox="0 0 290 216" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>路径 5</title>
+    <defs>
+        <linearGradient x1="50%" y1="26.5947995%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2A2F36" offset="0%"></stop>
+            <stop stop-color="#F5BA5D" stop-opacity="0.136390953" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.4">
+        <g id="桌面端-HD" transform="translate(-575.000000, -115.000000)" fill="url(#linearGradient-1)">
+            <g id="编组" transform="translate(575.000000, 115.078262)">
+                <polygon id="路径-5" points="91 202.921738 0 51.9217378 147 2.84217094e-14 289.5 51.9217378 201.769953 188.421738 174 215.769878"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
