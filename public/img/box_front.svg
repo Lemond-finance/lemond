@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="65px" height="53px" viewBox="0 0 65 53" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="编组-3" transform="translate(1 1)">
+    <g id="资源-10">
+      <path d="M0 36.1257L0 0L43.12 6.77228L43.12 42.8911L0 36.1257Z" transform="translate(0 7.739685)" id="路径" fill="#CBB086" stroke="#756036" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0C0 0 4.71407 9.16314 12.8005 12.8662C23.1561 17.6093 43.12 21.342 43.12 21.342L43.12 28.7822L0 21.9542L0 0Z" transform="translate(0 21.848602)" id="路径" fill="#C2A065" stroke="none" />
+      <path d="M0.148375 50.2277L0 14.4449L15.12 0L15.12 35.3281L0.148375 50.2277Z" transform="translate(43.120117 0.40304565)" id="路径" fill="#CBB086" stroke="#756036" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M5.82168 33.7001L0 14.6334L15.12 0L19.6 19.4698L5.82168 33.7001Z" transform="translate(43.120117 0)" id="路径" fill="#CBB086" stroke="#756036" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M43.12 43L0 36.127L0 0L43.12 6.87304L43.12 43L43.12 43Z" transform="translate(0.00048828125 7.630768)" id="路径" fill="none" fill-rule="evenodd" stroke="#756036" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M15.3762 4.33563C12.7288 0.558591 8.25032 -0.913161 4.69619 0.567675L3.83579 0.365537C3.34437 0.250885 2.8288 0.359643 2.42078 0.664026C2.01276 0.968409 1.75183 1.43893 1.70464 1.95539L1.60977 3.00015C-0.616243 6.02315 -0.57212 10.6564 1.98261 14.2904C4.53735 17.9243 8.84818 19.4529 12.3516 18.1833L13.4546 18.4445C13.9468 18.5614 14.464 18.4537 14.8733 18.149C15.2825 17.8443 15.5439 17.3724 15.5902 16.8546L15.7005 15.6895C17.9773 12.6778 17.9508 8.00592 15.3762 4.33563Z" transform="translate(12.320068 20.155518)" id="路径" fill="#F6BB5D" stroke="none" />
+      <path d="M0.952264 0.591147C0.952264 0.591147 1.85802 7.72615 9.91905 10.1457C14.1267 11.4059 17.36 8.23481 17.36 8.23481L16.6558 9.42627L15.502 12.4255L14.0071 14.341L10.2623 14.6733L7.875 14.2746L4.30512 11.8917L1.83366 8.91302L0.478347 5.81982L0.0354331 3.52855L0 1.87884L0.292323 0L0.952264 0.591147Z" transform="translate(12.3203125 24.206024)" id="路径" fill="#EEA440" stroke="none" />
+      <path d="M15.3762 4.33507C12.7288 0.558519 8.25032 -0.913043 4.69619 0.567602L3.83579 0.36549C3.3443 0.250071 2.82832 0.358502 2.42011 0.662991C2.0119 0.967481 1.75113 1.43843 1.70464 1.95514L1.60977 2.99977C-0.616243 6.02237 -0.57212 10.6483 1.98261 14.2908C4.53735 17.9334 8.84598 19.4526 12.3516 18.1809L13.4546 18.4444C13.9468 18.5613 14.464 18.4536 14.8733 18.1489C15.2825 17.8443 15.5439 17.3724 15.5902 16.8547L15.7005 15.6874C17.9773 12.6739 17.9508 8.00489 15.3762 4.33507Z" transform="translate(12.3203125 20.255524)" id="路径" fill="none" fill-rule="evenodd" stroke="#3A393C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0C0.225285 0.346846 0.413411 0.726027 0.56 1.12871" transform="translate(24.880127 26.48816)" id="路径" fill="none" fill-rule="evenodd" stroke="#FDF4F8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0.0512943C1.36031 -0.0990923 2.75875 0.0839402 3.92 0.564356" transform="translate(18.720215 24.230743)" id="路径" fill="none" fill-rule="evenodd" stroke="#FDF4F8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>

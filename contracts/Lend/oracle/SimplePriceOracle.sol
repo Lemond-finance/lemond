@@ -24,27 +24,27 @@ contract SimplePriceOracle is IPriceOracle, OwnableUpgradeSafe {
 
     mapping(address => Datum) private data;
 
-    address private _pETHUnderlying;
+    address private _lETHUnderlying;
 
     event PricePosted(address asset, uint previousPriceMantissa, uint requestedPriceMantissa, uint newPriceMantissa, uint timestamp);
 
     function initialize() public initializer {
-        _pETHUnderlying = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
+        _lETHUnderlying = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
         OwnableUpgradeSafe.__Ownable_init();
     }
 
 
     function getUnderlyingPrice(LToken lToken) public override view returns (uint) {
-        if (compareStrings(lToken.symbol(), "pETH")) {
-            return data[_pETHUnderlying].price;
+        if (compareStrings(lToken.symbol(), "lETH")) {
+            return data[_lETHUnderlying].price;
         } else {
             return data[address(LERC20(address(lToken)).underlying())].price;
         }
     }
 
     function setUnderlyingPrice(LToken lToken, uint price) public onlyOwner {
-        address asset = _pETHUnderlying;
-        if (!compareStrings(lToken.symbol(), "pETH")) {
+        address asset = _lETHUnderlying;
+        if (!compareStrings(lToken.symbol(), "lETH")) {
             asset = address(LERC20(address(lToken)).underlying());
         }
         uint bt = block.timestamp;

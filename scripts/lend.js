@@ -26,8 +26,6 @@ async function main() {
     this.deployer = (await ethers.getSigners())[0].address
     console.log('deployer address',this.deployer)
 
-    const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
-
     // Mock ERC20s
     this.WBTC = await MockErc20.new('WBTC', 'WBTC', hre.ethers.utils.parseEther('100000000'),8)
     // await hre.run("verify:verify", { address: this.WBTC.address, constructorArguments: ['WBTC', 'WBTC', hre.ethers.utils.parseEther('100000000'),8] })
@@ -79,8 +77,8 @@ async function main() {
         this.comptroller.address, 
         this.jumpRateModel.address, 
         hre.ethers.utils.parseEther('200000000'),
-        'pETH',
-        'pETH',
+        'lETH',
+        'lETH',
         '18'
     )
     this.lDAI = await LERC20.new()
@@ -172,12 +170,12 @@ async function main() {
     ])
     console.log("comptroller Config")
 
-    // set lTokens speed
+    // set lTokens speed and set lemdDistribution config
     await this.lemdDistribution._setLemdSpeed(this.lEther.address,hre.ethers.utils.parseEther('1'))
-
-    /* Lend Test */
     await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
+
+    /* Lend Test */
     await this.lemdToken.grantRole(
         "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", 
         this.deployer
@@ -211,6 +209,7 @@ async function main() {
 
     /** Stake Pool Test **/
     // Add Stake Pool
+    // const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
     // await this.lemdBreeder.add('1000', this.lEther.address, ZERO_ADDR, false)
     // console.log(JSON.parse(JSON.stringify(await this.lemdBreeder.poolInfo(0))))
     // await this.lemdBreeder.add('1000', this.lDAI.address, ZERO_ADDR, false)

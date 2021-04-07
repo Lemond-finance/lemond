@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="68px" height="35px" viewBox="0 0 68 35" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="Group" transform="translate(1 1)">
+    <path d="M7.28 0L0 18.6238L7.28 15.2939" transform="translate(0 14.108917)" id="路径" fill="#997739" fill-rule="evenodd" stroke="#735F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M0 14.1293L15.6665 0L58.24 6.36923L45.0181 20.8812L0 14.1293Z" transform="translate(7.2800293 0)" id="路径-2" fill="#997739" fill-rule="evenodd" stroke="#735F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M0.14 0L0.14 16.3663" transform="translate(22.95996 0)" id="路径-3" fill="#997739" fill-rule="evenodd" stroke="#735F35" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
