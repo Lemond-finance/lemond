@@ -15,42 +15,61 @@ import Web3 from "web3"
 const Home = ({ t }) => {
     const { account, ethereum } = useWallet()
     const [showLendBox, setShowLendBox] = useState(false)
+    const [remaining, setRemaining] = useState(0)
 
     const web3 = new Web3(ethereum)
+    
     const { comptroller } = tokenConfig.lend.controller
-
     const comptrollerContract = new web3.eth.Contract(comptroller.abi, comptroller.address)
-
-    console.log("comptrollerContract", comptrollerContract)
+    const { OKB, USDT, ETHK, BTCK } = tokenConfig.lend.tokens
+    const OKBContract = new web3.eth.Contract(OKB.abi, OKB.address)
+    const USDTContract = new web3.eth.Contract(USDT.abi, USDT.address)
+    const ETHKContract = new web3.eth.Contract(ETHK.abi, ETHK.address)
+    const BTCKContract = new web3.eth.Contract(BTCK.abi, BTCK.address)
+    const { lEther, lOKB, lUSDT, lETHK, lBTCK } = tokenConfig.lend.lTokens
+    const lEtherContract = new web3.eth.Contract(lEther.abi, lEther.address)
+    const lOKBContract = new web3.eth.Contract(lOKB.abi, lOKB.address)
+    const lUSDTContract = new web3.eth.Contract(lUSDT.abi, lUSDT.address)
+    const lETHKContract = new web3.eth.Contract(lETHK.abi, lETHK.address)
+    const lBTCKContract = new web3.eth.Contract(lBTCK.abi, lBTCK.address)
 
     useEffect(() => {
         const timer = setInterval(async () => {
             if (account) {
-                // const accountLiquidity = await comptrollerContract.methods.getAccountLiquidity("0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE").call()
-                // console.log(accountLiquidity)
+                const remaining = await comptrollerContract.methods.getAccountLiquidity(account).call()
+                setRemaining(remaining[1])
+                const cash = await lEtherContract.methods.getCash().call()
+                console.log("cash",cash)
+                const exchangeRate = (await lEtherContract.methods.exchangeRateCurrent().call()) / 1e18
+                console.log("exchangeRate",exchangeRate)
+                const borrows = await lEtherContract.methods.totalBorrowsCurrent().call()
+                console.log("borrows", borrows)
+                const borrowRate = (await lEtherContract.methods.borrowRatePerBlock().call()) / 1e18
+                console.log("borrowRate", borrowRate)
+                const reserves = await lEtherContract.methods.totalReserves().call()
+                console.log("reserves", reserves)
+                const tokens = await lEtherContract.methods.totalSupply().call()
+                console.log("tokens", tokens)
+                const supplyRate = (await lEtherContract.methods.supplyRatePerBlock().call()) / 1e18
+                console.log("supplyRate", supplyRate)
+                const reserveFactor = (await lEtherContract.methods.reserveFactorMantissa().call()) / 1e18
+                console.log("reserveFactor", reserveFactor)
+
+                const ethMantissa = 1e18
+                const blocksPerDay = 17 * 60 * 24
+                const daysPerYear = 365
+                const supplyRatePerBlock = await lEtherContract.methods.supplyRatePerBlock().call()
+                const borrowRatePerBlock = await lEtherContract.methods.borrowRatePerBlock().call()
+                const supplyApy = (Math.pow((supplyRatePerBlock / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100
+                const borrowApy = (Math.pow((borrowRatePerBlock / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100
+                console.log(`Supply APY for ETH ${supplyApy} %`)
+                console.log(`Borrow APY for ETH ${borrowApy} %`)
             }
         }, 3000)
         return () => {
             clearInterval(timer)
         }
     }, [account])
-
-    const showDialog = () => {
-        confirmAlert({
-            title: "Confirm to submit",
-            message: "Are you sure to do this.",
-            buttons: [
-                {
-                    label: "Yes",
-                    onClick: () => alert("Click Yes"),
-                },
-                {
-                    label: "No",
-                    onClick: () => alert("Click No"),
-                },
-            ],
-        })
-    }
 
     const showAlert = () => {
         toast.dark("🚀 Waiting for open!", toastConfig)
@@ -94,6 +113,7 @@ const Home = ({ t }) => {
                         </div>
                         <span className={styles.text}>Borrow Limit</span>
                         <span className={styles.num}>0.000000 %</span>
+                        <span className={styles.borrowed}>$ 0.00000</span>
                     </div>
                 </div>
                 <ul className={styles.lend_list}>

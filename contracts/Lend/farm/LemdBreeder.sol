@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../token/LemdToken.sol";
-import "hardhat/console.sol";
 
 // Copied and modified from sushiswap code:
 // https://github.com/sushiswap/sushiswap/blob/master/contracts/MasterChef.sol
@@ -335,7 +334,6 @@ contract LemdBreeder is Ownable {
         }
 
         uint256 lpSupply = pool.lpToken.balanceOf(address(this));
-        console.log("lpSupply",lpSupply);
         if (lpSupply == 0) {
             pool.lastRewardBlock = block.number;
             return;
@@ -368,7 +366,6 @@ contract LemdBreeder is Ownable {
 
         //update totalAllocPoint
         totalAllocPoint = totalAllocPoint.add(_allocPoint);
-        console.log(totalAllocPoint,_allocPoint);
 
         // add poolInfo
         poolInfo.push(PoolInfo({

@@ -111,7 +111,7 @@ contract LemdPriceProviderV1 is Ownable {
         address underlying = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
         LTokenInterface lToken = LTokenInterface(_lToken);
 
-        if (!compareStrings(lToken.symbol(), "lETH")) {
+        if (!compareStrings(lToken.symbol(), "lOKT")) {
             underlying = address(LTokenInterface(_lToken).underlying());
         }
 
