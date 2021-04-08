@@ -20,15 +20,15 @@ module.exports = {
     lend: {
         tokens: {
             OKB: {
-                address: "0xda9d14072ef2262c64240da3a93fea2279253611",
+                address: "0xDa9d14072Ef2262c64240Da3A93fea2279253611",
                 abi: require("./tokenAbi/OKB.json"),
             },
             USDT: {
-                address: "0xe579156f9decc4134b5e3a30a24ac46bb8b01281",
+                address: "0xe579156f9dEcc4134B5E3A30a24Ac46BB8B01281",
                 abi: require("./tokenAbi/USDT.json"),
             },
             ETHK: {
-                address: "0xdf950cecf33e64176ada5dd733e170a56d11478e",
+                address: "0xDF950cEcF33E64176ada5dD733E170a56d11478E",
                 abi: require("./tokenAbi/ETHK.json"),
             },
             BTCK: {
