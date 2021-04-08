@@ -8,7 +8,6 @@ const cx = classNames.bind(styles)
 
 const Header = (props) => {
     const { activeIndex } = props
-    console.log(activeIndex)
     const [toggleNav, setToggleNav] = useState(true)
     return ( 
         <header className={styles.header}>

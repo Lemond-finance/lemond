@@ -17,7 +17,23 @@ const Home = ({ t }) => {
     const [showLendBox, setShowLendBox] = useState(false)
 
     const web3 = new Web3(ethereum)
-    const poolConfig = tokenConfig.pool.okt_pool
+    const { comptroller } = tokenConfig.lend.controller
+
+    const comptrollerContract = new web3.eth.Contract(comptroller.abi, comptroller.address)
+
+    console.log("comptrollerContract", comptrollerContract)
+
+    useEffect(() => {
+        const timer = setInterval(async () => {
+            if (account) {
+                // const accountLiquidity = await comptrollerContract.methods.getAccountLiquidity("0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE").call()
+                // console.log(accountLiquidity)
+            }
+        }, 3000)
+        return () => {
+            clearInterval(timer)
+        }
+    }, [account])
 
     const showDialog = () => {
         confirmAlert({
@@ -105,17 +121,10 @@ const Home = ({ t }) => {
                         </span>
                         <span>
                             <p>0%</p>
-                            <p className={styles.sub_titles}>
-                                Distribution APY
-                            </p>
+                            <p className={styles.sub_titles}>Distribution APY</p>
                         </span>
                         <span className={styles.none}>
-                            <button
-                                onClick={() => showAlert()}
-                                // onClick={() => setShowLendBox(true)}
-                            >
-                                Deposit / Borrow
-                            </button>
+                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
                         </span>
                     </li>
                     <li className={styles.usdt}>
@@ -142,14 +151,10 @@ const Home = ({ t }) => {
                         </span>
                         <span>
                             <p>0%</p>
-                            <p className={styles.sub_titles}>
-                                Distribution APY
-                            </p>
+                            <p className={styles.sub_titles}>Distribution APY</p>
                         </span>
                         <span className={styles.none}>
-                            <button onClick={() => showAlert()}>
-                                Deposit / Borrow
-                            </button>
+                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
                         </span>
                     </li>
                     <li className={styles.btc}>
@@ -176,14 +181,10 @@ const Home = ({ t }) => {
                         </span>
                         <span>
                             <p>0%</p>
-                            <p className={styles.sub_titles}>
-                                Distribution APY
-                            </p>
+                            <p className={styles.sub_titles}>Distribution APY</p>
                         </span>
                         <span className={styles.none}>
-                            <button onClick={() => showAlert()}>
-                                Deposit / Borrow
-                            </button>
+                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
                         </span>
                     </li>
                     <li className={styles.eth}>
@@ -210,14 +211,10 @@ const Home = ({ t }) => {
                         </span>
                         <span>
                             <p>0%</p>
-                            <p className={styles.sub_titles}>
-                                Distribution APY
-                            </p>
+                            <p className={styles.sub_titles}>Distribution APY</p>
                         </span>
                         <span className={styles.none}>
-                            <button onClick={() => showAlert()}>
-                                Deposit / Borrow
-                            </button>
+                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
                         </span>
                     </li>
                 </ul>
@@ -228,11 +225,7 @@ const Home = ({ t }) => {
                     }}
                 >
                     <div
-                        className={cx(
-                            styles.lend_box,
-                            styles.approve,
-                            styles.usdt,
-                        )}
+                        className={cx(styles.lend_box, styles.approve, styles.usdt)}
                         onClick={(e) => {
                             e.stopPropagation()
                         }}
@@ -259,17 +252,13 @@ const Home = ({ t }) => {
                                     <li>
                                         <p>
                                             <span>Supply APY</span>
-                                            <span className={styles.num}>
-                                                65.86%
-                                            </span>
+                                            <span className={styles.num}>65.86%</span>
                                         </p>
                                     </li>
                                     <li>
                                         <p>
                                             <span>Distribution APY</span>
-                                            <span className={styles.num}>
-                                                35.86%
-                                            </span>
+                                            <span className={styles.num}>35.86%</span>
                                         </p>
                                     </li>
                                 </ul>
@@ -280,12 +269,8 @@ const Home = ({ t }) => {
                                     <p>Wallet Balance</p>
                                 </span>
                                 <span className={styles.btns}>
-                                    <button className={styles.none}>
-                                        Close
-                                    </button>
-                                    <button className={styles.green}>
-                                        ENABLE
-                                    </button>
+                                    <button className={styles.none}>Close</button>
+                                    <button className={styles.green}>ENABLE</button>
                                 </span>
                             </div>
                         </div>
@@ -301,17 +286,13 @@ const Home = ({ t }) => {
                                     <li>
                                         <p>
                                             <span>Supply APY</span>
-                                            <span className={styles.num}>
-                                                65.86%
-                                            </span>
+                                            <span className={styles.num}>65.86%</span>
                                         </p>
                                     </li>
                                     <li>
                                         <p>
                                             <span>Distribution APY</span>
-                                            <span className={styles.num}>
-                                                35.86%
-                                            </span>
+                                            <span className={styles.num}>35.86%</span>
                                         </p>
                                     </li>
                                 </ul>
@@ -322,22 +303,16 @@ const Home = ({ t }) => {
                                     <li>
                                         <p>
                                             <span>Supply APY</span>
-                                            <span className={styles.num}>
-                                                65.86%
-                                            </span>
+                                            <span className={styles.num}>65.86%</span>
                                         </p>
                                     </li>
                                     <li>
                                         <p>
                                             <span>Distribution APY</span>
-                                            <span className={styles.num}>
-                                                35.86%
-                                            </span>
+                                            <span className={styles.num}>35.86%</span>
                                         </p>
                                         <p className={styles.bar}>
-                                            <span
-                                                className={styles.inner}
-                                            ></span>
+                                            <span className={styles.inner}></span>
                                         </p>
                                     </li>
                                 </ul>
@@ -348,9 +323,7 @@ const Home = ({ t }) => {
                                     <p>Wallet Balance</p>
                                 </span>
                                 <span className={styles.btns}>
-                                    <button className={styles.none}>
-                                        Close
-                                    </button>
+                                    <button className={styles.none}>Close</button>
                                     <button disabled className={styles.green}>
                                         NO BALANCE TO WITHDRAW
                                     </button>
