@@ -19,6 +19,10 @@ module.exports = {
     },
     lend: {
         tokens: {
+            OKT: {
+                address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                abi: require("./tokenAbi/OKB.json"),
+            },
             OKB: {
                 address: "0xDa9d14072Ef2262c64240Da3A93fea2279253611",
                 abi: require("./tokenAbi/OKB.json"),
@@ -40,22 +44,37 @@ module.exports = {
             lEther: {
                 address: "0xd5ef09E50d38E1a427a057830Bf5D7A0304a2FD7",
                 abi: require("./abi/LEther.json"),
+                className: "okb",
+                name: "OKT",
+                description: "OKExChain Token",
             },
             lOKB: {
                 address: "0x28771205292Bf4B1dAcA7efFA49092eb34cAE104",
                 abi: require("./abi/LERC20.json"),
+                className: "okb",
+                name: "OKB",
+                description: "OKEx Token",
             },
             lETHK: {
                 address: "0xd7Bf65e8a6e4601a9f8475A320Cde428eAF65e1A",
                 abi: require("./abi/LERC20.json"),
+                className: "eth",
+                name: "ETH",
+                description: "Ethereum",
             },
             lUSDT: {
                 address: "0x7e2bbb9944985f1E94d7B657C845A76BB52D67B0",
                 abi: require("./abi/LERC20.json"),
+                className: "usdt",
+                name: "USDT",
+                description: "Tether USD",
             },
             lBTCK: {
                 address: "0x0E6e1086e46a5C5Cc29C6F50692b504B923DCf83",
                 abi: require("./abi/LERC20.json"),
+                className: "btc",
+                name: "BTC",
+                description: "BitCoin",
             },
         },
         controller: {
