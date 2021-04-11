@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "../comptroller/ComptrollerStorage.sol";
 import "../comptroller/Comptroller.sol";
 import "../comptroller/ComptrollerStorage.sol";
-import "hardhat/console.sol";
 
 interface ILemdDistribution {
 
@@ -289,8 +288,6 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
         Double memory supplyIndex = Double({mantissa : supplyState.index});
         Double memory supplierIndex = Double({mantissa : lemdSupplierIndex[lToken][supplier]});
         lemdSupplierIndex[lToken][supplier] = supplyIndex.mantissa;
-
-        console.log("mantissa",supplyIndex.mantissa,supplierIndex.mantissa);
         if (supplierIndex.mantissa == 0 && supplyIndex.mantissa > 0) {
             supplierIndex.mantissa = lemdInitialIndex;
         }
@@ -299,7 +296,6 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
         uint supplierDelta = mul_(supplierTokens, deltaIndex);
         uint supplierAccrued = add_(lemdAccrued[supplier], supplierDelta);
         lemdAccrued[supplier] = grantLemdInternal(supplier, supplierAccrued, distributeAll ? 0 : lemdClaimThreshold);
-        console.log("distributeSupplierLemd",supplierTokens,supplierDelta,supplierAccrued);
         emit DistributedSupplierLemd(LToken(lToken), supplier, supplierDelta, supplyIndex.mantissa);
     }
 
@@ -338,8 +334,6 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
 
         if (userAccrued >= threshold && userAccrued > 0) {
             uint lemdRemaining = lemd.balanceOf(address(this));
-            console.log("lemdRemaining",lemdRemaining);
-            console.log("userAccrued",userAccrued);
             if (userAccrued <= lemdRemaining) {
                 lemd.transfer(user, userAccrued);
                 return 0;

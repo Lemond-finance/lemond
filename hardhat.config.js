@@ -3,6 +3,7 @@ require('hardhat-abi-exporter')
 require('@openzeppelin/hardhat-upgrades')
 require('@nomiclabs/hardhat-truffle5')
 require("@nomiclabs/hardhat-etherscan")
+require("hardhat-log-remover")
 
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim()

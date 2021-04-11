@@ -7,7 +7,6 @@ const cx = classNames.bind(styles)
 const Language = ({ t, isToggle }) =>{
     const [languageText, setLanguageText] = useState(t('languageTextEN'));
     const changeLanguage = (value) => {
-        console.log(i18n.language)
         i18n.changeLanguage(value)
         value == 'cn'  && setLanguageText(t('languageTextCN'))
         value == 'en' && setLanguageText(t('languageTextEN'))

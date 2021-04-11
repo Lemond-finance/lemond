@@ -37,7 +37,6 @@ const HeaderFooter = (props) => {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-              //document.write(navigator.appVersion)
                  window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());

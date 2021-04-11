@@ -35,7 +35,7 @@ contract SimplePriceOracle is IPriceOracle, OwnableUpgradeSafe {
 
 
     function getUnderlyingPrice(LToken lToken) public override view returns (uint) {
-        if (compareStrings(lToken.symbol(), "lETH")) {
+        if (compareStrings(lToken.symbol(), "lOKT")) {
             return data[_lETHUnderlying].price;
         } else {
             return data[address(LERC20(address(lToken)).underlying())].price;
@@ -44,7 +44,7 @@ contract SimplePriceOracle is IPriceOracle, OwnableUpgradeSafe {
 
     function setUnderlyingPrice(LToken lToken, uint price) public onlyOwner {
         address asset = _lETHUnderlying;
-        if (!compareStrings(lToken.symbol(), "lETH")) {
+        if (!compareStrings(lToken.symbol(), "lOKT")) {
             asset = address(LERC20(address(lToken)).underlying());
         }
         uint bt = block.timestamp;

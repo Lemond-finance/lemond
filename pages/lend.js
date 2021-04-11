@@ -8,49 +8,58 @@ import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
-import tokenConfig from "../contract.config.js"
+import tokenConfig from "../contract.config"
+import Pool from "../components/pool"
+import { fromUSD } from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
+import BigNumber from "bignumber.js"
 
 const Home = ({ t }) => {
     const { account, ethereum } = useWallet()
     const [showLendBox, setShowLendBox] = useState(false)
+    const [lemdPrice, setLemdPrice] = useState(0.0001)
+    const [poolDate, setPoolDate] = useState([{}, {}, {}, {},{}])
+    const [supplyBalance, setSupplyBalance] = useState(0)
+    const [borrowBalance, setBorrowBalance] = useState(0)
+    const [borrowBalanceLimit, setBorrowBalanceLimit] = useState(0)
+    const [borrowRate, setBorrowRate] = useState(0)
 
     const web3 = new Web3(ethereum)
-    const { comptroller } = tokenConfig.lend.controller
+    const { OKT, OKB, USDT, ETHK, BTCK } = tokenConfig.lend.tokens
+    const { lEther, lOKB, lUSDT, lETHK, lBTCK } = tokenConfig.lend.lTokens
 
-    const comptrollerContract = new web3.eth.Contract(comptroller.abi, comptroller.address)
-
-    console.log("comptrollerContract", comptrollerContract)
+    const updatePoolDate = (data, index) => {
+        poolDate[index] = data
+        setPoolDate(poolDate)
+    }
 
     useEffect(() => {
         const timer = setInterval(async () => {
             if (account) {
-                // const accountLiquidity = await comptrollerContract.methods.getAccountLiquidity("0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE").call()
-                // console.log(accountLiquidity)
+                console.log(poolDate)
+                let supplyBalance = 0
+                let borrowBalance = 0
+                let borrowBalanceLimit = 0
+                let borrowRate = 0
+                for (const index in poolDate) {
+                    if (JSON.stringify(poolDate[index]) != "{}") {
+                        supplyBalance += parseInt(poolDate[index].supplyBalance)
+                        borrowBalance += parseInt(poolDate[index].borrowBalance)
+                        borrowBalanceLimit += parseInt(poolDate[index].borrowBalanceLimit)
+                    }
+                }
+                borrowRate = new BigNumber(borrowBalance).div(borrowBalanceLimit).times(100).toFixed(2)
+                setSupplyBalance(supplyBalance)
+                setBorrowBalance(borrowBalance)
+                setBorrowBalanceLimit(borrowBalanceLimit)
+                setBorrowRate(borrowRate)
             }
         }, 3000)
         return () => {
             clearInterval(timer)
         }
     }, [account])
-
-    const showDialog = () => {
-        confirmAlert({
-            title: "Confirm to submit",
-            message: "Are you sure to do this.",
-            buttons: [
-                {
-                    label: "Yes",
-                    onClick: () => alert("Click Yes"),
-                },
-                {
-                    label: "No",
-                    onClick: () => alert("Click No"),
-                },
-            ],
-        })
-    }
 
     const showAlert = () => {
         toast.dark("🚀 Waiting for open!", toastConfig)
@@ -79,259 +88,71 @@ const Home = ({ t }) => {
                     </h1>
                     <div className={styles.supplyText}>
                         <h3>Supply Balance</h3>
-                        <p>$ 0.000000</p>
+                        <p>{fromUSD(supplyBalance)}</p>
                     </div>
                     <div className={styles.borrowText}>
                         <h3>Borrow Balance</h3>
-                        <p>$ 0.000000</p>
+                        <p>{fromUSD(borrowBalance)}</p>
                     </div>
                     <div className={styles.lend_line}>
                         <div className={styles.line}>
-                            <i className={styles.inner}>
+                            <i className={styles.inner} style={{ width: `${borrowRate}%` }}>
                                 <span className={styles.line_light}></span>
                                 <i />
                             </i>
                         </div>
                         <span className={styles.text}>Borrow Limit</span>
-                        <span className={styles.num}>0.000000 %</span>
+                        <span className={styles.num}>{fromUSD(borrowBalanceLimit)}</span>
+                        <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
                 <ul className={styles.lend_list}>
-                    <li className={styles.okb}>
-                        <span className={styles.icon}></span>
-                        <span className={styles.left}>
-                            <p>#OKB</p>
-                            <p className={styles.sub_title}>OKB</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Market size</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Total borrowed</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Deposit APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Borrow APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Distribution APY</p>
-                        </span>
-                        <span className={styles.none}>
-                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
-                        </span>
-                    </li>
-                    <li className={styles.usdt}>
-                        <span className={styles.icon}></span>
-                        <span className={styles.left}>
-                            <p>#Tether</p>
-                            <p className={styles.sub_title}>USTD</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Market size</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Total borrowed</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Deposit APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Borrow APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Distribution APY</p>
-                        </span>
-                        <span className={styles.none}>
-                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
-                        </span>
-                    </li>
-                    <li className={styles.btc}>
-                        <span className={styles.icon}></span>
-                        <span className={styles.left}>
-                            <p>#BitCoin</p>
-                            <p className={styles.sub_title}>BTC</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Market size</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Total borrowed</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Deposit APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Borrow APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Distribution APY</p>
-                        </span>
-                        <span className={styles.none}>
-                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
-                        </span>
-                    </li>
-                    <li className={styles.eth}>
-                        <span className={styles.icon}></span>
-                        <span className={styles.left}>
-                            <p>#Ethereum</p>
-                            <p className={styles.sub_title}>ETH</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Market size</p>
-                        </span>
-                        <span>
-                            <p>$0M</p>
-                            <p className={styles.sub_titles}>Total borrowed</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Deposit APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Borrow APY</p>
-                        </span>
-                        <span>
-                            <p>0%</p>
-                            <p className={styles.sub_titles}>Distribution APY</p>
-                        </span>
-                        <span className={styles.none}>
-                            <button onClick={() => showAlert()}>Deposit / Borrow</button>
-                        </span>
-                    </li>
+                    <Pool
+                        lemdPrice={lemdPrice}
+                        token={OKT}
+                        lToken={lEther}
+                        borrow={borrowBalance}
+                        borrowLimit={borrowBalanceLimit}
+                        borrowRate={borrowRate}
+                        updateDate={(data) => updatePoolDate(data, 0)}
+                    />
+                    <Pool
+                        lemdPrice={lemdPrice}
+                        token={OKB}
+                        lToken={lOKB}
+                        borrow={borrowBalance}
+                        borrowLimit={borrowBalanceLimit}
+                        borrowRate={borrowRate}
+                        updateDate={(data) => updatePoolDate(data, 1)}
+                    />
+                    <Pool
+                        lemdPrice={lemdPrice}
+                        token={USDT}
+                        lToken={lUSDT}
+                        borrow={borrowBalance}
+                        borrowLimit={borrowBalanceLimit}
+                        borrowRate={borrowRate}
+                        updateDate={(data) => updatePoolDate(data, 2)}
+                    />
+                    <Pool
+                        lemdPrice={lemdPrice}
+                        token={ETHK}
+                        lToken={lETHK}
+                        borrow={borrowBalance}
+                        borrowLimit={borrowBalanceLimit}
+                        borrowRate={borrowRate}
+                        updateDate={(data) => updatePoolDate(data, 3)}
+                    />
+                    <Pool
+                        lemdPrice={lemdPrice}
+                        token={BTCK}
+                        lToken={lBTCK}
+                        borrow={borrowBalance}
+                        borrowLimit={borrowBalanceLimit}
+                        borrowRate={borrowRate}
+                        updateDate={(data) => updatePoolDate(data, 4)}
+                    />
                 </ul>
-                <div
-                    className={cx(styles.mask, { hide: !showLendBox })}
-                    onClick={() => {
-                        setShowLendBox(false)
-                    }}
-                >
-                    <div
-                        className={cx(styles.lend_box, styles.approve, styles.usdt)}
-                        onClick={(e) => {
-                            e.stopPropagation()
-                        }}
-                    >
-                        <div className={styles.title}>
-                            <i className={styles.icon_usdt}></i>
-                            <span className={styles.text}>
-                                <h1>#Tether</h1>
-                                <p>USTD</p>
-                            </span>
-                            <span className={styles.apy}>
-                                <h1>65.86%</h1>
-                                <p>Total APY</p>
-                            </span>
-                        </div>
-                        <ul className={styles.tabs}>
-                            <li className={styles.active}>SUPPLY</li>
-                            <li>WITHDRAW</li>
-                        </ul>
-                        <div className={cx(styles.content, styles.none)}>
-                            <div className={styles.info}>
-                                <h1>Supply Rates</h1>
-                                <ul>
-                                    <li>
-                                        <p>
-                                            <span>Supply APY</span>
-                                            <span className={styles.num}>65.86%</span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            <span>Distribution APY</span>
-                                            <span className={styles.num}>35.86%</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className={styles.tools}>
-                                <span className={styles.balance}>
-                                    <h1>0 USDT</h1>
-                                    <p>Wallet Balance</p>
-                                </span>
-                                <span className={styles.btns}>
-                                    <button className={styles.none}>Close</button>
-                                    <button className={styles.green}>ENABLE</button>
-                                </span>
-                            </div>
-                        </div>
-                        <div className={cx(styles.content, styles.a)}>
-                            <div className={styles.inputAction}>
-                                <h1>Supply Rates</h1>
-                                <input type="text" placeholder="0" />
-                                <button>SAFE MAX</button>
-                            </div>
-                            <div className={styles.info}>
-                                <h1>Supply Rates</h1>
-                                <ul>
-                                    <li>
-                                        <p>
-                                            <span>Supply APY</span>
-                                            <span className={styles.num}>65.86%</span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            <span>Distribution APY</span>
-                                            <span className={styles.num}>35.86%</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className={styles.info}>
-                                <h1>Supply Rates</h1>
-                                <ul>
-                                    <li>
-                                        <p>
-                                            <span>Supply APY</span>
-                                            <span className={styles.num}>65.86%</span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            <span>Distribution APY</span>
-                                            <span className={styles.num}>35.86%</span>
-                                        </p>
-                                        <p className={styles.bar}>
-                                            <span className={styles.inner}></span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className={styles.tools}>
-                                <span className={styles.balance}>
-                                    <h1>0 USDT</h1>
-                                    <p>Wallet Balance</p>
-                                </span>
-                                <span className={styles.btns}>
-                                    <button className={styles.none}>Close</button>
-                                    <button disabled className={styles.green}>
-                                        NO BALANCE TO WITHDRAW
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </HeaderFooter>
     )

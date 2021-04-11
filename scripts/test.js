@@ -9,7 +9,8 @@ const BigNumber = require("bignumber.js")
 const web3 = require("web3")
 
 const Comptroller = artifacts.require("Comptroller")
-const comptroller = require("../abi/Comptroller.json")
+const LEther = artifacts.require("LEther")
+
 
 async function main() {
     await hre.run("compile")
@@ -17,11 +18,12 @@ async function main() {
     this.deployer = (await ethers.getSigners())[0].address
     console.log("deployer address", this.deployer)
 
-    const contract = await hre.ethers.getContractAt(
-        "Comptroller",
-        "0xe656189F4ACcb4614552E6b75b1D280e081e868D",
-    )
-    // await contract.claimComp(this.deployer)
+    const contract = await hre.ethers.getContractAt("Comptroller", "0xB862D3d472fD427f4D9E2424C272c5425546f1C3")
+    console.log((await contract.getAccountLiquidity(this.deployer))[1].toString())
+
+    // this.lEther = await hre.ethers.getContractAt("LEther", "0xd5ef09E50d38E1a427a057830Bf5D7A0304a2FD7")
+    // await this.lEther.mint({ value: hre.ethers.utils.parseEther("1"), })
+    // await this.lEther.borrow(hre.ethers.utils.parseEther("0.2"))
 
     console.log("End")
 }

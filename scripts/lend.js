@@ -3,11 +3,13 @@
 //
 // When running the script with `hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+// npx hardhat verify --network bsc 0x95BAC1812D5ffccB72Ba64195EE6868769965D59 "WBTC" "WBTC" "100000000000000000000000000" 8
 const hre = require("hardhat")
 const { ethers, upgrades } = require("hardhat")
 const BigNumber = require("bignumber.js")
 const web3 = require("web3")
 
+const LEMD = artifacts.require("LEMD")
 const MockErc20 = artifacts.require("MockERC20")
 const Comptroller = artifacts.require("Comptroller")
 const JumpRateModel = artifacts.require("JumpRateModel")
@@ -28,15 +30,13 @@ async function main() {
 
     // Mock ERC20s
     this.WBTC = await MockErc20.new("WBTC", "WBTC", hre.ethers.utils.parseEther("100000000"), 8)
-    // await hre.run("verify:verify", { address: this.WBTC.address, constructorArguments: ['WBTC', 'WBTC', hre.ethers.utils.parseEther('100000000'),8] })
-    // npx hardhat verify --network bsc 0x95BAC1812D5ffccB72Ba64195EE6868769965D59 "WBTC" "WBTC" "100000000000000000000000000" 8
     this.DAI = await MockErc20.new("DAI", "DAI", hre.ethers.utils.parseEther("100000000"), 18)
     this.USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 6)
     this.USDC = await MockErc20.new("USDC", "USDC", hre.ethers.utils.parseEther("100000000"), 6)
     console.log("ERC20s", this.WBTC.address, this.DAI.address, this.USDT.address, this.USDC.address)
 
     // LEMD Token
-    this.lemdToken = await LemdToken.new()
+    this.lemdToken = await LEMD.new()
     console.log("lemdToken", this.lemdToken.address)
 
     // LemdBreeder
@@ -44,7 +44,8 @@ async function main() {
     console.log("lemdBreeder", this.lemdBreeder.address)
 
     // Grant miner role to lemdBreeder
-    await this.lemdToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", this.lemdBreeder.address)
+    // await this.lemdToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", this.lemdBreeder.address)
+    await this.lemdToken.addMinter(this.lemdBreeder.address)
     console.log("lemdToken grantRole", this.lemdBreeder.address)
 
     // Price oracle
@@ -64,7 +65,7 @@ async function main() {
 
     // lTokens
     this.lEther = await LEther.new()
-    await this.lEther.initialize(this.comptroller.address, this.jumpRateModel.address, hre.ethers.utils.parseEther("200000000"), "lETH", "lETH", "18")
+    await this.lEther.initialize(this.comptroller.address, this.jumpRateModel.address, hre.ethers.utils.parseEther("200000000"), "lOKT", "lOKT", "18")
     this.lDAI = await LERC20.new()
     await this.lDAI.initialize(this.DAI.address, this.comptroller.address, this.jumpRateModel.address, hre.ethers.utils.parseEther("200000000"), "lDAI", "lDAI", "8")
     this.lUSDT = await LERC20.new()
@@ -105,9 +106,9 @@ async function main() {
     await this.comptroller._supportMarket(this.lUSDC.address)
     await this.comptroller._supportMarket(this.lUSDT.address)
     await this.comptroller._supportMarket(this.lwBTC.address)
-    // await this.comptroller._setCollateralFactor(this.lEther.address, hre.ethers.utils.parseEther("0.75"))
+    await this.comptroller._setCollateralFactor(this.lEther.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCollateralFactor(this.lDAI.address, hre.ethers.utils.parseEther("0.75"))
-    await this.comptroller._setCollateralFactor(this.lUSDC.address, hre.ethers.utils.parseEther("0"))
+    await this.comptroller._setCollateralFactor(this.lUSDC.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCollateralFactor(this.lUSDT.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCollateralFactor(this.lwBTC.address, hre.ethers.utils.parseEther("0.6"))
     await this.comptroller._setCloseFactor(hre.ethers.utils.parseEther("0.5"))
@@ -123,32 +124,35 @@ async function main() {
     await this.lemdDistribution._setEnableAll(true)
 
     /* Lend Test */
-    await this.lemdToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", this.deployer)
+    // await this.lemdToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", this.deployer)
+    await this.lemdToken.addMinter(this.deployer)
     await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("1000"))
-    await this.lEther.mint({
-        value: hre.ethers.utils.parseEther("1"),
-    })
+    // await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
     console.log("lEther deplayer", (await this.lEther.balanceOf(this.deployer)).toString())
-    await delay(5000)
-    await this.lEther.mint({
-        value: hre.ethers.utils.parseEther("1"),
-    })
-    await this.lEther.mint({
-        value: hre.ethers.utils.parseEther("1"),
-    })
-    await delay(5000)
+    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
     console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
     console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
 
-    await this.DAI.approve(this.lDAI.address, hre.ethers.utils.parseEther("50000"))
+    await this.DAI.approve(this.lDAI.address, hre.ethers.utils.parseEther("2000"))
 
     console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
 
-    await this.lDAI.mint(hre.ethers.utils.parseEther("50000"))
+    await this.lDAI.mint(hre.ethers.utils.parseEther("2000"))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
-    await this.lDAI.borrow(hre.ethers.utils.parseEther("1000"))
+    await this.lDAI.borrow(hre.ethers.utils.parseEther("2000"))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+
+    await this.lEther.borrow(hre.ethers.utils.parseEther("0.5"))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    
+
 
     /** Stake Pool Test **/
     // Add Stake Pool
