@@ -35,10 +35,10 @@ export function fromUSD(number) {
 
 export function formatUSDNumer(number) {
     if(number >= 1000){
-      return numeral(number).format("$0,0.00") + "K"
+      return numeral(new BigNumber(String(number)).div(1000)).format("$0,0.00") + "K"
     }
     if (number >= 1000000) {
-        return numeral(number).format("$0,0.00") + "M"
+        return numeral(new BigNumber(String(number)).div(1000000)).format("$0,0.00") + "M"
     }
     return numeral(number).format("$0,0.00")
 }
@@ -50,12 +50,18 @@ export function toWeiNumber(number) {
 
 export function to10WeiNumber(number) {
     const bn = new BigNumber(String(number))
-    return bn.times(new BigNumber(10).pow(18)).toFixed()
+    return bn.times(new BigNumber(10).pow(10)).toFixed()
 }
 
 export function fromAPY(number) {
     return numeral(number).format("0,0.00")
 }
+
+export function fromBigNumber(number) {
+    const bn = new BigNumber(String(number))
+    return bn.toString()
+}
+
 
 export const toastConfig = {
                       position: 'bottom-left',

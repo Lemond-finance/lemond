@@ -37,7 +37,6 @@ async function main() {
 
     this.lUSDT = await hre.ethers.getContractAt("LERC20", "0xf5799c87C0f996B17DC0556dB0b4C48211367A7E")
     await this.lUSDT.mint(hre.ethers.utils.parseEther("1"))
-
     console.log("End")
 }
 
