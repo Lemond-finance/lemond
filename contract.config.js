@@ -12,7 +12,6 @@ module.exports = {
     },
     token: {
         lemond: {
-            // address: "0xE667d8bD182D165D2E71cF72315bD117f6940094",
             address: "0xF36175e5318e20d911868f78bEA04a411FCb5e95",
             abi: require("./abi/LEMD.json"),
         },

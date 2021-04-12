@@ -8,7 +8,7 @@ import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
-import { fromUSD, fromAPY, formatUSDNumer, from10WeiNumber, fromWeiNumber, toWeiNumber, to10WeiNumber, fromETHWeiNumber, from10ETHWeiNumber } from "../libs/utils"
+import { fromUSD, fromAPY, formatUSDNumer, fromBigNumber, from10WeiNumber, fromWeiNumber, toWeiNumber, to10WeiNumber, fromETHWeiNumber, from10ETHWeiNumber } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import BigNumber from "bignumber.js"
 const cx = classNames.bind(styles)
@@ -50,7 +50,14 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
     useEffect(() => {
         const timer = setInterval(async () => {
             if (account) {
-                const ethMantissa = 1e18
+                var ethMantissa = 1e18
+                if(lToken.name != "OKT"){
+                    ethMantissa = 1e10
+                }
+                var digits = 18
+                if (lToken.name != "OKT") {
+                    digits = 10
+                }
                 const blocksPerDay = 17 * 60 * 24
                 const daysPerYear = 365
                 const supplyRatePerBlock = await lTokenContract.methods.supplyRatePerBlock().call()
@@ -66,7 +73,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 console.log("totalSupply", totalSupply)
                 const tokenPrice = await priceOracleContract.methods.getUnderlyingPrice(lToken.address).call()
                 console.log("tokenPrice", tokenPrice)
-                const exchangeRate = (await lTokenContract.methods.exchangeRateCurrent().call()) / 1e18
+                const exchangeRate = (await lTokenContract.methods.exchangeRateCurrent().call()) / ethMantissa
                 console.log("exchangeRate", exchangeRate)
                 const marketSize = new BigNumber(totalSupply).times(exchangeRate).times(tokenPrice).div(new BigNumber(10).pow(18)).div(new BigNumber(10).pow(18)).toFixed(2)
                 console.log("marketSize", marketSize)
@@ -79,11 +86,15 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 const market = await comptrollerContract.methods.markets(lToken.address).call()
                 console.log("market", market)
 
-                const supplyBalanceAmount = new BigNumber(accountSnapshot[1]).times(accountSnapshot[3]).div(new BigNumber(10).pow(36)).toFixed(2)
-                const supplyBalance = new BigNumber(supplyBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)).toFixed(2)
-                const borrowBalanceAmount = new BigNumber(accountSnapshot[2]).div(new BigNumber(10).pow(18)).toFixed(2)
-                const borrowBalance = new BigNumber(borrowBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)).toFixed(2)
-                const borrowBalanceLimit = new BigNumber(accountSnapshot[1]).times(accountSnapshot[3]).times(tokenPrice).times(market[1]).div(new BigNumber(10).pow(72))
+                const supplyBalanceAmount = new BigNumber(accountSnapshot[1]).times(accountSnapshot[3]).div(new BigNumber(10).pow(18)).div(new BigNumber(10).pow(digits)).toString()
+                console.log("supplyBalanceAmount", supplyBalanceAmount)
+                const supplyBalance = new BigNumber(supplyBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)).toString()
+                console.log("supplyBalance", supplyBalance)
+                const borrowBalanceAmount = new BigNumber(accountSnapshot[2]).div(new BigNumber(10).pow(digits)).toString()
+                console.log("borrowBalanceAmount", borrowBalanceAmount)
+                const borrowBalance = new BigNumber(borrowBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)).toString()
+                console.log("borrowBalance", borrowBalance)
+                const borrowBalanceLimit = new BigNumber(accountSnapshot[1]).times(accountSnapshot[3]).times(tokenPrice).times(market[1]).div(new BigNumber(10).pow(36))
 
                 const lemdSpeedPerBlock = new BigNumber(await lemdDistributionContract.methods.lemdSpeeds(lToken.address).call()).div(new BigNumber(10).pow(18)).times(lemdPrice)
                 console.log("lemdSpeed", lemdSpeedPerBlock.toFixed())
@@ -247,12 +258,12 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 </span>
                 <span className={styles.border_right}>
                     <p>{fromAPY(totalBorrowAPY)} %</p>
-                    <p className={styles.sub_titles}>Borrow APR</p>
+                    <p className={styles.sub_titles}>Borrow APY</p>
                 </span>
                 <span>
                     <h4>
                         <s>
-                            {supplyBalanceAmount}
+                            {fromAPY(supplyBalanceAmount)}
                             <b>{lToken.name}</b>
                         </s>
                         <s>{fromUSD(supplyBalance)}</s>
@@ -262,7 +273,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 <span>
                     <h4>
                         <s>
-                            {borrowBalanceAmount}
+                            {fromAPY(borrowBalanceAmount)}
                             <b>{lToken.name}</b>
                         </s>
                         <s>{fromUSD(borrowBalance)}</s>
@@ -360,8 +371,8 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                             </span>
                             <span className={styles.balance}>
                                 <h1>
-                                    {switchSupply && (lToken.name == "OKT" ? fromWeiNumber(tokenBalance) : from10WeiNumber(tokenBalance))}
-                                    {!switchSupply && fromAPY(supplyBalanceAmount)} <b>{lToken.name}</b>
+                                    {switchSupply && (lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))}
+                                    {!switchSupply && fromBigNumber(supplyBalanceAmount)} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
                                     {switchSupply && "Wallet Balance"}
@@ -402,7 +413,10 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                     <button
                                         onClick={() => {
                                             if (switchBorrow) {
-                                                const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18))).times(0.8)
+                                                const value = new BigNumber(borrowLimit)
+                                                    .minus(borrow)
+                                                    .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                    .times(0.8)
                                                 setBorrowValue(value)
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
@@ -451,8 +465,8 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                             </span>
                             <span className={cx(styles.balance, styles.fr)}>
                                 <h1>
-                                    {switchBorrow && fromAPY(borrowBalanceAmount)}
-                                    {!switchBorrow && (lToken.name == "OKT" ? fromWeiNumber(tokenBalance) : from10WeiNumber(tokenBalance))} <b>{lToken.name}</b>
+                                    {switchBorrow && fromBigNumber(borrowBalanceAmount)}
+                                    {!switchBorrow && (lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
                                     {switchBorrow && "Currently Borrowing"}
