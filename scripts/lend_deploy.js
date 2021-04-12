@@ -35,7 +35,7 @@ async function main() {
     // const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
     // const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
     // const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
-    // console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
+    console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
 
     // LEMD Token
     this.lemdToken = await LEMD.new()
@@ -50,6 +50,7 @@ async function main() {
     await this.lemdToken.addMinter(this.lemdBreeder.address)
     console.log("lemdToken grantRole", this.lemdBreeder.address)
 
+    await delay(5000)
     // Price oracle
     this.priceOracle = await SimplePriceOracle.new()
     await this.priceOracle.initialize()
@@ -65,6 +66,7 @@ async function main() {
     await this.jumpRateModel.initialize(hre.ethers.utils.parseEther("0.05"), hre.ethers.utils.parseEther("0.45"), hre.ethers.utils.parseEther("0.25"), hre.ethers.utils.parseEther("0.95"))
     console.log("jumpRateModel", this.jumpRateModel.address)
 
+    await delay(5000)
     // lTokens
     this.lEther = await LEther.new()
     await this.lEther.initialize(this.comptroller.address, this.jumpRateModel.address, hre.ethers.utils.parseEther("200000000"), "Lemond OKT", "lOKT", "18")
@@ -88,6 +90,7 @@ async function main() {
     await this.comptroller._setPriceOracle(this.priceOracle.address)
     console.log("set Price")
 
+    await delay(5000)
     // lToken setReserveFactor
     await this.lEther._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
     await this.lOKB._setReserveFactor(hre.ethers.utils.parseEther("0.05"))
@@ -129,6 +132,29 @@ async function main() {
     await this.lemdDistribution._setLemdSpeed(this.lBTCK.address, hre.ethers.utils.parseEther("1"))
     await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
+
+    // test
+    await this.lemdToken.addMinter(this.deployer)
+    await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("100000"))
+    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
+    console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
+
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+
+    USDT.approve(this.lUSDT.address, hre.ethers.utils.parseEther("2000"))
+
+    await this.lUSDT.mint(hre.ethers.utils.parseEther("2000"))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+
+    await this.lUSDT.borrow(hre.ethers.utils.parseEther("2000"))
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
     console.log("End")
 }
