@@ -60,7 +60,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 const borrowEnable = lToken.name != "OKT" ? (await lTokenContract.methods.allowance(account, lToken.address).call()) > 0 : true
                 const supplyApy = ((Math.pow((supplyRatePerBlock / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100).toFixed(2)
                 console.log("supplyApy", supplyApy)
-                const borrowApy = ((Math.pow((borrowRatePerBlock / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100).toFixed(2)
+                const borrowApy = (((borrowRatePerBlock / ethMantissa) * blocksPerDay + 1) * 100).toFixed(2)
                 console.log("borrowApy", borrowApy)
                 const totalSupply = await lTokenContract.methods.totalSupply().call()
                 console.log("totalSupply", totalSupply)
@@ -93,7 +93,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 console.log("borrowRewardAPY", borrowRewardAPY)
 
                 const totalSupplyAPY = parseFloat(supplyApy) + parseFloat(supplyRewardAPY == Infinity ? 0 : supplyRewardAPY)
-                const totalBorrowAPY = parseFloat(borrowApy) + parseFloat(borrowRewardAPY == Infinity ? 0 : borrowRewardAPY)
+                const totalBorrowAPY = parseFloat(borrowApy) - parseFloat(borrowRewardAPY == Infinity ? 0 : borrowRewardAPY)
                 console.log("totalSupplyAPY", totalSupplyAPY)
                 console.log("totalBorrowAPY", totalBorrowAPY)
 
@@ -121,7 +121,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                     exchangeRateMantissa: accountSnapshot[3],
                 })
             }
-        }, 3000)
+        }, 2000)
         return () => {
             clearInterval(timer)
         }
@@ -182,7 +182,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
         if (checkWallet()) return
         if (checkZero(supplyValue * 1)) return
         const value = lToken.name == "OKT" ? toWeiNumber(supplyValue) : to10WeiNumber(supplyValue)
-        console.log(value)
+        console.log(value, "OKT", lToken.name)
         if (lToken.name == "OKT") {
             await lTokenContract.methods.mint().send({ from: account, value: value })
         }else{
@@ -247,7 +247,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 </span>
                 <span className={styles.border_right}>
                     <p>{fromAPY(totalBorrowAPY)} %</p>
-                    <p className={styles.sub_titles}>Borrow APY</p>
+                    <p className={styles.sub_titles}>Borrow APR</p>
                 </span>
                 <span>
                     <h4>

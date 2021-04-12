@@ -29,13 +29,12 @@
                 h2 {
                     font-size: 16px;
                     color: #fff;
-                    font-weight: normal;
+                    font-weight: bold;
                     opacity: 0.75;
                 }
                 p {
                     font-size: 30px;
                     color: #f5ba5d;
-                    font-weight: lighter;
                 }
             }
             i.light {
@@ -128,19 +127,36 @@
             left: 50%;
             margin-left: -260px;
             top: 50%;
-            margin-top: -70px;
+            margin-top: -50px;
             text-align: left;
+            min-width: 140px;
+            &.price{
+                margin-top: -140px;
+            }
             h3 {
                 opacity: 0.45;
                 font-size: 14px;
                 color: #fff;
-                font-weight: normal;
+                font-weight: bold;
                 line-height: 2em;
             }
             p {
                 font-size: 30px;
                 color: #f5ba5d;
-                font-weight: lighter;
+                position: relative;
+                button{
+                    position: absolute;
+                    background: #f5b95c;
+                    color: #fff;
+                    font-weight: bold;
+                    border: none;
+                    padding: 3px 8px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    right: -55px;
+                    bottom: 10px;
+                    cursor: pointer;
+                }
             }
         }
         .borrowText {

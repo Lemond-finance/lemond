@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import Pool from "../components/pool"
-import { fromUSD } from "../libs/utils"
+import { fromUSD, fromWeiNumber} from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 import BigNumber from "bignumber.js"
@@ -18,16 +18,19 @@ import BigNumber from "bignumber.js"
 const Home = ({ t }) => {
     const { account, ethereum } = useWallet()
     const [showLendBox, setShowLendBox] = useState(false)
-    const [lemdPrice, setLemdPrice] = useState(0.0001)
+    const [lemdPrice, setLemdPrice] = useState(1)
     const [poolDate, setPoolDate] = useState([{}, {}, {}, {},{}])
     const [supplyBalance, setSupplyBalance] = useState(0)
     const [borrowBalance, setBorrowBalance] = useState(0)
     const [borrowBalanceLimit, setBorrowBalanceLimit] = useState(0)
     const [borrowRate, setBorrowRate] = useState(0)
+    const [pendingLemd, setPendingLemd] = useState(0)
 
     const web3 = new Web3(ethereum)
     const { OKT, OKB, USDT, ETHK, BTCK } = tokenConfig.lend.tokens
     const { lEther, lOKB, lUSDT, lETHK, lBTCK } = tokenConfig.lend.lTokens
+    const { lemdDistribution } = tokenConfig.lend.controller
+    const lemdDistributionContract = new web3.eth.Contract(lemdDistribution.abi, lemdDistribution.address)
 
     const updatePoolDate = (data, index) => {
         poolDate[index] = data
@@ -50,16 +53,52 @@ const Home = ({ t }) => {
                     }
                 }
                 borrowRate = new BigNumber(borrowBalance).div(borrowBalanceLimit).times(100).toFixed(2)
+
+                const pendingLemd = await lemdDistributionContract.methods.pendingLemdAccrued(account,true,true).call()
+
                 setSupplyBalance(supplyBalance)
                 setBorrowBalance(borrowBalance)
                 setBorrowBalanceLimit(borrowBalanceLimit)
                 setBorrowRate(borrowRate)
+                setPendingLemd(pendingLemd)
             }
         }, 3000)
         return () => {
             clearInterval(timer)
         }
     }, [account])
+
+    const checkWallet = () => {
+        if (!account) {
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className={styles.confirmAlert}>
+                            <h1>Please connect wallet</h1>
+                            <p className={styles.center}>
+                                <button
+                                    onClick={() => {
+                                        wallet.connect()
+                                        onClose()
+                                    }}
+                                >
+                                    OK
+                                </button>
+                                <button onClick={onClose}>Cancel</button>
+                            </p>
+                        </div>
+                    )
+                },
+            })
+            return true
+        }
+        return false
+    }
+
+    const claim = async () => {
+        if (checkWallet()) return
+        await lemdDistributionContract.methods.claimLemd(account).send({ from: account })
+    }
 
     const showAlert = () => {
         toast.dark("🚀 Waiting for open!", toastConfig)
@@ -86,9 +125,20 @@ const Home = ({ t }) => {
                         <i className={styles.lemond4}></i>
                         <i className={styles.lemond5}></i>
                     </h1>
+                    <div className={cx(styles.supplyText, styles.price)}>
+                        <h3>LEMD Price</h3>
+                        <p>{fromUSD(lemdPrice)}</p>
+                    </div>
                     <div className={styles.supplyText}>
                         <h3>Supply Balance</h3>
                         <p>{fromUSD(supplyBalance)}</p>
+                    </div>
+                    <div className={cx(styles.borrowText, styles.price)}>
+                        <h3>Pending LEMD</h3>
+                        <p>
+                            {fromWeiNumber(pendingLemd)}
+                            <button onClick={()=>claim()}>Claim</button>
+                        </p>
                     </div>
                     <div className={styles.borrowText}>
                         <h3>Borrow Balance</h3>
