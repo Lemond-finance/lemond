@@ -49,7 +49,8 @@ const Home = ({ t }) => {
                     if (JSON.stringify(poolDate[index]) != "{}") {
                         supplyBalance += parseInt(poolDate[index].supplyBalance)
                         borrowBalance += parseInt(poolDate[index].borrowBalance)
-                        borrowBalanceLimit += parseInt(poolDate[index].borrowBalanceLimit)
+                        borrowBalanceLimit = new BigNumber(borrowBalanceLimit).plus(poolDate[index].borrowBalanceLimit)
+                        console.log("borrowBalanceLimit", poolDate[index].borrowBalanceLimit.toString())
                     }
                 }
                 borrowRate = new BigNumber(borrowBalance).div(borrowBalanceLimit).times(100).toFixed(2)
@@ -58,7 +59,7 @@ const Home = ({ t }) => {
 
                 setSupplyBalance(supplyBalance)
                 setBorrowBalance(borrowBalance)
-                setBorrowBalanceLimit(borrowBalanceLimit)
+                setBorrowBalanceLimit(borrowBalanceLimit.toFixed(2))
                 setBorrowRate(borrowRate)
                 setPendingLemd(pendingLemd)
             }
