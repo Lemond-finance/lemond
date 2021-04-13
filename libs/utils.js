@@ -34,10 +34,9 @@ export function fromUSD(number) {
 }
 
 export function formatUSDNumer(number) {
-    if(number >= 1000){
+    if(number >= 1000 && number < 1000000){
       return numeral(new BigNumber(String(number)).div(1000)).format("$0,0.00") + "K"
-    }
-    if (number >= 1000000) {
+    }else if (number >= 1000000) {
         return numeral(new BigNumber(String(number)).div(1000000)).format("$0,0.00") + "M"
     }
     return numeral(number).format("$0,0.00")
