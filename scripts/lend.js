@@ -129,7 +129,7 @@ async function main() {
     await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("1000"))
     // await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
     console.log("lEther deplayer", (await this.lEther.balanceOf(this.deployer)).toString())
-    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    await this.lEther.mint("0x0000000000000000000000000000000000000000", { value: hre.ethers.utils.parseEther("1") })
     console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
     console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
 
@@ -137,7 +137,7 @@ async function main() {
 
     console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
 
-    await this.lDAI.mint(hre.ethers.utils.parseEther("2000"))
+    await this.lDAI.mint(hre.ethers.utils.parseEther("2000"), "0x0000000000000000000000000000000000000000")
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
@@ -151,8 +151,6 @@ async function main() {
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
-    
-
 
     /** Stake Pool Test **/
     // Add Stake Pool

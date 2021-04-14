@@ -47,8 +47,8 @@ contract LERC20 is LToken, ILERC20, LERC20Storage {
      * @param mintAmount The amount of the underlying asset to supply
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function mint(uint mintAmount) external override returns (uint) {
-        (uint err,) = mintInternal(mintAmount);
+    function mint(uint mintAmount, address inviter) external override returns (uint) {
+        (uint err,) = mintInternal(mintAmount, inviter);
         return err;
     }
 
