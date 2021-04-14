@@ -11,6 +11,7 @@ import { toastConfig } from "../libs/utils"
 import { fromUSD, fromAPY, formatUSDNumer, fromBigNumber, from10WeiNumber, fromWeiNumber, toWeiNumber, to10WeiNumber, fromETHWeiNumber, from10ETHWeiNumber } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import BigNumber from "bignumber.js"
+import Switch from "react-switch"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 
@@ -38,6 +39,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
     const [borrowValue, setBorrowValue] = useState(0)
     const [supplyEnable, setSupplyEnable] = useState(true)
     const [borrowEnable, setBorrowEnable] = useState(true)
+    const [enterMarkets, setEnterMarkets] = useState(false)
 
     const web3 = new Web3(ethereum)
     const { comptroller, lemdDistribution, priceOracle } = tokenConfig.lend.controller
@@ -115,6 +117,10 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                 console.log("totalSupplyAPY", totalSupplyAPY)
                 console.log("totalBorrowAPY", totalBorrowAPY)
 
+                const enterMarkets = await comptrollerContract.methods.getAssetsIn(account).call()
+                if ( enterMarkets.indexOf(lToken.address) != -1 ) {
+                    setEnterMarkets(true)
+                }
                 setTokenBalance(tokenBalance)
                 setTokenPrice(tokenPrice)
                 setSupplyEnable(supplyEnable)
@@ -194,6 +200,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
     const tokenApprove = async () => {
         if (checkWallet()) return
         await tokenContract.methods.approve(lToken.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({ from: account })
+        toast.dark("🚀 Approve success!", toastConfig)
     }
 
     const mint = async () => {
@@ -207,6 +214,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
             await lTokenContract.methods.mint(value).send({ from: account })
         }
         setSupplyValue(0)
+        toast.dark("🚀 Mint success!", toastConfig)
     }
 
     const redeem = async () => {
@@ -216,11 +224,13 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
         console.log("redeem", value)
         await lTokenContract.methods.redeemUnderlying(value).send({ from: account })
         setSupplyValue(0)
+        toast.dark("🚀 Withdraw success!", toastConfig)
     }
 
     const lTokenApprove = async () => {
         if (checkWallet()) return
         await lTokenContract.methods.approve(lToken.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({ from: account })
+        toast.dark("🚀 Approve success!", toastConfig)
     }
 
     const borrows = async () => {
@@ -229,6 +239,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
         const value = lToken.name == "OKT" ? toWeiNumber(borrowValue) : to10WeiNumber(borrowValue)
         await lTokenContract.methods.borrow(value).send({ from: account })
         setBorrowValue(0)
+        toast.dark("🚀 Borrow success!", toastConfig)
     }
 
     const repay = async () => {
@@ -241,10 +252,26 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
             await lTokenContract.methods.repayBorrow(value).send({ from: account })
         }
         setBorrowValue(0)
+        toast.dark("🚀 Repay success!", toastConfig)
+    }
+
+    const enterMarket = async () => {
+        if (checkWallet()) return
+        await comptrollerContract.methods.enterMarkets([lToken.address]).send({ from: account })
+        setEnterMarkets(true)
+        toast.dark("🚀 Enter market success!", toastConfig)
+    }
+
+    const exitMarket =  async () => {
+        if (checkWallet()) return
+        await comptrollerContract.methods.exitMarket(lToken.address).send({ from: account })
+        setEnterMarkets(false)
+        toast.dark("🚀 Exit market success!", toastConfig)
     }
 
     return (
         <li className={cx(lToken.className)}>
+            <ToastContainer />
             <span className={styles.total_info}>
                 <span className={styles.icon}></span>
                 <span className={styles.left}>
@@ -321,6 +348,21 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                     WITHDRAW
                                 </li>
                             </ul>
+                            <div className={styles.enter_markets}>
+                                <Switch
+                                    height={10}
+                                    width={50}
+                                    handleDiameter={20}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    onColor="#F6BA5E"
+                                    onHandleColor="#ffffff"
+                                    boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                    activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                                    onChange={() => (!enterMarkets ? enterMarket() : exitMarket())}
+                                    checked={enterMarkets}
+                                />
+                            </div>
                             <div className={styles.content}>
                                 <div className={styles.inputAction}>
                                     <h1>{switchSupply ? "Supply Amount" : "WITHDRAW Amount"}</h1>

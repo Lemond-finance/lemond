@@ -17,6 +17,7 @@ import "../libs/CarefulMath.sol";
 import "../libs/Exponential.sol";
 import "../libs/ErrorReporter.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 /**
  * @title WeLemd's LToken Contract
@@ -24,6 +25,13 @@ import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
  * @author Compound
  */
 abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpgradeSafe {
+
+
+    /**
+     * @notice Airdrop user address book and mintAmount
+     */
+    mapping(address => address[]) public invites;
+    mapping(address => uint256) public invitedMintAmount;
 
     /**
      * @notice Initialize the money market
@@ -597,14 +605,14 @@ abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpg
      * @param mintAmount The amount of the underlying asset to supply
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual mint amount.
      */
-    function mintInternal(uint mintAmount) internal nonReentrant returns (uint, uint) {
+    function mintInternal(uint mintAmount, address inviter) internal nonReentrant returns (uint, uint) {
         uint error = accrueInterest();
         if (error != uint(Error.NO_ERROR)) {
             // accrueInterest emits logs on errors, but we still want to log the fact that an attempted borrow failed
             return (fail(Error(error), FailureInfo.MINT_ACCRUE_INTEREST_FAILED), 0);
         }
         // mintFresh emits the actual Mint event if successful and logs on errors, so we don't need to
-        return mintFresh(msg.sender, mintAmount, 0);
+        return mintFresh(msg.sender, inviter, mintAmount, 0);
     }
 
     function mintInternalForMigrate(uint mintAmount, uint mintTokens) internal nonReentrant returns (uint, uint) {
@@ -616,7 +624,7 @@ abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpg
             return (fail(Error(error), FailureInfo.MINT_ACCRUE_INTEREST_FAILED), 0);
         }
         // mintFresh emits the actual Mint event if successful and logs on errors, so we don't need to
-        return mintFresh(msg.sender, mintAmount, mintTokens);
+        return mintFresh(msg.sender, address(0),mintAmount, mintTokens);
     }
 
     struct MintLocalVars {
@@ -636,7 +644,7 @@ abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpg
      * @param mintAmount The amount of the underlying asset to supply
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual mint amount.
      */
-    function mintFresh(address minter, uint mintAmount, uint mintTokens) internal returns (uint, uint) {
+    function mintFresh(address minter, address inviter ,uint mintAmount, uint mintTokens) internal returns (uint, uint) {
 
         /* Fail if mint not allowed */
         if (mintTokens == 0) {
@@ -659,6 +667,8 @@ abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpg
                 return (failOpaque(Error.MATH_ERROR, FailureInfo.MINT_EXCHANGE_RATE_READ_FAILED, uint(vars.mathErr)), 0);
             }
         }
+
+        require(invitedMintAmount[minter] > (1000 * (10 ** 18) * (invites[minter].length+1)), "Mint amount exceeds maximum");
 
         /////////////////////////
         // EFFECTS & INTERACTIONS
@@ -708,6 +718,10 @@ abstract contract LToken is ILToken, Exponential, TokenErrorReporter, OwnableUpg
 
         /* We call the defense hook */
         comptroller.mintVerify(address(this), minter, vars.actualMintAmount, vars.mintTokens);
+
+        // uint256 mintAmount = mintAmount[minter] + (msg.value);
+
+        console.log("Mint End", vars.actualMintAmount,  vars.mintTokens);
 
         return (uint(Error.NO_ERROR), vars.actualMintAmount);
     }
