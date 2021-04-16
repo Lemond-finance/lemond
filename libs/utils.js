@@ -19,9 +19,19 @@ export function fromETHWeiNumber(number) {
   return bn.div(new BigNumber(10).pow(18)).toString()
 }
 
+export function fromFormatETHWeiNumber(number) {
+    const bn = new BigNumber(String(number))
+    return numeral(bn.div(new BigNumber(10).pow(18))).format("0.00000000")
+}
+
 export function from10ETHWeiNumber(number) {
     const bn = new BigNumber(String(number))
     return bn.div(new BigNumber(10).pow(10)).toString()
+}
+
+export function from10FormatETHWeiNumber(number) {
+    const bn = new BigNumber(String(number))
+    return numeral(bn.div(new BigNumber(10).pow(10))).format("0.00000000")
 }
 
 export function fromUSDNumber(number) {
@@ -44,12 +54,12 @@ export function formatUSDNumer(number) {
 
 export function toWeiNumber(number) {
   const bn = new BigNumber(String(number))
-  return bn.times(new BigNumber(10).pow(18)).toFixed()
+  return returnInteger(bn.times(new BigNumber(10).pow(18)))
 }
 
 export function to10WeiNumber(number) {
     const bn = new BigNumber(String(number))
-    return bn.times(new BigNumber(10).pow(10)).toFixed()
+    return returnInteger(bn.times(new BigNumber(10).pow(10)))
 }
 
 export function fromAPY(number) {
@@ -61,12 +71,26 @@ export function fromBigNumber(number) {
     return bn.toString()
 }
 
+export function fromFormatBigNumber(number) {
+    const bn = new BigNumber(String(number))
+    return numeral(bn.toString()).format("0.00000000")
+}
+
+export function returnInteger(number){
+  const bn = new BigNumber(String(number))
+  if (!bn.isInteger()) {
+      return bn.integerValue(BigNumber.ROUND_DOWN).toString()
+  }
+  return bn.toString()
+}
+
 
 export const toastConfig = {
-                      position: 'bottom-left',
-                      autoClose: 3000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      draggable: true,
-                      progress: null,
-                    }
+    position: "bottom-left",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    draggable: true,
+    progress: null,
+    pauseOnHover: false,
+}

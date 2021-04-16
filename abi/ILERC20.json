@@ -72,11 +72,6 @@
         "internalType": "uint256",
         "name": "mintAmount",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "inviter",
-        "type": "address"
       }
     ],
     "name": "mint",
