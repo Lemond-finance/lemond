@@ -26,7 +26,7 @@ contract MockMintFlashLoanReceiver is IFlashLoanReceiver {
         erc20.safeApprove(pUsdt, amount);
 
         LERC20 lErc20 = LERC20(pUsdt);
-        lErc20.mint(amount);
+        lErc20.mint(amount,address(0));
 
         erc20.safeTransfer(sender, amount);
 

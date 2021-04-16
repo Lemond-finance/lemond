@@ -30,11 +30,11 @@ async function main() {
     console.log("deployer address", this.deployer)
 
     // Mock ERC20s
-    // const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
-    const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
-    const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
-    const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
-    const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
+    const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
+    // const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
+    // const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
+    // const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
+    // const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
     console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
 
     // LEMD Token
@@ -90,7 +90,6 @@ async function main() {
     await this.comptroller._setPriceOracle(this.priceOracle.address)
     console.log("set Price")
 
-    await delay(5000)
     // lToken setReserveFactor
     await this.lEther._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
     await this.lOKB._setReserveFactor(hre.ethers.utils.parseEther("0.05"))
@@ -99,6 +98,7 @@ async function main() {
     await this.lBTCK._setReserveFactor(hre.ethers.utils.parseEther("0.1"))
     console.log("setReserveFactor")
 
+    await delay(5000)
     // LemdDistribution
     this.lemdDistribution = await LemdDistribution.new()
     await this.lemdDistribution.initialize(this.lemdToken.address, this.lemdBreeder.address, this.comptroller.address)
@@ -136,7 +136,7 @@ async function main() {
     // test
     await this.lemdToken.addMinter(this.deployer)
     await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("100000"))
-    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    await this.lEther.mint("0xaf4944eBFEc95497f1A1D3B1a955ABbe828f842b", { value: hre.ethers.utils.parseEther("1") })
     console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
     console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
 
@@ -146,7 +146,8 @@ async function main() {
 
     console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
     console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
-    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    await this.lEther.mint("0xaf4944eBFEc95497f1A1D3B1a955ABbe828f842b", { value: hre.ethers.utils.parseEther("1") })
+    await delay(5000)
     console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
     await this.lemdDistribution.claimLemd(this.deployer)
     console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))

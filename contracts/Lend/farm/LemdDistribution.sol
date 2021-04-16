@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "../comptroller/ComptrollerStorage.sol";
 import "../comptroller/Comptroller.sol";
 import "../comptroller/ComptrollerStorage.sol";
-import "hardhat/console.sol";
 
 interface ILemdDistribution {
 
@@ -331,11 +330,21 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
      * @return The amount of LEMD which was NOT transferred to the user
      */
     function grantLemdInternal(address user, uint userAccrued, uint threshold) internal returns (uint) {
-        console.log(msg.sender);
         if (userAccrued >= threshold && userAccrued > 0) {
             uint lemdRemaining = lemd.balanceOf(address(this));
             if (userAccrued <= lemdRemaining) {
-                lemd.transfer(user, userAccrued);
+                uint maxMint = comptroller.getMaxInvitedMintAmount(msg.sender);
+                uint accountMint = comptroller.getInvitedMintAmount(msg.sender);
+                if( userAccrued < comptroller.getMaxInvitedMintAmount(msg.sender) && userAccrued < sub_(maxMint,accountMint)){
+                    comptroller.addInvitedMintAmount(msg.sender,userAccrued);
+                    lemd.transfer(user, userAccrued);
+                }else{
+                    if( maxMint > accountMint ){
+                        uint remaining = sub_(maxMint, accountMint);
+                        comptroller.addInvitedMintAmount(msg.sender,remaining);
+                        lemd.transfer(user, remaining);
+                    }
+                }
                 return 0;
             }
         }
