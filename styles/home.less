@@ -1,327 +1,334 @@
 .wrapper {
-  .bg_cute{
-    background:url(../public/img/bg_cute.png) no-repeat center bottom;
-    width: 1500px;
-    height: 550px;
-    background-size: 100% auto;
-    position: absolute;
-    top: 0px;
-    z-index: -1;
-    left: 50%;
-    margin-left: -50px;
-    .bg_box{
-      background: url(../public/img/box.png) no-repeat center;
-      width: 270px;
-      height: 270px;
-      background-size: 100% auto;
-      position: absolute;
-      left: 140px;
-      top: 50%;
-      margin-top: -130px;
-    }
-  }
-  .slogan{
-      width: 1000px;
-      padding: 0 100px;
-      margin: 0 auto;
-      overflow: hidden;
-      h1{
-        background:url(../public/img/bg_text_logo.svg) no-repeat center;
-        width: 240px;
-        height: 140px;
-        background-size: 100% auto;
-        margin-top: 20px;
-      }
-      h2{
-        font-weight: 500;
-        font-size: 20px;
-        font-weight:lighter;
-      }
-      h3{
-        color:#D8D8D8;
-        font-size:14px;
-      }
-      h4{
-        font-size: 48px;
-        color:#F5BA5D;
-        text-shadow: 0 0 3px rgba(255,176,53,0.81);
-        padding: 10px 0;
-      }
-      b{
-        color:#F5BA5D;
-        font-weight:normal;
-      }
-      p{
-        max-width:500px;
-        font-weight:200;
-        font-size: 14px;
-        padding: 10px 0;
-        color: #848484;
-        button{
-          color: #F5BA5D;
-          border: 1px solid #F5BA5D;
-          border-radius: 5px;
-          background: url(../public/img/button_arrow.svg) no-repeat 90% center ;
-          background-size: auto 40%;
-          font-size: 16px;
-          padding: 6px 28px 6px 18px;
-          cursor: pointer;
-          margin-top: 10px;
-          &:hover{
-            background-color: #2b2b2b;
-          }
-        }
-      }
-    }
-    .airdrop{
-      background:url(../public/img/airdrop_bg.svg) no-repeat  650px 45px #1B1F26;
-      width: 1000px;
-      background-size: auto 110%;
-      margin: 200px auto 50px auto;
-      border-radius: 50px;
-      padding: 40px 60px;
-      box-sizing: border-box;
-      position:relative;
-      z-index:9;
-      .airdrop_box{
-        background:url(../public/img/airdrop_bg2.svg) no-repeat center;
+    .bg_cute {
+        background: url(../public/img/bg_cute.png) no-repeat center bottom;
+        width: 1500px;
+        height: 550px;
         background-size: 100% auto;
         position: absolute;
-        top: -140px;
-        right: 80px;
-        width: 400px;
-        height: 390px;
-      }
-      h1{
-        font-size: 12px;
-        i{
-          background:url(../public/img/airdrop_icon.svg) no-repeat center;
-          width: 16px;
-          height: 16px;
-          background-size: 100% auto;
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 6px;
+        top: 0px;
+        z-index: -1;
+        left: 50%;
+        margin-left: -50px;
+        .bg_box {
+            background: url(../public/img/box.png) no-repeat center;
+            width: 270px;
+            height: 270px;
+            background-size: 100% auto;
+            position: absolute;
+            left: 140px;
+            top: 50%;
+            margin-top: -130px;
         }
-        span{
-          vertical-align:middle;
-          font-weight: 200;
-        }
-      }
-      h2{
-        font-size: 28px;
-        padding: 40px 0 10px 0;
-      }
-      p{
-        font-weight: 200;
-        font-size:14px;
-        line-height: 1.6em;
-        width: 480px;
-        padding: 2px 0;
-        b{
-          font-weight:600;
-          color:#F5BA5D;
-        }
-        &.btns{
-          button{
-             color:#F5BA5D;
-             outline:none;
-             border:none;
-             background:none;
-             font-size: 12px;
-             cursor:pointer;
-             border:1px solid #F5BA5D;
-             padding:3px 15px;
-             border-radius:5px;
-             margin-left:10px;
-             margin-top:8px;
-             &:disabled{
-                   border: 1px solid #848484;
-              color: #848484;
-              &:hover{
-                     border: 1px solid #848484;
-              color: #848484;
-              background:none;
-              }
-             }
-             &:hover{
-               background:none;
-               color:#F5BA5D;
-             }
-          }
-        }
-      }
     }
-    .partners{
-      margin: 0 auto;
-      width: 1000px;
-      h1{
-        text-align: center;
-        font-size: 30px;
-        font-weight: normal;
-        margin-bottom:30px;
-      }
-      ul{
-        padding-bottom:50px;
-        li{
-          display:inline-block;
-          width: 170px;
-          height:50px;
-          border-radius:10px;
-          &.onto{
-            background:url(../public/img/onto_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.tokenpocket{
-            background:url(../public/img/tp_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.roots_cap{
-            background:url(../public/img/rootscap_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.crypto_venture_capital{
-            background:url(../public/img/crypto_venture_capital.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.bigone{
-            background:url(../public/img/bigone_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.bkex{
-            background:url(../public/img/bkex_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.zb{
-            background:url(../public/img/zb_capital_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.coinshub{
-            background:url(../public/img/coinshub_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.hoo{
-            background:url(../public/img/hoo_capital_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
-          &.mxc{
-            background:url(../public/img/mxc_logo.png) no-repeat center;
-            background-size: auto 150%;
-            border-radius: 0;
-            padding: 0 15px;
-            box-sizing: content-box;
-          }
+    .slogan {
+        width: 1000px;
+        padding: 0 100px;
+        margin: 0 auto;
+        overflow: hidden;
+        h1 {
+            background: url(../public/img/bg_text_logo.svg) no-repeat center;
+            width: 240px;
+            height: 140px;
+            background-size: 100% auto;
+            margin-top: 20px;
         }
-      }
+        h2 {
+            font-weight: 500;
+            font-size: 20px;
+            font-weight: lighter;
+        }
+        h3 {
+            color: #d8d8d8;
+            font-size: 14px;
+        }
+        h4 {
+            font-size: 48px;
+            color: #f5ba5d;
+            text-shadow: 0 0 3px rgba(255, 176, 53, 0.81);
+            padding: 10px 0;
+        }
+        b {
+            color: #f5ba5d;
+            font-weight: normal;
+        }
+        p {
+            max-width: 500px;
+            font-weight: 200;
+            font-size: 14px;
+            padding: 10px 0;
+            color: #848484;
+            button {
+                color: #f5ba5d;
+                border: 1px solid #f5ba5d;
+                border-radius: 5px;
+                background: url(../public/img/button_arrow.svg) no-repeat 90% center;
+                background-size: auto 40%;
+                font-size: 16px;
+                padding: 6px 28px 6px 18px;
+                cursor: pointer;
+                margin-top: 10px;
+                &:hover {
+                    background-color: #2b2b2b;
+                }
+            }
+        }
+    }
+    .airdrop {
+        background: url(../public/img/airdrop_bg.svg) no-repeat 650px 45px #1b1f26;
+        width: 1000px;
+        background-size: auto 110%;
+        margin: 200px auto 50px auto;
+        border-radius: 50px;
+        padding: 40px 60px;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 9;
+        .airdrop_box {
+            background: url(../public/img/airdrop_bg2.svg) no-repeat center;
+            background-size: 100% auto;
+            position: absolute;
+            top: -140px;
+            right: 80px;
+            width: 400px;
+            height: 390px;
+        }
+        h1 {
+            font-size: 12px;
+            i {
+                background: url(../public/img/airdrop_icon.svg) no-repeat center;
+                width: 16px;
+                height: 16px;
+                background-size: 100% auto;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 6px;
+            }
+            span {
+                vertical-align: middle;
+                font-weight: 200;
+            }
+        }
+        h2 {
+            font-size: 28px;
+            padding: 40px 0 10px 0;
+        }
+        p {
+            font-weight: 200;
+            font-size: 14px;
+            line-height: 1.6em;
+            width: 480px;
+            padding: 2px 0;
+            b {
+                font-weight: 600;
+                color: #f5ba5d;
+            }
+            &.btns {
+                button {
+                    color: #f5ba5d;
+                    outline: none;
+                    border: none;
+                    background: none;
+                    font-size: 12px;
+                    cursor: pointer;
+                    border: 1px solid #f5ba5d;
+                    padding: 3px 15px;
+                    border-radius: 5px;
+                    margin-left: 10px;
+                    margin-top: 8px;
+                    &:disabled {
+                        border: 1px solid #848484;
+                        color: #848484;
+                        &:hover {
+                            border: 1px solid #848484;
+                            color: #848484;
+                            background: none;
+                        }
+                    }
+                    &:hover {
+                        background: none;
+                        color: #f5ba5d;
+                    }
+                }
+            }
+        }
+    }
+    .partners {
+        margin: 0 auto;
+        width: 1000px;
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+        ul {
+            padding-bottom: 50px;
+            li {
+                display: inline-block;
+                width: 170px;
+                height: 50px;
+                border-radius: 10px;
+                &.onto {
+                    background: url(../public/img/onto_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.tokenpocket {
+                    background: url(../public/img/tp_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.roots_cap {
+                    background: url(../public/img/rootscap_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.crypto_venture_capital {
+                    background: url(../public/img/crypto_venture_capital.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.bigone {
+                    background: url(../public/img/bigone_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.bkex {
+                    background: url(../public/img/bkex_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.zb {
+                    background: url(../public/img/zb_capital_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.coinshub {
+                    background: url(../public/img/coinshub_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.hoo {
+                    background: url(../public/img/hoo_capital_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.mxc {
+                    background: url(../public/img/mxc_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+                &.gate {
+                    background: url(../public/img/gateio_labs_logo.png) no-repeat center;
+                    background-size: auto 150%;
+                    border-radius: 0;
+                    padding: 0 15px;
+                    box-sizing: content-box;
+                }
+            }
+        }
     }
 }
 
 @media screen and (max-width: 500px) {
-  .wrapper {
-    .bg_cute{
-      position: relative;
-      top: 0;
-      left: 0;
-      background-image: none;
-      height: 160px;
-      width: 100%;
-      margin-left: 0;
-      .bg_box{
-        width: 120px;
-        height: 120px;
-        margin-top: -60px;
-        left: 50%;
-        margin-left: -60px;
-        position: relative;
-        display: inline-block;
-      }
-    }
-    .slogan{
-    width: 100%;
-    text-align: center;
-    padding: 0;
-        h1{
-          height: 50px;
-          background-position: center bottom;
-          width: 200px;
-          margin-top: 0;
-              display: inline-block;
-        }
-        h2{
-          font-size: 16px;
-        }
-        h3{
-          color:#D8D8D8;
-          font-size:14px;
-        }
-        h4{
-padding: 5px 0;
-    font-size: 38px;
-        }
-        b{
-          color:#F5BA5D;
-          font-weight:normal;
-        }
-      }
-      .airdrop{
-    width: 100%;
-    border-radius: 0;
-    margin-top: 90px;
-    text-align: center;
-    padding: 210px 10px 20px 10px;
-    margin: 130px 0 0 0;
-    background:url(../public/img/airdrop_bg.png) no-repeat center top;
-    background-size: 100% auto;
-        .airdrop_box{
-              width: 300px;
-    left: 50%;
-    margin-left: -150px;
-        }
-        h1{
-          font-size: 14px;
-        }
-        h2{
-          padding: 10px 0 15px 0;
-        }
-        p{
-          width:100%;
-          line-height: 2.4em;
-          b{
-            font-weight:600;
-            color:#F5BA5D;
-          }
-          &.btns{
-            button{
+    .wrapper {
+        .bg_cute {
+            position: relative;
+            top: 0;
+            left: 0;
+            background-image: none;
+            height: 160px;
+            width: 100%;
+            margin-left: 0;
+            .bg_box {
+                width: 120px;
+                height: 120px;
+                margin-top: -60px;
+                left: 50%;
+                margin-left: -60px;
+                position: relative;
+                display: inline-block;
             }
-          }
         }
-      }
-  }
+        .slogan {
+            width: 100%;
+            text-align: center;
+            padding: 0;
+            h1 {
+                height: 50px;
+                background-position: center bottom;
+                width: 200px;
+                margin-top: 0;
+                display: inline-block;
+            }
+            h2 {
+                font-size: 16px;
+            }
+            h3 {
+                color: #d8d8d8;
+                font-size: 14px;
+            }
+            h4 {
+                padding: 5px 0;
+                font-size: 38px;
+            }
+            b {
+                color: #f5ba5d;
+                font-weight: normal;
+            }
+        }
+        .airdrop {
+            width: 100%;
+            border-radius: 0;
+            margin-top: 90px;
+            text-align: center;
+            padding: 210px 10px 20px 10px;
+            margin: 130px 0 0 0;
+            background: url(../public/img/airdrop_bg.png) no-repeat center top;
+            background-size: 100% auto;
+            .airdrop_box {
+                width: 300px;
+                left: 50%;
+                margin-left: -150px;
+            }
+            h1 {
+                font-size: 14px;
+            }
+            h2 {
+                padding: 10px 0 15px 0;
+            }
+            p {
+                width: 100%;
+                line-height: 2.4em;
+                b {
+                    font-weight: 600;
+                    color: #f5ba5d;
+                }
+                &.btns {
+                    button {
+                    }
+                }
+            }
+        }
+    }
 }
