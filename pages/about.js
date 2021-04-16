@@ -54,35 +54,69 @@ const Home = ({ t }) => {
   }
 
   return (
-    <HeaderFooter  activeIndex={4}>
-      <ToastContainer />
-      <Head>
-        <title>{t('title')}</title>
-      </Head>
-      <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <h1>About</h1>
+      <HeaderFooter activeIndex={4}>
+          <ToastContainer />
+          <Head>
+              <title>{t("title")}</title>
+          </Head>
+          <div className={styles.wrapper}>
+              <div className={styles.content}>
+                  <h1>About</h1>
 
-<p>Lemond is a Protocol initialized on OKExChain with lower gas cost and higher efficiency. Besides the basic loan function, Lemond would bring more in the following steps, all is aiming for a Juicy DeFi environment.</p>
+                  <p>
+                      Lemond is a Protocol initialized on OKExChain with lower gas cost and higher efficiency. Besides the basic loan function, Lemond would bring more in the following steps, all is
+                      aiming for a Juicy DeFi environment.
+                  </p>
 
-<h1>Tokenomics</h1>
+                  <h1>Audit Report</h1>
 
-<p>Token: LEMD<br />
-Total Supply: <b>1,000,000,000</b><br />
- <b>60%</b> Loan Mining + Liquidity Mining<br />
- <b>15%</b> DAO Governance<br />
- <b>10%</b> Team Incentive<br />
- <b>10%</b>  Early Investments<br />
- <b>5%</b>  Eco-incentive + Initial Liquidity</p>
+                  <p>
+                      <a href="https://github.com/Lemond-finance/doc/blob/main/Smart%20Contract%20Security%20Audit%20Report%20-%20LEMD.pdf" target="_blank">
+                          Smart Contract Security Audit Report - LEMD.pdf
+                      </a>
+                  </p>
 
-<p>LEMD Token Contract:  <b>0xE667d8bD182D165D2E71cF72315bD117f6940094</b></p>
+                  <h1>Tokenomics</h1>
 
-<p>Lemond is a decentralized, open-source, autonomous non-custodial liquidity market protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized (perpetually) or undercollateralized (one-block liquidity) fashion.</p>
- 
-<p>Each asset supported by the Lemond Protocol is integrated through a lToken contract, which is an EIP-20 compliant representation of balances supplied to the protocol. By minting lTokens, users (1) earn interest through the lToken's exchange rate, which increases in value relative to the underlying asset, and (2) gain the ability to use lTokens as collateral.</p>
-    </div>
-      </div>
-    </HeaderFooter>
+                  <p>
+                      Token: LEMD
+                      <br />
+                      Total Supply: <b>1,000,000,000</b>
+                      <br />
+                      <b>60%</b> Loan Mining + Liquidity Mining
+                      <br />
+                      <b>15%</b> DAO Governance
+                      <br />
+                      <b>10%</b> Strategic Investment
+                      <br />
+                      <b>5%</b> Seed Round Investment
+                      <br />
+                      <b>3%</b> Team Incentive
+                      <br />
+                      <b>2%</b> Advisor
+                      <br />
+                      <b>1%</b> Public Circulation on Exchange
+                      <br />
+                      <b>4%</b> Eco-incentive + Initial Liquidity
+                  </p>
+
+                  <p>
+                      LEMD Token Contract: <b>0xE667d8bD182D165D2E71cF72315bD117f6940094</b>
+                  </p>
+
+                  <p>
+                      Lemond is a decentralized, open-source, autonomous non-custodial liquidity market protocol where users can participate as depositors or borrowers. Depositors provide liquidity to
+                      the market to earn a passive income, while borrowers are able to borrow in an overcollateralized (perpetually) or undercollateralized (one-block liquidity) fashion.
+                  </p>
+
+                  <p>
+                      Each asset supported by the Lemond Protocol is integrated through a lToken contract, which is an EIP-20 compliant representation of balances supplied to the protocol. By minting
+                      lTokens, users (1) earn interest through the lToken's exchange rate, which increases in value relative to the underlying asset, and (2) gain the ability to use lTokens as
+                      collateral.
+                  </p>
+              </div>
+          </div>
+      </HeaderFooter>
   )
 };
 

@@ -58,19 +58,10 @@ const Home = ({ t }) => {
                       A <b>Juicy DeFi</b> Protocol
                   </h2>
                   <h4 id="count">
-                      <CountUp
-                          start={0}
-                          end={5270319549.94}
-                          separator=","
-                          decimal="."
-                          decimal=","
-                          prefix="$"
-                      />
+                      <CountUp start={0} end={5270319549.94} separator="," decimal="." decimal="," prefix="$" />
                   </h4>
                   <p>
-                      <b>Lemond</b> is a decentralized, open-source, autonomous,
-                      non-custodial liquidity market protocol where users can
-                      participate as depositors or borrowers.
+                      <b>Lemond</b> is a decentralized, open-source, autonomous, non-custodial liquidity market protocol where users can participate as depositors or borrowers.
                   </p>
                   <p>
                       <Link href="/lend">
@@ -86,8 +77,7 @@ const Home = ({ t }) => {
                   </h1>
                   <h2>Lemond Airdrop</h2>
                   <p>
-                      Besides <b>OKExChain</b> testing bounty. <b>Lemond</b> is
-                      also holding Airdrop Carnival to get your bag served.
+                      Besides <b>OKExChain</b> testing bounty. <b>Lemond</b> is also holding Airdrop Carnival to get your bag served.
                   </p>
                   <p>
                       Massive <b>$LEMD</b> in the box!
@@ -109,6 +99,7 @@ const Home = ({ t }) => {
               <div className={styles.partners}>
                   <h1>Partners</h1>
                   <ul>
+                      <li className={styles.gate}></li>
                       <li className={styles.mxc}></li>
                       <li className={styles.zb}></li>
                       <li className={styles.hoo}></li>
