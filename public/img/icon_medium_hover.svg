@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="43px" height="24px" viewBox="0 0 43 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_medium</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+        <polygon id="path-2" points="0 0 23 0 23 24 0 24"></polygon>
+        <polygon id="path-4" points="0 0 12 0 12 24 0 24"></polygon>
+        <polygon id="path-6" points="-7.91988894e-15 0 6 0 6 24 -7.91988894e-15 24"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g filter="url(#filter-1)" id="icon_medium">
+            <g>
+                <g id="Fill-1-Clipped">
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <g id="path-2"></g>
+                    <path d="M23,12 C23,18.6275311 17.851384,24 11.5,24 C5.14861601,24 0,18.6275311 0,12 C0,5.37246888 5.14861601,0 11.5,0 C17.851384,0 23,5.37246888 23,12" id="Fill-1" fill="#888889" fill-rule="nonzero" mask="url(#mask-3)"></path>
+                </g>
+                <g id="Fill-3-Clipped" transform="translate(24.000000, 0.000000)">
+                    <mask id="mask-5" fill="white">
+                        <use xlink:href="#path-4"></use>
+                    </mask>
+                    <g id="path-4"></g>
+                    <path d="M12,12.0000139 C12,18.6275527 9.31376556,24.0000279 6,24.0000279 C2.6865131,24.0000279 0,18.6275527 0,12.0000139 C0,5.37247512 2.6865131,0 6,0 C9.31376556,0 12,5.37247512 12,12.0000139" id="Fill-3" fill="#888889" fill-rule="nonzero" mask="url(#mask-5)"></path>
+                </g>
+                <g id="Fill-5-Clipped" transform="translate(37.000000, 0.000000)">
+                    <mask id="mask-7" fill="white">
+                        <use xlink:href="#path-6"></use>
+                    </mask>
+                    <g id="path-6"></g>
+                    <path d="M6.00002787,12.0000139 C6.00002787,18.6275527 4.65690441,24.0000279 3.00001393,24.0000279 C1.34312346,24.0000279 -7.91988894e-15,18.6275527 -7.91988894e-15,12.0000139 C-7.91988894e-15,5.37247512 1.34312346,0 3.00001393,0 C4.65690441,0 6.00002787,5.37247512 6.00002787,12.0000139" id="Fill-5" fill="#888889" fill-rule="nonzero" mask="url(#mask-7)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -18,8 +18,8 @@ contract LEther is LToken {
         super.init(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_);
     }
 
-    function mint(address inviter) external payable {
-        (uint err,) = mintInternal(msg.value, inviter);
+    function mint() external payable {
+        (uint err,) = mintInternal(msg.value);
         requireNoError(err, "mint failed");
     }
 

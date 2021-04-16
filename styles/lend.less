@@ -462,6 +462,9 @@
             position: absolute;
             left: 500px;
             top: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 225, 0.8);
         }
         &.border {
             border-right: 1px solid rgba(151, 151, 151, 0.3);
@@ -624,6 +627,8 @@
         padding: 10px 0;
     }
     p {
+        font-size: 14px;
+        opacity: 0.6;
         b {
             font-weight: normal;
             color: #f6ba5e;
@@ -641,6 +646,91 @@
         width: auto;
         cursor: pointer;
         display: inline-block;
+    }
+}
+
+:global {
+    .vs-loading {
+        position: relative;
+        width: 55px;
+        height: 55px;
+        display: inline-block;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 3px solid transparent;
+    }
+    .vs-loading.radius .effect-1,
+    .vs-loading.radius .effect-2 {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid #ff9900;
+        border-radius: 10px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .vs-loading.radius .effect-1 :local {
+        -webkit-animation: radius 1s ease infinite;
+        animation: radius 1s ease infinite;
+    }
+    .vs-loading .effects {
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    .vs-loading.radius .effect-2 :local {
+        -webkit-animation: radius 2s ease 0.1s infinite;
+        animation: radius 2s ease 0.1s infinite;
+    }
+    .vs-loading.radius .effect-1,
+    .vs-loading.radius .effect-2 {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid #ff9900;
+        border-radius: 10px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .vs-loading .effects {
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    .vs-loading.corners .effect-1,
+    .vs-loading.radius .effect-3 {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid #ff9900;
+        border-radius: 10px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .vs-loading.radius .effect-3  :local {
+        -webkit-animation: radius 3s ease 0.2s infinite;
+        animation: radius 3s ease 0.2s infinite;
+    }
+    .vs-loading .effects {
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    .vx-card .vx-card__collapsible-content img {
+        display: block;
+    }
+   
+    @keyframes radius {
+        0% {
+            transform: rotate(0deg) scale(0.1);
+            opacity: 1;
+        }
+        60% {
+            transform: rotate(160deg) scale(1);
+            opacity: 0;
+        }
+        to {
+            transform: rotate(0deg) scale(0.1);
+            opacity: 1;
+        }
     }
 }
 
@@ -921,25 +1011,24 @@
                     }
                 }
                 .operation {
-                display: block;
-                position: relative;
-                &.none {
-                    display: none;
-                }
-                dl {
                     display: block;
-                    padding-bottom: 70px;
-                    dt {
-                        width: 100%;
-                        position: relative;
-                        padding-bottom: 60px;
+                    position: relative;
+                    &.none {
+                        display: none;
+                    }
+                    dl {
+                        display: block;
+                        padding-bottom: 70px;
+                        dt {
+                            width: 100%;
+                            position: relative;
+                            padding-bottom: 60px;
+                        }
+                    }
+                    .borrow_limit {
+                        bottom: 15px;
                     }
                 }
-                .borrow_limit {
-                    bottom: 15px;
-                }
-            }
-                
             }
         }
         .lend_box {
@@ -947,7 +1036,7 @@
             .enter_markets {
                 position: absolute;
                 right: 10px;
-                left:auto;
+                left: auto;
                 top: 15px;
             }
             &.border {
