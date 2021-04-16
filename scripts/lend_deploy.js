@@ -30,11 +30,11 @@ async function main() {
     console.log("deployer address", this.deployer)
 
     // Mock ERC20s
-    const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
-    // const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
-    // const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
-    // const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
-    // const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
+    // const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
+    const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
+    const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
+    const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
+    const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
     console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
 
     // LEMD Token
@@ -144,17 +144,24 @@ async function main() {
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
-    USDT.approve(this.lUSDT.address, hre.ethers.utils.parseEther("2000"))
+    console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
+    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
+    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
+    await this.lemdDistribution.claimLemd(this.deployer)
+    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
 
-    await this.lUSDT.mint(hre.ethers.utils.parseEther("2000"))
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    // USDT.approve(this.lUSDT.address, hre.ethers.utils.parseEther("2000"))
 
-    await this.lUSDT.borrow(hre.ethers.utils.parseEther("2000"))
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    // await this.lUSDT.mint(hre.ethers.utils.parseEther("2000"))
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+
+    // await this.lUSDT.borrow(hre.ethers.utils.parseEther("2000"))
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
     console.log("End")
 }
