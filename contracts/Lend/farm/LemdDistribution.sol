@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "../comptroller/ComptrollerStorage.sol";
 import "../comptroller/Comptroller.sol";
 import "../comptroller/ComptrollerStorage.sol";
+import "hardhat/console.sol";
 
 interface ILemdDistribution {
 
@@ -83,7 +84,6 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
     bool public enableDistributeRepayBorrowLemd;
     bool public enableDistributeSeizeLemd;
     bool public enableDistributeTransferLemd;
-
 
     /// @notice Emitted when a new LEMD speed is calculated for a market
     event LemdSpeedUpdated(LToken indexed lToken, uint newSpeed);
@@ -331,7 +331,7 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
      * @return The amount of LEMD which was NOT transferred to the user
      */
     function grantLemdInternal(address user, uint userAccrued, uint threshold) internal returns (uint) {
-
+        console.log(msg.sender);
         if (userAccrued >= threshold && userAccrued > 0) {
             uint lemdRemaining = lemd.balanceOf(address(this));
             if (userAccrued <= lemdRemaining) {
@@ -358,7 +358,7 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
     function claimLemd(address holder, LToken[] memory lTokens) public {
         address[] memory holders = new address[](1);
         holders[0] = holder;
-        claimLemd(holders, lTokens, true, false);
+        claimLemd(holders, lTokens, true, true);
     }
 
     /**

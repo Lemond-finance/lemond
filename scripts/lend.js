@@ -151,8 +151,10 @@ async function main() {
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
-    
 
+    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
+    await this.lemdDistribution.claimLemd(this.deployer)
+    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
 
     /** Stake Pool Test **/
     // Add Stake Pool

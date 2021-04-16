@@ -36,7 +36,7 @@ module.exports = {
         okexchain: {
             url: "https://exchaintestrpc.okex.org",
             accounts: [mnemonic],
-            timeout: 20000,
+            timeout: 30000,
         },
         rinkeby: {
             url: "https://rinkeby.infura.io/v3/3970ae72d3db40f6a6dfad8544b4da1c",
