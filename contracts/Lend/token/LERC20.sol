@@ -47,7 +47,18 @@ contract LERC20 is LToken, ILERC20, LERC20Storage {
      * @param mintAmount The amount of the underlying asset to supply
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function mint(uint mintAmount) external override returns (uint) {
+    function mint(uint mintAmount, address inviter) external override returns (uint) {
+        if(inviter != address(0) && inviter != msg.sender  && comptroller.getMaxInvitedMintAmount(inviter) <= 4){
+            bool alreadyHave = false;
+            for(uint256 i = 0 ; i < comptroller.getInvites(inviter).length; i++){
+                if(comptroller.getInvites(inviter)[i] == inviter){
+                    alreadyHave = true;
+                }
+            }
+            if(!alreadyHave){
+                comptroller.addInvites(inviter, msg.sender);
+            }
+        }
         (uint err,) = mintInternal(mintAmount);
         return err;
     }
@@ -206,24 +217,6 @@ contract LERC20 is LToken, ILERC20, LERC20Storage {
             }
         }
         require(success, "TOKEN_TRANSFER_OUT_FAILED");
-    }
-
-    function flashloan(address _receiver, uint256 _amount, bytes memory _params) nonReentrant external {
-
-        uint256 availableLiquidityBefore = getCashPrior();
-
-        address payable fl = address(uint160(address(flashloanInstance)));
-        doTransferOut(fl, _amount);
-        flashloanInstance.flashloan(address(this), _receiver, underlying, _amount, _params);
-
-        uint availableLiquidityAfter = getCashPrior();
-        require(availableLiquidityAfter >= availableLiquidityBefore, "The actual balance of the protocol is inconsistent");
-
-        accrueInterest();
-    }
-
-    function _setFlashloan(address _flashloan) public onlyOwner {
-        flashloanInstance = IFlashloan(_flashloan);
     }
 
 }

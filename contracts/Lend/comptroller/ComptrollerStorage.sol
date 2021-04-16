@@ -47,7 +47,7 @@ contract ComptrollerStorage {
     */
     mapping(address => address[]) public invites;
     mapping(address => uint256) public invitedMintAmount;
-    uint256 public mintCap = 200 * 1e18;
+    uint256 public mintCap = 20 * 1e18;
 
     /**
      * LEMD-MODIFY: Copy and modify from ComptrollerV2Storage

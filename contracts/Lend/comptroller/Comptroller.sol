@@ -90,6 +90,29 @@ contract Comptroller is ComptrollerStorage, IComptroller, ComptrollerErrorReport
         super.__Ownable_init();
     }
 
+    /** Invite Something **/
+
+    function getInvites(address account) public override(IComptroller) view returns(address[] memory) {
+        return invites[account];
+    }
+
+    function getInvitedMintAmount(address account) public override(IComptroller) view returns(uint256) {
+        return invitedMintAmount[account];
+    }
+
+    function getMaxInvitedMintAmount(address account) public override(IComptroller) view returns(uint256) {
+        return invites[account].length * 10 * 1e18 + mintCap;
+    }
+
+    function addInvites(address account, address inviter) public override(IComptroller){
+        require(invites[account].length < 5,"Maximum invites.");
+        invites[account].push(inviter);
+    }
+
+    function addInvitedMintAmount(address account, uint256 amount) public override(IComptroller){
+        invitedMintAmount[account] = invitedMintAmount[account] + amount;
+    }
+
 
     /*** Assets You Are In ***/
 

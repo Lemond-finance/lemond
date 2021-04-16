@@ -219,6 +219,271 @@
             }
         }
     }
+    .lend_news{
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+          background:#1B1F26;
+          border:1px solid#ffb033;
+          border-radius: 10px;
+          position: relative;
+          overflow: hidden;
+        line-height: 1.5em;
+        .rules{
+          text-align: left;
+           padding: 15px 20px 15px 20px;
+           float:left;
+           width: 60%;
+           box-sizing: border-box;
+           &.info{
+               width: 40%;
+           }
+          h1{
+            font-size:20px;
+            line-height:2em;
+          }
+          h2{
+            font-size:18px;
+            line-height:2em;
+            span{
+              display:block;
+              margin-right: 10px;
+            }
+            
+          }
+          b{
+               color:#f6ba5e;
+          }
+          p{
+            font-size:14px;
+            line-height:1.5em;
+            color:#ddd;
+            margin-bottom:1em;
+            .btn{
+              align-items: center;
+              background: #ffb033;
+              border: 0px;
+              border-radius: 5px;
+              box-sizing: border-box;
+              color: #ffffff;
+              cursor: pointer;
+              display: inline-block;
+              font-size: 14px;
+              font-weight: 700;
+              height: 32px;
+              padding: 0 10px;
+              outline: none;
+              white-space: nowrap;
+            }
+            a{
+              color:#f6ba5e;
+            }
+          }
+        }
+          i.speed {
+               font-size: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #c35857;
+    padding: 3px 20px;
+    text-align: center;
+    border-bottom-left-radius: 3px;
+    font-style: normal;
+          }
+          span.pool {
+            display: flex;
+            flex-direction: column;
+            margin: 15px 20px 0 20px;
+            i.icon{
+                background:url(../public/img/token.svg) no-repeat center;
+                width:46px;
+                height:46px;
+                background-size:100% auto;
+                position: absolute;
+                left: 20px;
+            }
+            h1 {
+              font-weight: 600;
+              font-size: 20px;
+              padding-left: 60px;              
+            }
+            h2 {
+                color: #848484;
+                font-size: 14px;
+                margin-bottom: 24px;
+                cursor: pointer;
+                font-weight: lighter;
+                padding-left: 60px; 
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+            h3 {
+              display: flex;
+              -webkit-box-align: center;
+              align-items: center;
+              font-weight: 600;
+              font-size: 22px;
+              img {
+                margin-left: 10px;
+                width: auto;
+                height: 26px;
+                margin-bottom: 0;
+                vertical-align: middle;
+              }
+            }
+            h4 {
+              color: #848484;
+              font-size: 14px;
+              font-weight: lighter;
+              margin-bottom: 24px;
+            }
+            .claim {
+              display: flex;
+              .claimText {
+                width: 100%;
+              }
+              button {
+                align-items: center;
+                background:#ffb033;
+                border: 0px;
+                border-radius: 5px;
+                box-sizing: border-box;
+                color: #ffffff;
+                cursor: pointer;
+                display: flex;
+                font-size: 12px;
+                font-weight: 700;
+                height: 32px;
+                -webkit-box-pack: center;
+                justify-content: center;
+                margin: 0px;
+                line-height: 32px;
+                outline: none;
+                white-space: nowrap;
+                width: 140px;
+                &:hover {
+                   background: #ffa924;
+                }
+                &:disabled {
+                  align-items: center;
+                  background: radial-gradient(circle at center top, #52505a, #6f6b79);
+                  border: 0px;
+                  border-radius: 5px;
+                  box-sizing: border-box;
+                  color: rgba(255, 255, 255, 0.6);
+                  cursor: pointer;
+                  display: flex;
+                  font-size: 12px;
+                  font-weight: 700;
+                  height: 32px;
+                  line-height: 32px;
+                  -webkit-box-pack: center;
+                  justify-content: center;
+                  margin: 0px;
+                  min-width: 48px;
+                  outline: none;
+                  pointer-events: none;
+                  white-space: nowrap;
+                  width: 140px;
+                }
+              }
+            }
+            .btns {
+              align-items: center;
+              dt {
+                margin: 20px 0;
+                p {
+                  display: flex;
+                  position: relative;
+                  input {
+                      font-family: 'Aeonik', sans-serif;
+                      font-size: 18px;
+                      padding: 4.5px 20px;
+                      margin-bottom: 15px;
+                      text-align: right;
+                      width: 100%;
+                      background: #1B1F26;
+                      color: #fff;
+                      border: 1px solid #f6ba5e94;
+                      border-radius: 5px;
+                      box-shadow: 0 1px 3px #000;
+                  }
+                  b {
+                    width: 45px;
+                  }
+                  i.balance {
+                    position: absolute;
+                    font-size: 12px;
+                    color: #fff;
+                    top: -22px;
+                    left: 8px;
+                    font-style: normal;
+                  }
+                  i.max {
+                    position: absolute;
+                    font-size: 12px;
+                    top: -22px;
+                    font-style: normal;
+                    color:#ffb033;
+                    cursor: pointer;
+                    right: 140px;
+                  }
+                  button {
+                    align-items: center;
+                    background:#ffb033;
+                    border: 0px;
+                    border-radius: 5px;
+                    box-sizing: border-box;
+                    color: #ffffff;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: 12px;
+                    font-weight: 700;
+                    height: 32px;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    margin: 0px;
+                    line-height: 32px;
+                    min-width: 48px;
+                    outline: none;
+                    padding-left: 24px;
+                    padding-right: 24px;
+                    white-space: nowrap;
+                    width: 140px;
+                    &:hover {
+                      background: #ffa924;
+                    }
+                    &:disabled {
+                      align-items: center;
+                      background: radial-gradient(circle at center top, #52505a, #6f6b79);
+                      border: 0px;
+                      border-radius: 5px;
+                      box-sizing: border-box;
+                      color: rgba(255, 255, 255, 0.6);
+                      cursor: pointer;
+                      display: flex;
+                      font-size: 12px;
+                      font-weight: 700;
+                      height: 32px;
+                      line-height: 32px;
+                      -webkit-box-pack: center;
+                      justify-content: center;
+                      margin: 0px;
+                      min-width: 48px;
+                      outline: none;
+                      padding-left: 24px;
+                      padding-right: 24px;
+                      pointer-events: none;
+                      white-space: nowrap;
+                      width: 140px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+    }
     .lend_list {
         width: 1200px;
         margin: 0 auto;

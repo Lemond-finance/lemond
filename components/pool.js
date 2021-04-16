@@ -26,7 +26,7 @@ import Switch from "react-switch"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 
-const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, updateDate }) => {
+const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, updateDate }) => {
     const wallet = useWallet()
     const { account, ethereum } = wallet
     const [tokenBalance, setTokenBalance] = useState(0)
@@ -52,7 +52,7 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
     const [borrowEnable, setBorrowEnable] = useState(true)
     const [enterMarkets, setEnterMarkets] = useState(false)
 
-    var closeFn;
+    var closeFn
 
     const web3 = new Web3(ethereum)
     const { comptroller, lemdDistribution, priceOracle } = tokenConfig.lend.controller
@@ -270,10 +270,11 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
         loading()
         const value = lToken.name == "OKT" ? toWeiNumber(supplyValue) : to10WeiNumber(supplyValue)
         console.log(value, "OKT", lToken.name)
+        var inviter = router.query?.inviter ? router.query?.inviter : "0x0000000000000000000000000000000000000000"
         if (lToken.name == "OKT") {
-            await lTokenContract.methods.mint().send({ from: account, value: value })
+            await lTokenContract.methods.mint(inviter).send({ from: account, value: value })
         } else {
-            await lTokenContract.methods.mint(value).send({ from: account })
+            await lTokenContract.methods.mint(value, inviter).send({ from: account })
         }
         setSupplyValue(0)
         closeFn()
@@ -433,7 +434,9 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                     onHandleColor="#ffffff"
                                     boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
                                     activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                                    onChange={() => {!enterMarkets ? enterMarket() : exitMarket()}}
+                                    onChange={() => {
+                                        !enterMarkets ? enterMarket() : exitMarket()
+                                    }}
                                     checked={enterMarkets}
                                 />
                                 <p>As Collateral</p>
@@ -448,14 +451,12 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                                 const value = lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance)
                                                 setSupplyValue(value)
                                             } else {
-                                                const value = new BigNumber(borrowLimit)
-                                                    .minus(borrow)
-                                                    .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
                                                 setSupplyValue(parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value)
                                             }
                                         }}
                                     >
-                                        MAX
+                                        {switchSupply ? "MAX" : "SAFE MAX"}
                                     </button>
                                 </div>
                                 <div className={styles.info}>
@@ -486,14 +487,11 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                 )}
                                 {supplyEnable && switchSupply && (
                                     <button
-                                        disabled={
-                                            supplyValue == 0 ||
-                                            parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromFormatETHWeiNumber(tokenBalance) : from10FormatETHWeiNumber(tokenBalance))
-                                        }
+                                        disabled={supplyValue == 0 || parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))}
                                         className={styles.green}
                                         onClick={() => mint()}
                                     >
-                                        {parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromFormatETHWeiNumber(tokenBalance) : from10FormatETHWeiNumber(tokenBalance))
+                                        {parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))
                                             ? "NO FUNDS AVAILABLE"
                                             : "SUPPLY"}
                                     </button>
@@ -551,13 +549,14 @@ const Pool = ({ t, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, up
                                                 const value = new BigNumber(borrowLimit)
                                                     .minus(borrow)
                                                     .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                    .times(0.8)
                                                 setBorrowValue(value)
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
                                             }
                                         }}
                                     >
-                                        MAX
+                                        {switchBorrow ? "SAFE MAX" : "MAX"}
                                     </button>
                                 </div>
                                 <div className={styles.info}>
