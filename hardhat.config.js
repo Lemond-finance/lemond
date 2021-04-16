@@ -34,7 +34,7 @@ module.exports = {
             allowUnlimitedContractSize: true,
         },
         okexchain: {
-            url: "https://exchaintest.okexcn.com",
+            url: "https://exchaintestrpc.okex.org",
             accounts: [mnemonic],
             timeout: 20000,
         },
