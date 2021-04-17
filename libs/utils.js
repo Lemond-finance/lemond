@@ -1,17 +1,23 @@
 // import { utils } from 'web3'
 import {utils} from 'ethers'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
+import numbro from "numbro"
 
 
 export function fromWeiNumber(number) {
   const bn = new BigNumber(String(number))
-  return numeral(bn.div(new BigNumber(10).pow(18))).format('0,0.00')
+  return numbro(bn.div(new BigNumber(10).pow(18))).format({
+      thousandSeparated: true,
+      mantissa: 2,
+  })
 }
 
 export function from10WeiNumber(number) {
     const bn = new BigNumber(String(number))
-    return numeral(bn.div(new BigNumber(10).pow(10))).format("0,0.00")
+    return numbro(bn.div(new BigNumber(10).pow(10))).format({
+      thousandSeparated: true,
+      mantissa: 2,
+  })
 }
 
 export function fromETHWeiNumber(number) {
@@ -21,7 +27,10 @@ export function fromETHWeiNumber(number) {
 
 export function fromFormatETHWeiNumber(number) {
     const bn = new BigNumber(String(number))
-    return numeral(bn.div(new BigNumber(10).pow(18))).format("0.00000000")
+    return numbro(bn.div(new BigNumber(10).pow(18))).format({
+      thousandSeparated: true,
+      mantissa: 8,
+  })
 }
 
 export function from10ETHWeiNumber(number) {
@@ -31,25 +40,26 @@ export function from10ETHWeiNumber(number) {
 
 export function from10FormatETHWeiNumber(number) {
     const bn = new BigNumber(String(number))
-    return numeral(bn.div(new BigNumber(10).pow(10))).format("0.00000000")
+    return numbro(bn.div(new BigNumber(10).pow(10))).format({
+      thousandSeparated: true,
+      mantissa: 8,
+  })
 }
 
 export function fromUSDNumber(number) {
    const bn = new BigNumber(String(number))
-  return numeral(bn.div(new BigNumber(10).pow(18))).format('$0,0.00')
+  return numbro(bn.div(new BigNumber(10).pow(18))).formatCurrency({ mantissa: 2 })
 }
 
 export function fromUSD(number) {
-  return numeral(number).format('$0,0.00')
+  return numbro(number).formatCurrency({ mantissa: 2 })
 }
 
 export function formatUSDNumer(number) {
-    if(number >= 1000 && number < 1000000){
-      return numeral(new BigNumber(String(number)).div(1000)).format("$0,0.00") + "K"
-    }else if (number >= 1000000) {
-        return numeral(new BigNumber(String(number)).div(1000000)).format("$0,0.00") + "M"
-    }
-    return numeral(number).format("$0,0.00")
+    return numbro(number).formatCurrency({
+      average: true,
+      mantissa: 2 
+    })
 }
 
 export function toWeiNumber(number) {
@@ -63,7 +73,10 @@ export function to10WeiNumber(number) {
 }
 
 export function fromAPY(number) {
-    return numeral(number).format("0,0.00")
+    return numbro(number).format({
+      thousandSeparated: true,
+      mantissa: 2,
+  })
 }
 
 export function fromBigNumber(number) {
@@ -73,7 +86,10 @@ export function fromBigNumber(number) {
 
 export function fromFormatBigNumber(number) {
     const bn = new BigNumber(String(number))
-    return numeral(bn.toString()).format("0.00000000")
+    return numbro(bn.toString()).format({
+      thousandSeparated: true,
+      mantissa: 8,
+  })
 }
 
 export function returnInteger(number){
