@@ -335,14 +335,14 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
             if (userAccrued <= lemdRemaining) {
                 uint maxMint = comptroller.getMaxInvitedMintAmount(msg.sender);
                 uint accountMint = comptroller.getInvitedMintAmount(msg.sender);
-                if( userAccrued < comptroller.getMaxInvitedMintAmount(msg.sender) && userAccrued < sub_(maxMint,accountMint)){
-                    comptroller.addInvitedMintAmount(msg.sender,userAccrued);
-                    lemd.transfer(user, userAccrued);
-                }else{
-                    if( maxMint > accountMint ){
-                        uint remaining = sub_(maxMint, accountMint);
-                        comptroller.addInvitedMintAmount(msg.sender,remaining);
-                        lemd.transfer(user, remaining);
+                uint upperLimit = sub_(maxMint,accountMint);
+                if(upperLimit > 0){
+                    if(userAccrued > upperLimit){
+                        comptroller.addInvitedMintAmount(msg.sender,upperLimit);
+                        lemd.transfer(user, upperLimit);
+                    }else{
+                        comptroller.addInvitedMintAmount(msg.sender,userAccrued);
+                        lemd.transfer(user, userAccrued);
                     }
                 }
                 return 0;
@@ -488,6 +488,9 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
             }
         }
 
+        if(pendingLemd > comptroller.getMaxInvitedMintAmount(holder)){
+            return comptroller.getMaxInvitedMintAmount(holder);
+        }
         return pendingLemd;
     }
 

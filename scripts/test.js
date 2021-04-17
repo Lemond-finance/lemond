@@ -33,6 +33,7 @@ async function main() {
     // await this.lEther.borrow(hre.ethers.utils.parseEther("0.2"))
 
     const LEMD = await hre.ethers.getContractAt("LEMD", "0x784503921c877Df8E228189601BB71C628593A87")
+    console.log(LEMD.address)
     // await LEMD.addMinter(this.deployer)
     // await LEMD.mint("0xDa755D8cAfc0e731245415d3da9748EB92D87CaC", hre.ethers.utils.parseEther("1000000"))
 
@@ -43,12 +44,12 @@ async function main() {
     // await this.lUSDT.mint(hre.ethers.utils.parseEther("1"))
 
     
-    this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0x0533259C3DB98220059B34eC9D5Cf38705E3A578")
-    const pendingLemdAccrued = await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)
-    console.log(hre.ethers.utils.formatEther(pendingLemdAccrued.toString()))
-    console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
-    await this.lemdDistribution.claimLemd(this.deployer)
-    console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
+    // this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0x0533259C3DB98220059B34eC9D5Cf38705E3A578")
+    // const pendingLemdAccrued = await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)
+    // console.log(hre.ethers.utils.formatEther(pendingLemdAccrued.toString()))
+    // console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
+    // await this.lemdDistribution.claimLemd(this.deployer)
+    // console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
     
     
     console.log("End")

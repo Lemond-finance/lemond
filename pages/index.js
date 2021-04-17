@@ -90,7 +90,10 @@ const Home = ({ t }) => {
                       </Link>{" "}
                   </p>
                   <p className={styles.btns}>
-                      Episode ② <button disabled>Comming soon</button>{" "}
+                      Episode ②{" "}
+                      <Link href="/lend">
+                          <button>Get Airdrop >></button>
+                      </Link>
                   </p>
                   <p className={styles.btns}>
                       Episode ③ <button disabled>Comming soon</button>{" "}
