@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import Pool from "../components/pool"
-import { fromUSD, fromWeiNumber} from "../libs/utils"
+import { fromUSD, fromWeiNumber, fromFormatETHWeiNumber, formatNmuber } from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 import BigNumber from "bignumber.js"
@@ -163,7 +163,7 @@ const Home = ({ t, router }) => {
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
                         <p>
-                            {fromWeiNumber(pendingLemd)}
+                            {formatNmuber(pendingLemd,18,6)}
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
