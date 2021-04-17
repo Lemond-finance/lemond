@@ -7,19 +7,7 @@ import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
-import {
-    formatUSDNmuber,
-    fromAPY,
-    formatUSDNumer,
-    fromBigNumber,
-    from10FormatETHWeiNumber,
-    fromFormatBigNumber,
-    fromFormatETHWeiNumber,
-    toWeiNumber,
-    to10WeiNumber,
-    fromETHWeiNumber,
-    from10ETHWeiNumber,
-} from "../libs/utils"
+import { formatUSDNmuber, formatThousandNumber, formatAverageNumber, formatNmuber, unFormatNumber, formatStringNumber } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import BigNumber from "bignumber.js"
 import Switch from "react-switch"
@@ -51,6 +39,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
     const [supplyEnable, setSupplyEnable] = useState(true)
     const [borrowEnable, setBorrowEnable] = useState(true)
     const [enterMarkets, setEnterMarkets] = useState(false)
+    const [remaining, setRemaining] = useState(0)
 
     var closeFn
 
@@ -62,16 +51,17 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
     const lemdDistributionContract = new web3.eth.Contract(lemdDistribution.abi, lemdDistribution.address)
     const priceOracleContract = new web3.eth.Contract(priceOracle.abi, priceOracle.address)
 
+    var digits = 18
+    if (lToken.name != "OKT") {
+        digits = 10
+    }
+
     useEffect(() => {
         const timer = setInterval(async () => {
             if (account) {
                 var ethMantissa = 1e18
                 if (lToken.name != "OKT") {
                     ethMantissa = 1e10
-                }
-                var digits = 18
-                if (lToken.name != "OKT") {
-                    digits = 10
                 }
                 const blocksPerDay = 17 * 60 * 24
                 const daysPerYear = 365
@@ -80,9 +70,9 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 const tokenBalance = lToken.name != "OKT" ? await tokenContract.methods.balanceOf(account).call() : await web3.eth.getBalance(account)
                 const supplyEnable = lToken.name != "OKT" ? (await tokenContract.methods.allowance(account, lToken.address).call()) > 0 : true
                 const borrowEnable = lToken.name != "OKT" ? (await lTokenContract.methods.allowance(account, lToken.address).call()) > 0 : true
-                const supplyApy = ((Math.pow((supplyRatePerBlock / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100).toFixed(2)
+                const supplyApy = ((Math.pow((supplyRatePerBlock / 1e18) * blocksPerDay + 1, daysPerYear) - 1) * 100).toFixed(2)
                 console.log("supplyApy", supplyApy)
-                const borrowApy = (((borrowRatePerBlock / ethMantissa) * blocksPerDay + 1) * 100).toFixed(2)
+                const borrowApy = (((borrowRatePerBlock / 1e18) * blocksPerDay + 1) * 100).toFixed(2)
                 console.log("borrowApy", borrowApy)
                 const totalSupply = await lTokenContract.methods.totalSupply().call()
                 console.log("totalSupply", totalSupply)
@@ -92,8 +82,19 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 console.log("exchangeRate", exchangeRate)
                 const marketSize = new BigNumber(totalSupply).times(exchangeRate).times(tokenPrice).div(new BigNumber(10).pow(18)).div(new BigNumber(10).pow(18)).toFixed(2)
                 console.log("marketSize", marketSize)
-                const totalBorrow = new BigNumber(await lTokenContract.methods.totalBorrowsCurrent().call()).div(new BigNumber(10).pow(18)).times(tokenPrice).div(new BigNumber(10).pow(18)).toFixed(2)
+                const totalBorrowsCurrent = await lTokenContract.methods.totalBorrowsCurrent().call()
+                const totalBorrow = new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(digits)).times(tokenPrice).div(new BigNumber(10).pow(18)).toFixed(2)
                 console.log("totalBorrow", totalBorrow)
+                const remaining = new BigNumber(totalSupply)
+                    .times(exchangeRate)
+                    .div(new BigNumber(10).pow(18))
+                    .minus(new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(18)))
+                console.log(
+                    "remaining",
+                    remaining.toString(),
+                    new BigNumber(totalSupply).times(exchangeRate).div(new BigNumber(10).pow(18)).toString(),
+                    new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(18)).toString(),
+                )
 
                 const accountSnapshot = await lTokenContract.methods.getAccountSnapshot(account).call()
                 console.log("accountSnapshot", accountSnapshot)
@@ -120,8 +121,8 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
 
                 const lemdSpeedPerBlock = new BigNumber(await lemdDistributionContract.methods.lemdSpeeds(lToken.address).call()).div(new BigNumber(10).pow(18)).times(lemdPrice)
                 console.log("lemdSpeed", lemdSpeedPerBlock.toFixed())
-                const supplyRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).div(marketSize).times(100).toFixed(2)
-                const borrowRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).div(totalBorrow).times(100).toFixed(2)
+                const supplyRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).times(lemdPrice).div(marketSize).times(100).toFixed(2)
+                const borrowRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).times(lemdPrice).div(totalBorrow).times(100).toFixed(2)
                 console.log("supplyRewardAPY", supplyRewardAPY)
                 console.log("borrowRewardAPY", borrowRewardAPY)
 
@@ -146,6 +147,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 setSupplyApy(supplyApy)
                 setBorrowApy(borrowApy)
                 setMarketSize(marketSize)
+                setRemaining(remaining)
                 setSupplyBalance(supplyBalance)
                 setSupplyBalanceAmount(supplyBalanceAmount)
                 setBorrowBalance(borrowBalance)
@@ -239,7 +241,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
     }
 
     const checkBorrowingLimit = () => {
-        if (new BigNumber(supplyBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)) > new BigNumber(borrowLimit).minus(borrow)) {
+        if (new BigNumber(supplyBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)) < new BigNumber(borrowLimit).minus(borrow)) {
             confirmAlert({
                 customUI: ({ onClose }) => {
                     return (
@@ -268,7 +270,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
         if (checkWallet()) return
         if (checkZero(supplyValue * 1)) return
         loading()
-        const value = lToken.name == "OKT" ? toWeiNumber(supplyValue) : to10WeiNumber(supplyValue)
+        const value = lToken.name == "OKT" ? unFormatNumber(supplyValue, 18) : unFormatNumber(supplyValue, 10)
         console.log(value, "OKT", lToken.name)
         var inviter = router.query?.inviter ? router.query?.inviter : "0x0000000000000000000000000000000000000000"
         if (lToken.name == "OKT") {
@@ -285,7 +287,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
         if (checkWallet()) return
         if (checkZero(supplyValue * 1)) return
         loading()
-        const value = lToken.name == "OKT" ? toWeiNumber(supplyValue) : to10WeiNumber(supplyValue)
+        const value = lToken.name == "OKT" ? unFormatNumber(supplyValue, 18) : unFormatNumber(supplyValue, 10)
         console.log("redeem", value)
         await lTokenContract.methods.redeemUnderlying(value).send({ from: account })
         setSupplyValue(0)
@@ -303,7 +305,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
         if (checkWallet()) return
         if (checkZero(borrowValue * 1)) return
         loading()
-        const value = lToken.name == "OKT" ? toWeiNumber(borrowValue) : to10WeiNumber(borrowValue)
+        const value = lToken.name == "OKT" ? unFormatNumber(borrowValue, 18) : unFormatNumber(borrowValue, 10)
         await lTokenContract.methods.borrow(value).send({ from: account })
         setBorrowValue(0)
         closeFn()
@@ -314,7 +316,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
         if (checkWallet()) return
         if (checkZero(borrowValue * 1)) return
         loading()
-        const value = lToken.name == "OKT" ? toWeiNumber(borrowValue) : to10WeiNumber(borrowValue)
+        const value = lToken.name == "OKT" ? unFormatNumber(borrowValue, 18) : unFormatNumber(borrowValue, 10)
         if (lToken.name == "OKT") {
             await lTokenContract.methods.repayBorrow().send({ from: account, value: value })
         } else {
@@ -354,44 +356,44 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                     <p className={styles.sub_title}>{lToken.description}</p>
                 </span>
                 <span>
-                    <p>{formatUSDNumer(marketSize)}</p>
+                    <p>{formatAverageNumber(marketSize, 2)}</p>
                     <p className={styles.sub_titles}>Market Size</p>
                 </span>
                 <span>
-                    <p>{formatUSDNumer(totalBorrow)}</p>
+                    <p>{formatAverageNumber(totalBorrow, 2)}</p>
                     <p className={styles.sub_titles}>Total Borrowed</p>
                 </span>
                 <span>
                     <p>
                         <b className={styles.green}>↑</b>
-                        {fromAPY(totalSupplyAPY)}%
+                        {formatThousandNumber(totalSupplyAPY, 2)}%
                     </p>
                     <p className={styles.sub_titles}>Deposit APY</p>
                 </span>
                 <span className={styles.border_right}>
                     <p>
                         {totalBorrowAPY > 0 ? <b className={styles.red}>↓</b> : <b className={styles.green}>↑</b>}
-                        {fromAPY(Math.abs(totalBorrowAPY))}%
+                        {formatThousandNumber(Math.abs(totalBorrowAPY), 2)}%
                     </p>
                     <p className={styles.sub_titles}>Borrow APY</p>
                 </span>
                 <span>
                     <h4>
                         <s>
-                            {fromAPY(supplyBalanceAmount)}
+                            {formatThousandNumber(supplyBalanceAmount, 2)}
                             <b>{lToken.name}</b>
                         </s>
-                        <s>{formatUSDNmuber(supplyBalance,2)}</s>
+                        <s>{formatUSDNmuber(supplyBalance, 2)}</s>
                     </h4>
                     <p className={styles.sub_titles}>Supply Balance</p>
                 </span>
                 <span>
                     <h4>
                         <s>
-                            {fromAPY(borrowBalanceAmount)}
+                            {formatThousandNumber(borrowBalanceAmount, 2)}
                             <b>{lToken.name}</b>
                         </s>
-                        <s>{formatUSDNmuber(borrowBalance,2)}</s>
+                        <s>{formatUSDNmuber(borrowBalance, 2)}</s>
                     </h4>
                     <p className={styles.sub_titles}>Borrow Balance</p>
                 </span>
@@ -454,7 +456,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                     <button
                                         onClick={() => {
                                             if (switchSupply) {
-                                                const value = lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance)
+                                                const value = lToken.name == "OKT" ? formatStringNumber(tokenBalance, 18) : formatStringNumber(tokenBalance, 10)
                                                 setSupplyValue(value)
                                             } else {
                                                 const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
@@ -501,11 +503,13 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                 )}
                                 {supplyEnable && switchSupply && (
                                     <button
-                                        disabled={supplyValue == 0 || parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))}
+                                        disabled={
+                                            supplyValue == 0 || parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? formatStringNumber(tokenBalance, 18) : formatStringNumber(tokenBalance, 10))
+                                        }
                                         className={styles.green}
                                         onClick={() => mint()}
                                     >
-                                        {parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? fromETHWeiNumber(tokenBalance) : from10ETHWeiNumber(tokenBalance))
+                                        {parseFloat(supplyValue) > parseFloat(lToken.name == "OKT" ? formatStringNumber(tokenBalance, 18) : formatStringNumber(tokenBalance, 10))
                                             ? "NO FUNDS AVAILABLE"
                                             : "SUPPLY"}
                                     </button>
@@ -518,8 +522,8 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                             </span>
                             <span className={styles.balance}>
                                 <h1>
-                                    {switchSupply && (lToken.name == "OKT" ? fromFormatETHWeiNumber(tokenBalance) : from10FormatETHWeiNumber(tokenBalance))}
-                                    {!switchSupply && fromFormatBigNumber(supplyBalanceAmount)} <b>{lToken.name}</b>
+                                    {switchSupply && (lToken.name == "OKT" ? formatNmuber(tokenBalance, 18, 8) : formatNmuber(tokenBalance, 10, 8))}
+                                    {!switchSupply && formatThousandNumber(supplyBalanceAmount, 8)} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
                                     {switchSupply && "Wallet Balance"}
@@ -563,8 +567,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                                 const value = new BigNumber(borrowLimit)
                                                     .minus(borrow)
                                                     .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                    .times(0.8)
-                                                setBorrowValue(value)
+                                                    setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
                                             }
@@ -627,8 +630,8 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                             </span>
                             <span className={cx(styles.balance, styles.fr)}>
                                 <h1>
-                                    {switchBorrow && fromFormatBigNumber(borrowBalanceAmount)}
-                                    {!switchBorrow && (lToken.name == "OKT" ? fromFormatETHWeiNumber(tokenBalance) : from10FormatETHWeiNumber(tokenBalance))} <b>{lToken.name}</b>
+                                    {switchBorrow && formatThousandNumber(borrowBalanceAmount, 8)}
+                                    {!switchBorrow && (lToken.name == "OKT" ? formatNmuber(tokenBalance, 18, 8) : formatNmuber(tokenBalance, 10, 8))} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
                                     {switchBorrow && "Currently Borrowing"}
@@ -640,11 +643,11 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 </dl>
                 <span className={styles.borrow_limit}>
                     <span className={styles.item}>
-                        <h1>{formatUSDNmuber(borrow,4)}</h1>
+                        <h1>{formatUSDNmuber(borrow, 4)}</h1>
                         <p>Borrow Limit</p>
                     </span>
                     <span className={styles.item}>
-                        <h1>{formatUSDNmuber(borrowLimit,4)}</h1>
+                        <h1>{formatUSDNmuber(borrowLimit, 4)}</h1>
                         <p>Borrow Limit Used</p>
                     </span>
                     <span className={styles.bar}>

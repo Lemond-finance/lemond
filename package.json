@@ -39,6 +39,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.3",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "bignumber.js": "^9.0.1",
     "ethereum-waffle": "^3.2.0",
     "ethers": "^5.0.31",

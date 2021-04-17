@@ -127,10 +127,6 @@ const Home = ({ t, router }) => {
         await lemdDistributionContract.methods.claimLemd(account).send({ from: account })
     }
 
-    const showAlert = () => {
-        toast.dark("🚀 Waiting for open!", toastConfig)
-    }
-
     return (
         <HeaderFooter activeIndex={2}>
             <ToastContainer />
@@ -142,10 +138,10 @@ const Home = ({ t, router }) => {
                     <h1>
                         <i className={styles.light}></i>
                         <span className={styles.box_front}></span>
-                        <span className={styles.text}>
+                        {/* <span className={styles.text}>
                             <h2>Net APY</h2>
                             <p>0.00%</p>
-                        </span>
+                        </span> */}
                         <i className={styles.lemond1}></i>
                         <i className={styles.lemond2}></i>
                         <i className={styles.lemond3}></i>
@@ -154,11 +150,11 @@ const Home = ({ t, router }) => {
                     </h1>
                     <div className={cx(styles.supplyText, styles.price)}>
                         <h3>LEMD Price</h3>
-                        <p>{formatUSDNmuber(lemdPrice,2)}</p>
+                        <p>{formatUSDNmuber(lemdPrice, 2)}</p>
                     </div>
                     <div className={styles.supplyText}>
                         <h3>Supply Balance</h3>
-                        <p>{formatUSDNmuber(supplyBalance,2)}</p>
+                        <p>{formatUSDNmuber(supplyBalance, 2)}</p>
                     </div>
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
@@ -169,7 +165,7 @@ const Home = ({ t, router }) => {
                     </div>
                     <div className={styles.borrowText}>
                         <h3>Borrow Balance</h3>
-                        <p>{formatUSDNmuber(borrowBalance,2)}</p>
+                        <p>{formatUSDNmuber(borrowBalance, 2)}</p>
                     </div>
                     <div className={styles.lend_line}>
                         <div className={styles.line}>
@@ -179,7 +175,7 @@ const Home = ({ t, router }) => {
                             </i>
                         </div>
                         <span className={styles.text}>Borrow Limit</span>
-                        <span className={styles.num}>{formatUSDNmuber(borrowBalanceLimit,2)}</span>
+                        <span className={styles.num}>{formatUSDNmuber(borrowBalanceLimit, 2)}</span>
                         <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
@@ -194,7 +190,7 @@ const Home = ({ t, router }) => {
                         <p>*Real minted LEMD for Airdrop Episode II will be distributed on a 1:1 basis before the official launch of OKExChain by further notice.</p>
                         <h1>Invite to Claim MORE!</h1>
                         <p>
-                            You can invite up to <b>5</b> persons to increase your max amount of claiming from <b>20</b> to <b>70</b>.(10 up per invited person)
+                            You can invite up to <b>5</b> persons to increase your max amount of claiming from <b>10</b> to <b>60</b>.(10 up per invited person)
                         </p>
                         <p>*Effect will be activated after invited person supplies in the pool.</p>
                     </span>
@@ -233,7 +229,7 @@ const Home = ({ t, router }) => {
                         </p>
                         <p>
                             Click for{" "}
-                            <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-test-to-get-airdrop-cc48c26812f">
+                            <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-loan-to-get-airdrop-5d980bc3da56">
                                 detailed instructions.
                             </a>
                         </p>

@@ -12,7 +12,7 @@ module.exports = {
     },
     token: {
         lemond: {
-            address: "0x1d58D84fBAC3e2C665d281F8bc25DF0505A7993f",
+            address: "0xE667d8bD182D165D2E71cF72315bD117f6940094",
             abi: require("./abi/LEMD.json"),
         },
     },
@@ -41,35 +41,35 @@ module.exports = {
         },
         lTokens: {
             lEther: {
-                address: "0xe90da92488080cD47cf27A1e7AA7f8B3D3D99518",
+                address: "0x01b2E0845E2F711509b664CD0aD0b85E43d01878",
                 abi: require("./abi/LEther.json"),
                 className: "okb",
                 name: "OKT",
                 description: "OKExChain Token",
             },
             lOKB: {
-                address: "0xDA092ea1135589AF7C0eEEe2Df8C18880962b940",
+                address: "0x3C39Eb941db646982e4691446f6aB60d737919bc",
                 abi: require("./abi/LERC20.json"),
                 className: "okb",
                 name: "OKB",
                 description: "OKEx Token",
             },
             lUSDT: {
-                address: "0x9698842432f0fB5Adf236CFb11A8439E4DACF8b5",
+                address: "0x078baA86150286CC6e29Ec6B746593c14c7A82d3",
                 abi: require("./abi/LERC20.json"),
                 className: "usdt",
                 name: "USDT",
                 description: "Tether USD",
             },
             lETHK: {
-                address: "0x020EBb2A1C0F4687b4BAF0DDC5Ad7f6655585993",
+                address: "0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9",
                 abi: require("./abi/LERC20.json"),
                 className: "eth",
                 name: "ETH",
                 description: "Ethereum",
             },
             lBTCK: {
-                address: "0xDB4A990520cD422A621D00D4D473fEd63503324B",
+                address: "0xdc1e9B17EcF09EC52748f35059251FFb03a571c9",
                 abi: require("./abi/LERC20.json"),
                 className: "btc",
                 name: "BTC",
@@ -78,23 +78,23 @@ module.exports = {
         },
         controller: {
             lemdBreeder: {
-                address: "0xA3Ae681f046178c6A8D77D28Cc475b237E74B116",
+                address: "0xC97C0DE75391c7A1D04d76Be406F39B4d94EE7ff",
                 abi: require("./abi/LemdBreeder.json"),
             },
             lemdDistribution: {
-                address: "0x3786686C97F6EBC2E008607a578c1be29f9d1e3E",
+                address: "0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8",
                 abi: require("./abi/LemdDistribution.json"),
             },
             priceOracle: {
-                address: "0x26cda91358aC555f404C015d060195C7046fe4ed",
+                address: "0x1B0e0d095A5d8721E2d3b5dcD43dE29791164FCF",
                 abi: require("./abi/SimplePriceOracle.json"),
             },
             comptroller: {
-                address: "0xCFA272e12ef5F32DC557894f1cA9F155D6CD81BE",
+                address: "0x12F2d7D1dd0Ff12584FCf8A7996fF4F70d74963f",
                 abi: require("./abi/Comptroller.json"),
             },
             jumpRateModel: {
-                address: "0xe0978567Dbe93241e0b5ef63dEB630E1bC867564",
+                address: "0x1f3E25A504C90152B3C07994e4776A81aE744468",
                 abi: require("./abi/JumpRateModel.json"),
             },
         },
