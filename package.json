@@ -12,6 +12,7 @@
     "classnames": "^2.2.6",
     "json-circular-stringify": "1.0.1",
     "next": "10.0.1",
+    "numbro": "^2.3.2",
     "react": "17.0.1",
     "react-compound-timer": "^1.2.0",
     "react-confirm-alert": "^2.6.2",
@@ -48,7 +49,6 @@
     "next-i18next": "^7.0.1",
     "next-images": "^1.6.2",
     "nodemon": "^2.0.6",
-    "numeral": "^2.0.6",
     "openzeppelin-solidity": "^2.5.1",
     "react-clipboard.js": "^2.0.16",
     "react-toastify": "^7.0.3"
