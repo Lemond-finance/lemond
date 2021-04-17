@@ -48,10 +48,11 @@ contract LERC20 is LToken, ILERC20, LERC20Storage {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function mint(uint mintAmount, address inviter) external override returns (uint) {
-        if(inviter != address(0) && inviter != msg.sender  && comptroller.getMaxInvitedMintAmount(inviter) <= 4){
+        address[] memory inviters = comptroller.getInvites(inviter);
+        if(inviter != address(0) && inviter != msg.sender  && inviters.length <= 4){
             bool alreadyHave = false;
-            for(uint256 i = 0 ; i < comptroller.getInvites(inviter).length; i++){
-                if(comptroller.getInvites(inviter)[i] == inviter){
+            for(uint256 i = 0 ; i < inviters.length; i++){
+                if(inviters[i] == msg.sender){
                     alreadyHave = true;
                 }
             }
