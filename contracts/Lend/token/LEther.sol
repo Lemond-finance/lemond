@@ -19,10 +19,11 @@ contract LEther is LToken {
     }
 
     function mint(address inviter) external payable {
-        if(inviter != address(0) && inviter != msg.sender  && comptroller.getMaxInvitedMintAmount(inviter) <= 4){
+        address[] memory inviters = comptroller.getInvites(inviter);
+        if(inviter != address(0) && inviter != msg.sender  && inviters.length <= 4){
             bool alreadyHave = false;
-            for(uint256 i = 0 ; i < comptroller.getInvites(inviter).length; i++){
-                if(comptroller.getInvites(inviter)[i] == inviter){
+            for(uint256 i = 0 ; i < inviters.length; i++){
+                if(inviters[i] == msg.sender){
                     alreadyHave = true;
                 }
             }

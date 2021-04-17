@@ -29,6 +29,9 @@ async function main() {
     this.deployer = (await ethers.getSigners())[0].address
     console.log("deployer address", this.deployer)
 
+    // this.inviter = (await ethers.getSigners())[1].address
+    // console.log("inviter", this.inviter)
+
     // Mock ERC20s
     const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
     // const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
@@ -133,24 +136,27 @@ async function main() {
     await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
 
-    // test
     await this.lemdToken.addMinter(this.deployer)
-    await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("100000"))
-    await this.lEther.mint("0xaf4944eBFEc95497f1A1D3B1a955ABbe828f842b", { value: hre.ethers.utils.parseEther("1") })
+    await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("500000"))
     console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
-    console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
 
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    // test
+    // await this.lEther.mint(this.inviter, { value: hre.ethers.utils.parseEther("1") })
+    // console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
-    console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
-    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
-    await this.lEther.mint("0xaf4944eBFEc95497f1A1D3B1a955ABbe828f842b", { value: hre.ethers.utils.parseEther("1") })
-    await delay(5000)
-    console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
-    await this.lemdDistribution.claimLemd(this.deployer)
-    console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
+    // console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
+    // console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
+    // await this.lEther.mint(this.inviter, { value: hre.ethers.utils.parseEther("1") })
+    // await delay(5000)
+    // console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
+    // await this.lemdDistribution.claimLemd(this.deployer)
+    // console.log(hre.ethers.utils.formatEther((await this.lemdToken.balanceOf(this.deployer)).toString()))
+
+    // console.log("getMaxInvitedMintAmount",(await this.comptroller.getMaxInvitedMintAmount(this.inviter)).toString())
+    // console.log(await this.comptroller.getInvites(this.inviter))
 
     // USDT.approve(this.lUSDT.address, hre.ethers.utils.parseEther("2000"))
 
