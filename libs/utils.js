@@ -17,6 +17,13 @@ export function formatStringNumber(number, digits) {
     return bn.div(new BigNumber(10).pow(digits)).toString()
 }
 
+export function formatUSDNmuber(number, decimals){
+   return numbro(number).formatCurrency({
+       average: true,
+       mantissa: decimals,
+   })
+}
+
 export function fromWeiNumber(number) {
   const bn = new BigNumber(String(number))
   return numbro(bn.div(new BigNumber(10).pow(18))).format({
@@ -76,7 +83,7 @@ export function formatUSDNumer(number) {
 }
 
 export function toWeiNumber(number) {
-  const bn = new BigNumber(String(number))
+  const bn = new BigNumber(utils.parseEther(String(number)))
   return returnInteger(bn.times(new BigNumber(10).pow(18)))
 }
 

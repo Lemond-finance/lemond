@@ -8,7 +8,7 @@ import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
 import {
-    fromUSD,
+    formatUSDNmuber,
     fromAPY,
     formatUSDNumer,
     fromBigNumber,
@@ -355,11 +355,11 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 </span>
                 <span>
                     <p>{formatUSDNumer(marketSize)}</p>
-                    <p className={styles.sub_titles}>Market size</p>
+                    <p className={styles.sub_titles}>Market Size</p>
                 </span>
                 <span>
                     <p>{formatUSDNumer(totalBorrow)}</p>
-                    <p className={styles.sub_titles}>Total borrowed</p>
+                    <p className={styles.sub_titles}>Total Borrowed</p>
                 </span>
                 <span>
                     <p>
@@ -381,7 +381,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                             {fromAPY(supplyBalanceAmount)}
                             <b>{lToken.name}</b>
                         </s>
-                        <s>{fromUSD(supplyBalance)}</s>
+                        <s>{formatUSDNmuber(supplyBalance,2)}</s>
                     </h4>
                     <p className={styles.sub_titles}>Supply Balance</p>
                 </span>
@@ -391,7 +391,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                             {fromAPY(borrowBalanceAmount)}
                             <b>{lToken.name}</b>
                         </s>
-                        <s>{fromUSD(borrowBalance)}</s>
+                        <s>{formatUSDNmuber(borrowBalance,2)}</s>
                     </h4>
                     <p className={styles.sub_titles}>Borrow Balance</p>
                 </span>
@@ -580,7 +580,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                             <p>
                                                 <span>Borrow APY</span>
                                                 <span className={styles.num}>
-                                                    <b className={styles.red}>↑</b>
+                                                    <b className={styles.red}>↓</b>
                                                     {borrowApy}%
                                                 </span>
                                             </p>
@@ -640,11 +640,11 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 </dl>
                 <span className={styles.borrow_limit}>
                     <span className={styles.item}>
-                        <h1>{fromUSD(borrow)}</h1>
+                        <h1>{formatUSDNmuber(borrow,4)}</h1>
                         <p>Borrow Limit</p>
                     </span>
                     <span className={styles.item}>
-                        <h1>{fromUSD(borrowLimit)}</h1>
+                        <h1>{formatUSDNmuber(borrowLimit,4)}</h1>
                         <p>Borrow Limit Used</p>
                     </span>
                     <span className={styles.bar}>

@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import Pool from "../components/pool"
-import { fromUSD, fromWeiNumber, fromFormatETHWeiNumber, formatNmuber } from "../libs/utils"
+import { formatUSDNmuber, formatNmuber } from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 import BigNumber from "bignumber.js"
@@ -154,22 +154,22 @@ const Home = ({ t, router }) => {
                     </h1>
                     <div className={cx(styles.supplyText, styles.price)}>
                         <h3>LEMD Price</h3>
-                        <p>{fromUSD(lemdPrice)}</p>
+                        <p>{formatUSDNmuber(lemdPrice,2)}</p>
                     </div>
                     <div className={styles.supplyText}>
                         <h3>Supply Balance</h3>
-                        <p>{fromUSD(supplyBalance)}</p>
+                        <p>{formatUSDNmuber(supplyBalance,2)}</p>
                     </div>
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
                         <p>
-                            {formatNmuber(pendingLemd,18,6)}
+                            {formatNmuber(pendingLemd, 18, 4)}
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
                     <div className={styles.borrowText}>
                         <h3>Borrow Balance</h3>
-                        <p>{fromUSD(borrowBalance)}</p>
+                        <p>{formatUSDNmuber(borrowBalance,2)}</p>
                     </div>
                     <div className={styles.lend_line}>
                         <div className={styles.line}>
@@ -179,7 +179,7 @@ const Home = ({ t, router }) => {
                             </i>
                         </div>
                         <span className={styles.text}>Borrow Limit</span>
-                        <span className={styles.num}>{fromUSD(borrowBalanceLimit)}</span>
+                        <span className={styles.num}>{formatUSDNmuber(borrowBalanceLimit,2)}</span>
                         <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
@@ -189,35 +189,33 @@ const Home = ({ t, router }) => {
                         <p>
                             Total LEMD to be airdropped : <b>500,000 LEMD</b>
                             <br />
-                            Period of airdrop: <b>12.00 UTC, Mar 12 to 12.00 UTC, Mar 22</b>
+                            Period of airdrop: <b>12.00 UTC, Apr 18 to 12.00 UTC, Apr 25</b>
                         </p>
+                        <p>*Real minted LEMD for Airdrop Episode II will be distributed on a 1:1 basis before the official launch of OKExChain by further notice.</p>
+                        <h1>Invite to Claim MORE!</h1>
                         <p>
-                            *Real minted LEMD for Airdrop Episode I will be distributed on a <b>1:1</b> basis before the official launch of OKExChain by further notice.
+                            You can invite up to <b>5</b> persons to increase your max amount of claiming from <b>20</b> to <b>70</b>.(10 up per invited person)
                         </p>
-                        <h1>Invite to Stake MORE!</h1>
-                        <p>
-                            You can invite up to <b>5</b> persons to increase your max amount of <b>OKT</b> for staking from <b>100</b> to <b>500</b>.(100 up per invited person)
-                        </p>
-                        <p>*Effect will be activated after invited person stakes in the pool.</p>
+                        <p>*Effect will be activated after invited person supplies in the pool.</p>
                     </span>
                     <span className={cx(styles.rules, styles.info)}>
                         <h2>
-                            <span>Remaining LEMD:</span>
+                            <span>LEMD Remaining:</span>
                             <span>
-                                <b>{fromWeiNumber(remainingLemd)}</b>
+                                <b>{formatNmuber(remainingLemd, 18, 2)}</b>
                             </span>
                         </h2>
                         <h2>
-                            <span>Invited people:</span>
+                            <span>Persons Invited:</span>
                             <span>
                                 <b>{inviteAmount}</b>
                             </span>
                         </h2>
                         <h2>
-                            <span>Invited Cap:</span>
+                            <span>Claim Cap:</span>
                             <span>
                                 <b>
-                                    {fromWeiNumber(invitedMintAmount)}/{fromWeiNumber(maxInvitedMintAmount)}
+                                    {formatNmuber(invitedMintAmount, 18, 2)}/{formatNmuber(maxInvitedMintAmount, 18, 2)}
                                 </b>
                             </span>
                         </h2>
