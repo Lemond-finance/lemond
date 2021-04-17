@@ -362,11 +362,17 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                     <p className={styles.sub_titles}>Total borrowed</p>
                 </span>
                 <span>
-                    <p>{fromAPY(totalSupplyAPY)}%</p>
+                    <p>
+                        <b className={styles.green}>↑</b>
+                        {fromAPY(totalSupplyAPY)}%
+                    </p>
                     <p className={styles.sub_titles}>Deposit APY</p>
                 </span>
                 <span className={styles.border_right}>
-                    <p>{fromAPY(totalBorrowAPY)}%</p>
+                    <p>
+                        {totalBorrowAPY > 0 ? <b className={styles.red}>↓</b> : <b className={styles.green}>↑</b>}
+                        {fromAPY(Math.abs(totalBorrowAPY))}%
+                    </p>
                     <p className={styles.sub_titles}>Borrow APY</p>
                 </span>
                 <span>
@@ -467,13 +473,19 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                         <li>
                                             <p>
                                                 <span>Supply APY</span>
-                                                <span className={styles.num}>{supplyApy}%</span>
+                                                <span className={styles.num}>
+                                                    <b className={styles.green}>↑</b>
+                                                    {supplyApy}%
+                                                </span>
                                             </p>
                                         </li>
                                         <li>
                                             <p>
                                                 <span>Distribution APY</span>
-                                                <span className={styles.num}>{supplyRewardAPY}%</span>
+                                                <span className={styles.num}>
+                                                    <b className={styles.green}>↑</b>
+                                                    {supplyRewardAPY}%
+                                                </span>
                                             </p>
                                         </li>
                                     </ul>
@@ -567,13 +579,19 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                         <li>
                                             <p>
                                                 <span>Borrow APY</span>
-                                                <span className={styles.num}>{borrowApy}%</span>
+                                                <span className={styles.num}>
+                                                    <b className={styles.red}>↑</b>
+                                                    {borrowApy}%
+                                                </span>
                                             </p>
                                         </li>
                                         <li>
                                             <p>
                                                 <span>Distribution APY</span>
-                                                <span className={styles.num}>{borrowRewardAPY}%</span>
+                                                <span className={styles.num}>
+                                                    <b className={styles.green}>↑</b>
+                                                    {borrowRewardAPY}%
+                                                </span>
                                             </p>
                                         </li>
                                     </ul>

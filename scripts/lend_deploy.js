@@ -42,6 +42,7 @@ async function main() {
 
     // LEMD Token
     this.lemdToken = await LEMD.new()
+    // this.lemdToken = await hre.ethers.getContractAt("LEMD", "0xE667d8bD182D165D2E71cF72315bD117f6940094")
     console.log("lemdToken", this.lemdToken.address)
 
     // LemdBreeder
@@ -49,7 +50,6 @@ async function main() {
     console.log("lemdBreeder", this.lemdBreeder.address)
 
     // Grant miner role to lemdBreeder
-    // await this.lemdToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", this.lemdBreeder.address)
     await this.lemdToken.addMinter(this.lemdBreeder.address)
     console.log("lemdToken grantRole", this.lemdBreeder.address)
 
@@ -118,7 +118,7 @@ async function main() {
     await this.comptroller._setCollateralFactor(this.lOKB.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCollateralFactor(this.lUSDT.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCollateralFactor(this.lETHK.address, hre.ethers.utils.parseEther("0.75"))
-    await this.comptroller._setCollateralFactor(this.lBTCK.address, hre.ethers.utils.parseEther("0.6"))
+    await this.comptroller._setCollateralFactor(this.lBTCK.address, hre.ethers.utils.parseEther("0.75"))
     await this.comptroller._setCloseFactor(hre.ethers.utils.parseEther("0.5"))
     await this.comptroller._setLiquidationIncentive(hre.ethers.utils.parseEther("1.05"))
     await this.comptroller._setLemdDistribution(this.lemdDistribution.address)
@@ -128,11 +128,11 @@ async function main() {
 
     await delay(5000)
     // set lTokens speed and set lemdDistribution config
-    await this.lemdDistribution._setLemdSpeed(this.lEther.address, hre.ethers.utils.parseEther("1"))
-    await this.lemdDistribution._setLemdSpeed(this.lOKB.address, hre.ethers.utils.parseEther("1"))
-    await this.lemdDistribution._setLemdSpeed(this.lUSDT.address, hre.ethers.utils.parseEther("1"))
-    await this.lemdDistribution._setLemdSpeed(this.lETHK.address, hre.ethers.utils.parseEther("1"))
-    await this.lemdDistribution._setLemdSpeed(this.lBTCK.address, hre.ethers.utils.parseEther("1"))
+    await this.lemdDistribution._setLemdSpeed(this.lEther.address, hre.ethers.utils.parseEther("0.25"))
+    await this.lemdDistribution._setLemdSpeed(this.lOKB.address, hre.ethers.utils.parseEther("0.25"))
+    await this.lemdDistribution._setLemdSpeed(this.lUSDT.address, hre.ethers.utils.parseEther("0.25"))
+    await this.lemdDistribution._setLemdSpeed(this.lETHK.address, hre.ethers.utils.parseEther("0.25"))
+    await this.lemdDistribution._setLemdSpeed(this.lBTCK.address, hre.ethers.utils.parseEther("0.25"))
     await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
 
