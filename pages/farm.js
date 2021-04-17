@@ -16,10 +16,9 @@ import '../styles/react-confirm-alert.less'
 const cx = classNames.bind(styles)
 import Web3 from 'web3'
 import {
-  fromWeiNumber,
+  formatNmuber,
   toWeiNumber,
-  fromUSDNumber,
-  fromETHWeiNumber,
+  formatStringNumber,
 } from '../libs/utils'
 import tokenConfig from '../contract.config.js'
 import CountUp from 'react-countup';
@@ -67,7 +66,7 @@ const Home = ({ t,router }) => {
           setStakeNum(stakeNum)
           setUnStakeNum(unStakeNum)
           setEarnedNum(earnedNum)
-          setLemondBalance(fromETHWeiNumber(lemondBalance))
+          setLemondBalance(formatStringNumber(lemondBalance,18))
           setInvitedNum(invitedNum)
           console.log("invitedNum",invitedNum)
         }
@@ -214,7 +213,7 @@ const Home = ({ t,router }) => {
               Confirm to{' '}
               {type == 'getReward' ? 'claim ?' : 'claim & withdraw ?'}
             </h1>
-            <p>Your Actual Earned will be{' '}<b>{fromETHWeiNumber(earnedNum)}</b> LEMD.</p>
+            <p>Your Actual Earned will be{' '}<b>{formatStringNumber(earnedNum,18)}</b> LEMD.</p>
             <p className={styles.center}>
               <button
                 onClick={() =>
@@ -271,12 +270,12 @@ const Home = ({ t,router }) => {
                         <h2 onClick={() => window.open(oktConfig.link)}>
                         {oktConfig.description}
                         </h2>
-                        <h3>{fromWeiNumber(stakeNum)}</h3>
+                        <h3>{formatNmuber(stakeNum,18,8)}</h3>
                         <h4>Staked OKT Tokens</h4>
                         <div className={styles.claim}>
                         <div className={styles.claimText}>
                             <h3>
-                            {fromWeiNumber(earnedNum)}
+                            {formatNmuber(earnedNum,18,8)}
                             </h3>
                             <h4>Unclaimed LEMD in pool</h4>
                         </div>
@@ -296,9 +295,9 @@ const Home = ({ t,router }) => {
                                 value={userStakeNum}
                                 onChange={(e) => setUserStakeNum(e.target.value)}
                             />
-                            <i className={styles.balance}>{fromETHWeiNumber(unStakeNum)}</i>
+                            <i className={styles.balance}>{formatStringNumber(unStakeNum,18)}</i>
                             <i
-                                onClick={() => setUserStakeNum(fromETHWeiNumber(unStakeNum))}
+                                onClick={() => setUserStakeNum(formatStringNumber(unStakeNum,18))}
                                 className={styles.max}
                             >
                                 MAX
@@ -316,9 +315,9 @@ const Home = ({ t,router }) => {
                                 value={userUnstakeNum}
                                 onChange={(e) => setUserUnstakeNum(e.target.value)}
                             />
-                            <i className={styles.balance}>{fromETHWeiNumber(stakeNum)}</i>
+                            <i className={styles.balance}>{formatStringNumber(stakeNum,18)}</i>
                             <i
-                                onClick={() => setUserUnstakeNum(fromETHWeiNumber(stakeNum))}
+                                onClick={() => setUserUnstakeNum(formatStringNumber(stakeNum,18))}
                                 className={styles.max}
                             >
                                 MAX

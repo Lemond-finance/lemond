@@ -4,6 +4,19 @@ import BigNumber from 'bignumber.js'
 import numbro from "numbro"
 
 
+export function formatNmuber(number, digits, decimals){
+  const bn = new BigNumber(String(number))
+  return numbro(bn.div(new BigNumber(10).pow(digits))).format({
+      thousandSeparated: true,
+      mantissa: decimals,
+  })
+}
+
+export function formatStringNumber(number, digits) {
+    const bn = new BigNumber(String(number))
+    return bn.div(new BigNumber(10).pow(digits)).toString()
+}
+
 export function fromWeiNumber(number) {
   const bn = new BigNumber(String(number))
   return numbro(bn.div(new BigNumber(10).pow(18))).format({
