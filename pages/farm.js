@@ -17,7 +17,7 @@ const cx = classNames.bind(styles)
 import Web3 from 'web3'
 import {
   formatNmuber,
-  toWeiNumber,
+  unFormatNumber,
   formatStringNumber,
 } from '../libs/utils'
 import tokenConfig from '../contract.config.js'
@@ -178,7 +178,7 @@ const Home = ({ t,router }) => {
       )
       .send({ 
         from: account,
-        value: toWeiNumber(userStakeNum)
+        value: unFormatNumber(userStakeNum,18)
       })
     toast.dark('🚀 Deposit success!', toastConfig)
     setUserStakeNum(0)
@@ -195,9 +195,9 @@ const Home = ({ t,router }) => {
     if (checkWallet()) return
     if (checkStart()) return
     if (checkZero(userUnstakeNum * 1)) return
-    console.log(toWeiNumber(userUnstakeNum))
+    console.log(unFormatNumber(userUnstakeNum,18))
     await poolContract.methods
-      .withdraw(toWeiNumber(userUnstakeNum))
+      .withdraw(unFormatNumber(userUnstakeNum,18))
       .send({ from: account })
     toast.dark('🚀 Withdraw success!', toastConfig)
     setUserUnstakeNum(0)

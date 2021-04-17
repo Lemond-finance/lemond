@@ -11,38 +11,7 @@ import Web3 from 'web3';
 import CountUp from 'react-countup';
  
 const Home = ({ t }) => {
-  const { account, ethereum } = useWallet();
-  const [count, setCount] = useState(0);
-  const handleScroll = () => {setCount(count+1);};
 
-
-  useEffect(()=>{
-    // create
-        window.addEventListener('scroll',handleScroll);
-    return ()=>{
-    // destroy
-        window.removeEventListener('scroll',handleScroll);
-    }
-    // deps
-    },[count]);
-  //  const web3 = new Web3(ethereum)
-  //  const ABI = [ { "inputs": [], "name": "getMsgArr", "outputs": [ { "internalType": "string[]", "name": "", "type": "string[]" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "string[]", "name": "strs", "type": "string[]" } ], "name": "setMsgArr", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
-  //   const Contract = new web3.eth.Contract(ABI, "0xc631f2aa82730d90aaba53b44e8dfdc7341d6630")
-
-  //     useEffect(() => {
-  //     const timer = setInterval(async () => {
-  //       const str = {
-  //           age: user.age,
-  //           name: user.name
-  //       };
-  //       // Contract.methods.setMsgArr(str).send({from:account});
-  //       console.log(await Contract.methods.getMsgArr().call())
-  //    }, 3000)
-  //     return () => {
-  //       clearInterval(timer)
-  //     }
-  //   }, [account])
-  
   return (
       <HeaderFooter activeIndex={1}>
           <Head>
@@ -116,8 +85,6 @@ const Home = ({ t }) => {
                   </ul>
               </div>
           </div>
-
-          <script>console.log(${count});</script>
       </HeaderFooter>
   )
 };

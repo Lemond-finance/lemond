@@ -41,8 +41,8 @@ async function main() {
     console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
 
     // LEMD Token
-    this.lemdToken = await LEMD.new()
-    // this.lemdToken = await hre.ethers.getContractAt("LEMD", "0xE667d8bD182D165D2E71cF72315bD117f6940094")
+    // this.lemdToken = await LEMD.new()
+    this.lemdToken = await hre.ethers.getContractAt("LEMD", config.token.lemond.address)
     console.log("lemdToken", this.lemdToken.address)
 
     // LemdBreeder
@@ -51,7 +51,7 @@ async function main() {
 
     // Grant miner role to lemdBreeder
     await this.lemdToken.addMinter(this.lemdBreeder.address)
-    console.log("lemdToken grantRole", this.lemdBreeder.address)
+    console.log("lemdToken addMinter")
 
     await delay(5000)
     // Price oracle
@@ -133,12 +133,12 @@ async function main() {
     await this.lemdDistribution._setLemdSpeed(this.lUSDT.address, hre.ethers.utils.parseEther("0.25"))
     await this.lemdDistribution._setLemdSpeed(this.lETHK.address, hre.ethers.utils.parseEther("0.25"))
     await this.lemdDistribution._setLemdSpeed(this.lBTCK.address, hre.ethers.utils.parseEther("0.25"))
-    await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
 
-    await this.lemdToken.addMinter(this.deployer)
-    await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("500000"))
-    console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
+    // await this.comptroller._setDistributeLemdPaused(false)
+    // await this.lemdToken.addMinter(this.deployer)
+    // await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("500000"))
+    // console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
 
     // test
     // await this.lEther.mint(this.inviter, { value: hre.ethers.utils.parseEther("1") })
