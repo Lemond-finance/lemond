@@ -452,7 +452,9 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                                 setSupplyValue(value)
                                             } else {
                                                 const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                setSupplyValue(parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value)
+                                                const supplyValues = enterMarkets ? (parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value) : supplyBalanceAmount
+                                                console.log("supplyValues", supplyValues)
+                                                setSupplyValue(supplyValues)
                                             }
                                         }}
                                     >
