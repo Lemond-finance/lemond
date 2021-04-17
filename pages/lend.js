@@ -150,11 +150,11 @@ const Home = ({ t, router }) => {
                     </h1>
                     <div className={cx(styles.supplyText, styles.price)}>
                         <h3>LEMD Price</h3>
-                        <p>{formatUSDNmuber(lemdPrice,2)}</p>
+                        <p>{formatUSDNmuber(lemdPrice, 2)}</p>
                     </div>
                     <div className={styles.supplyText}>
                         <h3>Supply Balance</h3>
-                        <p>{formatUSDNmuber(supplyBalance,2)}</p>
+                        <p>{formatUSDNmuber(supplyBalance, 2)}</p>
                     </div>
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
@@ -165,7 +165,7 @@ const Home = ({ t, router }) => {
                     </div>
                     <div className={styles.borrowText}>
                         <h3>Borrow Balance</h3>
-                        <p>{formatUSDNmuber(borrowBalance,2)}</p>
+                        <p>{formatUSDNmuber(borrowBalance, 2)}</p>
                     </div>
                     <div className={styles.lend_line}>
                         <div className={styles.line}>
@@ -175,7 +175,7 @@ const Home = ({ t, router }) => {
                             </i>
                         </div>
                         <span className={styles.text}>Borrow Limit</span>
-                        <span className={styles.num}>{formatUSDNmuber(borrowBalanceLimit,2)}</span>
+                        <span className={styles.num}>{formatUSDNmuber(borrowBalanceLimit, 2)}</span>
                         <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
@@ -229,7 +229,7 @@ const Home = ({ t, router }) => {
                         </p>
                         <p>
                             Click for{" "}
-                            <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-test-to-get-airdrop-cc48c26812f">
+                            <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-loan-to-get-airdrop-5d980bc3da56">
                                 detailed instructions.
                             </a>
                         </p>
