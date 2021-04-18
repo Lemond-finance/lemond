@@ -88,12 +88,13 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 const remaining = new BigNumber(totalSupply)
                     .times(exchangeRate)
                     .div(new BigNumber(10).pow(18))
-                    .minus(new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(18)))
+                    .minus(new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(digits)))
                 console.log(
+                    lToken.name,
                     "remaining",
                     remaining.toString(),
                     new BigNumber(totalSupply).times(exchangeRate).div(new BigNumber(10).pow(18)).toString(),
-                    new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(18)).toString(),
+                    new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(digits)).toString(),
                 )
 
                 const accountSnapshot = await lTokenContract.methods.getAccountSnapshot(account).call()
