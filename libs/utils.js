@@ -25,7 +25,8 @@ export function formatUSDNmuber(number, decimals){
 }
 
 export function formatThousandNumber(number, decimals) {
-    return numbro(number).format({
+    const num = Math.floor(number * 100000000) / 100000000
+    return numbro(num).format({
         thousandSeparated: true,
         mantissa: decimals,
     })

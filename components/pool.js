@@ -467,7 +467,7 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                             }
                                         }}
                                     >
-                                        {switchSupply ? "MAX" : "SAFE MAX"}
+                                        {switchSupply ? "MAX" : "SAFE MAX(80%)"}
                                     </button>
                                 </div>
                                 <div className={styles.info}>
@@ -565,17 +565,15 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                     <button
                                         onClick={() => {
                                             if (switchBorrow) {
-                                                const value = new BigNumber(borrowLimit)
-                                                    .minus(borrow)
-                                                    .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                    // setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
-                                                    setBorrowValue(value.times(0.8))
+                                                const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                // setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
+                                                setBorrowValue(value.times(0.8))
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
                                             }
                                         }}
                                     >
-                                        {switchBorrow ? "SAFE MAX" : "MAX"}
+                                        {switchBorrow ? "SAFE MAX(80%)" : "MAX"}
                                     </button>
                                 </div>
                                 <div className={styles.info}>
