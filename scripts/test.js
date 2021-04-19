@@ -32,8 +32,8 @@ async function main() {
     // await this.lEther.mint({ value: hre.ethers.utils.parseEther("1"), })
     // await this.lEther.borrow(hre.ethers.utils.parseEther("0.2"))
 
-    const LEMD = await hre.ethers.getContractAt("LEMD", "0x784503921c877Df8E228189601BB71C628593A87")
-    console.log(LEMD.address)
+    // const LEMD = await hre.ethers.getContractAt("LEMD", "0xE667d8bD182D165D2E71cF72315bD117f6940094")
+    // console.log(LEMD.address)
     // await LEMD.addMinter(this.deployer)
     // await LEMD.mint("0xDa755D8cAfc0e731245415d3da9748EB92D87CaC", hre.ethers.utils.parseEther("1000000"))
 
@@ -43,17 +43,36 @@ async function main() {
     // this.lUSDT = await hre.ethers.getContractAt("LERC20", "0xf5799c87C0f996B17DC0556dB0b4C48211367A7E")
     // await this.lUSDT.mint(hre.ethers.utils.parseEther("1"))
 
-    
     // this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0x0533259C3DB98220059B34eC9D5Cf38705E3A578")
     // const pendingLemdAccrued = await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)
     // console.log(hre.ethers.utils.formatEther(pendingLemdAccrued.toString()))
     // console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
     // await this.lemdDistribution.claimLemd(this.deployer)
     // console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
-    
-    
-    console.log("End")
 
+    // this.comptroller = await hre.ethers.getContractAt("Comptroller", "0x12F2d7D1dd0Ff12584FCf8A7996fF4F70d74963f")
+    // await this.comptroller._setDistributeLemdPaused(false)
+    // await LEMD.addMinter(this.deployer)
+    // await LEMD.mint("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8", hre.ethers.utils.parseEther("500000"))
+    // console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")).toString())
+
+    // this.priceOracle = await hre.ethers.getContractAt("SimplePriceOracle", "0x1B0e0d095A5d8721E2d3b5dcD43dE29791164FCF")
+    // await this.priceOracle.setUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", hre.ethers.utils.parseEther("200"))
+    // await this.priceOracle.setUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", hre.ethers.utils.parseEther("300"))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9")).toString()))
+
+    this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")
+    // await this.lemdDistribution._setEnableDistributeMintLemd(true)
+    // await this.lemdDistribution._setEnableDistributeRedeemLemd(true)
+    // await this.lemdDistribution._setEnableDistributeBorrowLemd(true)
+    // await this.lemdDistribution._setEnableDistributeRepayBorrowLemd(true)
+    await this.lemdDistribution._setLemdSpeed("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", hre.ethers.utils.parseEther("3"))
+    await this.lemdDistribution._setLemdSpeed("0x3C39Eb941db646982e4691446f6aB60d737919bc", hre.ethers.utils.parseEther("0.05"))
+    await this.lemdDistribution._setLemdSpeed("0x078baA86150286CC6e29Ec6B746593c14c7A82d3", hre.ethers.utils.parseEther("1"))
+    await this.lemdDistribution._setLemdSpeed("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", hre.ethers.utils.parseEther("0.05"))
+    await this.lemdDistribution._setLemdSpeed("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", hre.ethers.utils.parseEther("1"))
+    console.log("End")
 }
 
 main()
