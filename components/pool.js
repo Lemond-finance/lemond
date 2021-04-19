@@ -568,7 +568,8 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                                                 const value = new BigNumber(borrowLimit)
                                                     .minus(borrow)
                                                     .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                    setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
+                                                    // setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
+                                                    setBorrowValue(value.times(0.8))
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
                                             }
