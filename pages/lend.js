@@ -160,7 +160,7 @@ const Home = ({ t, router }) => {
                         <h3>Pending LEMD</h3>
                         <p>
                             {/* {formatNmuber(pendingLemd, 18, 4)} */}
-                            0
+                            0.0000
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
