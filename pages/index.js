@@ -82,6 +82,7 @@ const Home = ({ t }) => {
                       <li className={styles.roots_cap}></li>
                       <li className={styles.tokenpocket}></li>
                       <li className={styles.onto}></li>
+                      <li className={styles.hyper}></li>
                   </ul>
               </div>
           </div>
