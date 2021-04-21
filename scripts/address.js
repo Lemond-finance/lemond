@@ -8,6 +8,7 @@ const { ethers, upgrades } = require("hardhat")
 const BigNumber = require("bignumber.js")
 const web3 = require("web3")
 const oktPool = require("../abi/OKTPool.json")
+const lemd = require("../abi/OKTPool.json")
 
 const OKTPool = artifacts.require("./OKTPool")
 const LEMD = artifacts.require("./LEMD")
@@ -18,29 +19,17 @@ async function main() {
     this.deployer = (await ethers.getSigners())[0].address
     console.log("deployer address", this.deployer)
 
-    const web3 = new Web3("https://exchaintest.okexcn.com")
-    const contract = new web3.eth.Contract(
-        oktPool,
-        "0x6eF0adF5dB077FE8A69f94D25e4EF29a0726e779",
-    )
-    console.log(1)
-    contract.getPastEvents(
-        "allEvents",
-        { filter: { fromBlock: 0, toBlock: "latest" } },
-        (error, events) => {
-            console.log(events) //return empty array, not all events
-        },
-    )
-    //    contract.getPastEvents(
-    //     'AllEvents',
-    //     {
-    //         fromBlock: '0',
-    //         toBlock: 'latest'
-    //     })
-    //     .then(function(events) {
-    //         console.log(events)
-    //     })
-    //     .catch((err) => console.error(err));
+    const web3 = new Web3("https://exchaintestrpc.okex.org")
+    const contract = new web3.eth.Contract(lemd, "0xE667d8bD182D165D2E71cF72315bD117f6940094")
+    contract
+        .getPastEvents("Transfer", {
+            fromBlock: "0",
+            toBlock: "latest",
+        })
+        .then(function (events) {
+            console.log(events)
+        })
+        .catch((err) => console.error(err))
 }
 
 main()

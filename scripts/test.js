@@ -50,9 +50,9 @@ async function main() {
     // await this.lemdDistribution.claimLemd(this.deployer)
     // console.log(hre.ethers.utils.formatEther((await LEMD.balanceOf(this.deployer)).toString()))
 
-    this.comptroller = await hre.ethers.getContractAt("Comptroller", "0x12F2d7D1dd0Ff12584FCf8A7996fF4F70d74963f")
-    console.log((await this.comptroller.getMaxInvitedMintAmount("0xAE2c8C4CB3CD69D0Dfa4490c024b6b1aEC64223f")).toString())
-    console.log((await this.comptroller.getInvitedMintAmount("0xAE2c8C4CB3CD69D0Dfa4490c024b6b1aEC64223f")).toString())
+    // this.comptroller = await hre.ethers.getContractAt("Comptroller", "0x12F2d7D1dd0Ff12584FCf8A7996fF4F70d74963f")
+    // console.log((await this.comptroller.getMaxInvitedMintAmount("0xAE2c8C4CB3CD69D0Dfa4490c024b6b1aEC64223f")).toString())
+    // console.log((await this.comptroller.getInvitedMintAmount("0xAE2c8C4CB3CD69D0Dfa4490c024b6b1aEC64223f")).toString())
     // await this.comptroller._setDistributeLemdPaused(false)
     // await LEMD.addMinter(this.deployer)
     // await LEMD.mint("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8", hre.ethers.utils.parseEther("500000"))
@@ -70,16 +70,17 @@ async function main() {
     // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9")).toString()))
     // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9")).toString()))
 
-    // this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")
+    this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")
     // await this.lemdDistribution._setEnableDistributeMintLemd(true)
     // await this.lemdDistribution._setEnableDistributeRedeemLemd(true)
     // await this.lemdDistribution._setEnableDistributeBorrowLemd(true)
     // await this.lemdDistribution._setEnableDistributeRepayBorrowLemd(true)
-    // await this.lemdDistribution._setLemdSpeed("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", hre.ethers.utils.parseEther("5"))
-    // await this.lemdDistribution._setLemdSpeed("0x3C39Eb941db646982e4691446f6aB60d737919bc", hre.ethers.utils.parseEther("0.5"))
-    // await this.lemdDistribution._setLemdSpeed("0x078baA86150286CC6e29Ec6B746593c14c7A82d3", hre.ethers.utils.parseEther("1"))
-    // await this.lemdDistribution._setLemdSpeed("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", hre.ethers.utils.parseEther("2"))
-    // await this.lemdDistribution._setLemdSpeed("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", hre.ethers.utils.parseEther("2"))
+    await this.lemdDistribution._setLemdSpeed("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", hre.ethers.utils.parseEther("15"))
+    await this.lemdDistribution._setLemdSpeed("0x3C39Eb941db646982e4691446f6aB60d737919bc", hre.ethers.utils.parseEther("0.05"))
+    await this.lemdDistribution._setLemdSpeed("0x078baA86150286CC6e29Ec6B746593c14c7A82d3", hre.ethers.utils.parseEther("0.05"))
+    await this.lemdDistribution._setLemdSpeed("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", hre.ethers.utils.parseEther("0.05"))
+    await this.lemdDistribution._setLemdSpeed("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", hre.ethers.utils.parseEther("0.05"))
+
     console.log("End")
 }
 
