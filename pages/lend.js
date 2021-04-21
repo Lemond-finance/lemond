@@ -159,7 +159,8 @@ const Home = ({ t, router }) => {
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
                         <p>
-                            {formatNmuber(pendingLemd, 18, 4)}
+                            {/* {formatNmuber(pendingLemd, 18, 4)} */}
+                            0.0000
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
