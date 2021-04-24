@@ -69,6 +69,10 @@ const Home = ({ t }) => {
                   </p>
               </div>
               <div className={styles.partners}>
+                  <h1>Road Map</h1>
+                  <p className={styles.road_map}></p>
+              </div>
+              <div className={styles.partners}>
                   <h1>Partners</h1>
                   <ul>
                       <li className={styles.gate}></li>
