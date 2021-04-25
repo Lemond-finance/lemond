@@ -129,23 +129,28 @@ async function main() {
     await this.lemdToken.mint(this.lemdDistribution.address, hre.ethers.utils.parseEther("1000"))
     // await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
     console.log("lEther deplayer", (await this.lEther.balanceOf(this.deployer)).toString())
-    await this.lEther.mint({ value: hre.ethers.utils.parseEther("1") })
+    console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
+    console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
+    console.log("lEther deplayer", (await this.lEther.balanceOf(this.deployer)).toString())
+
+    await this.lEther._setMigrator(this.deployer)
+    await this.lEther.mintForMigrate(hre.ethers.utils.parseEther("2"), { value: hre.ethers.utils.parseEther("0") })
+    console.log("lEther deplayer", (await this.lEther.balanceOf(this.deployer)).toString())
     console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf(this.lemdDistribution.address)).toString())
     console.log("deplyer lemdToken", (await this.lemdToken.balanceOf(this.deployer)).toString())
 
     await this.DAI.approve(this.lDAI.address, hre.ethers.utils.parseEther("2000"))
-
     console.log("pendingLemdAccrued", (await this.lemdDistribution.pendingLemdAccrued(this.deployer, true, true)).toString())
 
-    await this.lDAI.mint(hre.ethers.utils.parseEther("2000"))
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    // await this.lDAI.mint(hre.ethers.utils.parseEther("2000"))
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
-    await this.lDAI.borrow(hre.ethers.utils.parseEther("2000"))
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
-    console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
+    // await this.lDAI.borrow(hre.ethers.utils.parseEther("2000"))
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[1].toString())
+    // console.log((await this.comptroller.getAccountLiquidity(this.deployer))[2].toString())
 
     await this.lEther.borrow(hre.ethers.utils.parseEther("0.5"))
     console.log((await this.comptroller.getAccountLiquidity(this.deployer))[0].toString())
