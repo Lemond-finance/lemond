@@ -75,6 +75,7 @@ const Home = ({ t }) => {
               <div className={styles.partners}>
                   <h1>Partners</h1>
                   <ul>
+                      <li className={styles.okexchain}></li>
                       <li className={styles.gate}></li>
                       <li className={styles.mxc}></li>
                       <li className={styles.zb}></li>
@@ -87,6 +88,7 @@ const Home = ({ t }) => {
                       <li className={styles.tokenpocket}></li>
                       <li className={styles.onto}></li>
                       <li className={styles.hyper}></li>
+                      <li className={styles.bitkeep}></li>
                   </ul>
               </div>
           </div>
