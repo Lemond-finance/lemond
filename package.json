@@ -6,7 +6,9 @@
     "dev": "next dev -p 5000",
     "build": "next build",
     "start": "next start -p 5000",
-    "pm2": "pm2 start ./processes.json"
+    "pm2": "pm2 start ./processes.json",
+    "server": "NODE_ENV=developer node app.js",
+    "prod": "NODE_ENV=production node app.js"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -26,6 +28,8 @@
     "web3": "^1.3.5"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.14.0",
+    "@babel/register": "^7.13.16",
     "@chainlink/contracts": "^0.1.6",
     "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@nomiclabs/hardhat-etherscan": "^2.1.1",
@@ -47,11 +51,14 @@
     "hardhat-abi-exporter": "^2.0.8",
     "hardhat-log-remover": "^2.0.1",
     "less": "^3.12.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^1.7.0",
     "next-i18next": "^7.0.1",
     "next-images": "^1.6.2",
     "nodemon": "^2.0.6",
     "openzeppelin-solidity": "^2.5.1",
     "react-clipboard.js": "^2.0.16",
-    "react-toastify": "^7.0.3"
+    "react-toastify": "^7.0.3",
+    "sequelize": "^5.21.1"
   }
 }
