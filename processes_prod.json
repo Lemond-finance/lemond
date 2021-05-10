@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+      "script": "next start -p 5000",
+      "name": "lemond",
+      "log_date_format": "YYYY-DD-MM HH:mm",
+      "env": {
+          "NODE_ENV": "production"
+      },
+      "watch": ["./server"],
+      "ignore_watch": ["node_modules"]
+  }]
+}

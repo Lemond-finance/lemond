@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+      "script": "node app",
+      "name": "lemond",
+      "log_date_format": "YYYY-DD-MM HH:mm",
+      "env": {
+          "NODE_ENV": "developer"
+      },
+      "watch": ["./server"],
+      "ignore_watch": ["node_modules"]
+  }]
+}

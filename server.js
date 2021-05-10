@@ -4,7 +4,7 @@ import next from 'next'
 import logger from 'morgan'
 import router from './server/router/router'
 
-const port = parseInt(process.env.PORT, 10) || 8000
+const port = parseInt(process.env.PORT, 10) || 5000
 const env = process.env.NODE_ENV
 const dev = env !== 'production'
 const app = next({
