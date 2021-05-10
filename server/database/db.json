@@ -7,6 +7,6 @@
         "port": 3306,
         "username": "root",
         "password": "",
-        "dbName": "test"
+        "dbName": "lemond"
     }
 }

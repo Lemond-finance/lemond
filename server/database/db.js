@@ -30,7 +30,7 @@ const db = {
 };
 
 //user table model
-db.User = db.sequelize.import('../model/user.js');
+db.Lend = db.sequelize.import("../model/lend.js")
 db.Op = Op;
 
 export default db;

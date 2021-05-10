@@ -180,7 +180,7 @@ const Home = ({ t, router }) => {
                         <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
-                <div className={styles.lend_news}>
+                {/* <div className={styles.lend_news}>
                     <span className={styles.rules}>
                         <h1>Airdrop Episode II</h1>
                         <p>
@@ -235,7 +235,7 @@ const Home = ({ t, router }) => {
                             </a>
                         </p>
                     </span>
-                </div>
+                </div> */}
                 <ul className={styles.lend_list}>
                     <Pool
                         router={router}

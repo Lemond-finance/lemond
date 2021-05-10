@@ -64,7 +64,7 @@ const Home = ({ t }) => {
                           <button>Get Airdrop >></button>
                       </Link>
                   </p>
-                  <p className={styles.btns}>
+                  <p className={styles.btns} >
                       Episode ③ <button disabled>Comming soon</button>{" "}
                   </p>
               </div>

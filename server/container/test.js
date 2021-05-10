@@ -1,6 +1,6 @@
 import db from "../database/db.js"
 
-const User = db.User
+const Lend = db.Lend
 
 export async function test(req, res) {
     console.log(req, res)

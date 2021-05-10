@@ -1,9 +1,11 @@
 {
   "apps" : [{
-    "script"    : "next start -p 5000",
-    "name" : "lemond",
-    "log_date_format" : "YYYY-DD-MM HH:mm",
-    "watch"       : true,
-    "ignore_watch": ["node_modules"]
+      "script": "next start -p 5000",
+      "name": "lemond",
+      "log_date_format": "YYYY-DD-MM HH:mm",
+      "watch": [
+        "./server"
+      ],
+      "ignore_watch": ["node_modules"]
   }]
 }
