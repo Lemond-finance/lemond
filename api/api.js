@@ -1,28 +1,16 @@
 import axios from 'axios'
 
-export const getDOMOPrice = async() => {
-  try {
-    const {data} = await axios.get('https://api.0x.org/swap/v1/price?sellToken=0x77c329b7c9e2632a77aca45074d92ab027898c0e&buyToken=USDT&sellAmount=1000000000000000000')
-    return data.price
-  } catch (error) {
-    return 0
-  }
+export const getPrice = async() => {
+    const request  = await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=lemond,bitcoin,ethereum,okb,okexchain,tether&vs_currencies=usd")
+    return request
 }
 
-export const getWETHPrice = async () => {
-  try {
-    const { data } = await axios.get('https://api.0x.org/swap/v1/price?sellToken=ETH&buyToken=USDT&sellAmount=1000000000000000000')
-    return data.price
-  } catch (error) {
-    return 0
-  }
+export const getTotalValueLocked = async () => {
+    const request = await axios.get("/api/getTotalValueLocked")
+    return request
 }
 
-export const getWBTCPrice = async () => {
-  try {
-    const { data } = await axios.get('https://api.0x.org/swap/v1/price?sellToken=WBTC&buyToken=USDT&sellAmount=1000000000000000000')
-    return data.price
-  } catch (error) {
-    return 0
-  }
+export const getLendInfo = async () => {
+    const request = await axios.get("/api/getLendInfo")
+    return request
 }

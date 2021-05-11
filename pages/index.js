@@ -6,11 +6,18 @@ import { Link, withTranslation } from "../i18n";
 import HeaderFooter from "../layout/HeaderFooter";
 import classNames from "classnames/bind";
 import styles from "../styles/home.less";
-const cx = classNames.bind(styles);
-import Web3 from 'web3';
 import CountUp from 'react-countup';
- 
+import axios from 'axios';
+import { getLendInfo, getTotalValueLocked } from "../api/api"
+const cx = classNames.bind(styles);
+
 const Home = ({ t }) => {
+  const [totalValueLocked, setTotalValueLocked] = useState(0)
+
+  useEffect(async () => {
+      const { data } = await getTotalValueLocked()
+      setTotalValueLocked(data.data)
+  }, [])
 
   return (
       <HeaderFooter activeIndex={1}>
@@ -27,7 +34,7 @@ const Home = ({ t }) => {
                       A <b>Juicy DeFi</b> Protocol
                   </h2>
                   <h4 id="count">
-                      <CountUp start={0} end={5270319549.94} separator="," decimal="." decimal="," prefix="$" />
+                      <CountUp start={0} end={totalValueLocked} separator="," decimal="." decimal="," prefix="$" />
                   </h4>
                   <p>
                       <b>Lemond</b> is a decentralized, open-source, autonomous, non-custodial liquidity market protocol where users can participate as depositors or borrowers.
@@ -64,7 +71,7 @@ const Home = ({ t }) => {
                           <button>Get Airdrop >></button>
                       </Link>
                   </p>
-                  <p className={styles.btns}>
+                  <p className={styles.btns} >
                       Episode ③ <button disabled>Comming soon</button>{" "}
                   </p>
               </div>
