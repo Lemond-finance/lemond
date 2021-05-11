@@ -16,6 +16,7 @@ import Web3 from "web3"
 import BigNumber from "bignumber.js"
 import Clipboard from "react-clipboard.js"
 import { withRouter } from "next/router"
+import { getPrice, getLendInfo } from "../api/api"
 
 const Home = ({ t, router }) => {
     const wallet = useWallet()
@@ -32,6 +33,8 @@ const Home = ({ t, router }) => {
     const [inviteAmount, setInviteAmount] = useState(0)
     const [invitedMintAmount, setInvitedMintAmount] = useState(0)
     const [maxInvitedMintAmount, setMaxInvitedMintAmount] = useState(0)
+
+    const [poolInfo, setPoolInfo] = useState([{},{},{},{},{}])
 
 
     const web3 = new Web3(ethereum)
@@ -50,6 +53,11 @@ const Home = ({ t, router }) => {
 
     useEffect(() => {
         const timer = setInterval(async () => {
+            const { data } = await getPrice()
+            setLemdPrice(data?.lemond?.usd)
+            const lendInfo = await getLendInfo()
+            console.log(lendInfo?.data?.data)
+            setPoolInfo(lendInfo?.data?.data)
             if (account) {
                 console.log(poolDate)
                 let supplyBalance = 0
@@ -89,7 +97,7 @@ const Home = ({ t, router }) => {
                 setMaxInvitedMintAmount(maxInvitedMintAmount)
 
             }
-        }, 3000)
+        }, 5000)
         return () => {
             clearInterval(timer)
         }
@@ -180,66 +188,11 @@ const Home = ({ t, router }) => {
                         <span className={styles.borrowed}>{borrowRate} %</span>
                     </div>
                 </div>
-                {/* <div className={styles.lend_news}>
-                    <span className={styles.rules}>
-                        <h1>Airdrop Episode II</h1>
-                        <p>
-                            Total LEMD to be airdropped : <b>500,000 LEMD</b>
-                            <br />
-                            Period of airdrop: <b>12.00 UTC, Apr 18 to 12.00 UTC, Apr 25</b>
-                        </p>
-                        <p>*Real minted LEMD for Airdrop Episode II will be distributed on a 1:1 basis before the official launch of OKExChain by further notice.</p>
-                        <h1>Invite to Claim MORE!</h1>
-                        <p>
-                            You can invite up to <b>5</b> persons to increase your max amount of claiming from <b>10</b> to <b>60</b>.(10 up per invited person)
-                        </p>
-                        <p>*Effect will be activated after invited person supplies in the pool.</p>
-                    </span>
-                    <span className={cx(styles.rules, styles.info)}>
-                        <h2>
-                            <span>LEMD Remaining:</span>
-                            <span>
-                                <b>{formatNmuber(remainingLemd, 18, 2)}</b>
-                            </span>
-                        </h2>
-                        <h2>
-                            <span>Persons Invited:</span>
-                            <span>
-                                <b>{inviteAmount}</b>
-                            </span>
-                        </h2>
-                        <h2>
-                            <span>Claim Cap:</span>
-                            <span>
-                                <b>
-                                    {formatNmuber(invitedMintAmount, 18, 2)}/{formatNmuber(maxInvitedMintAmount, 18, 2)}
-                                </b>
-                            </span>
-                        </h2>
-                        <p>
-                            <Clipboard
-                                className={styles.btn}
-                                onClick={() => {
-                                    if (checkWallet()) return
-                                    toast.dark("🚀 Copy success!", toastConfig)
-                                }}
-                                data-clipboard-text={`http://lemond.money/lend?inviter=${account}`}
-                            >
-                                Copy Link & Share
-                            </Clipboard>
-                        </p>
-                        <p>
-                            Click for{" "}
-                            <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-loan-to-get-airdrop-5d980bc3da56">
-                                detailed instructions.
-                            </a>
-                        </p>
-                    </span>
-                </div> */}
                 <ul className={styles.lend_list}>
                     <Pool
                         router={router}
                         lemdPrice={lemdPrice}
+                        info={poolInfo[0]}
                         token={OKT}
                         lToken={lEther}
                         borrow={borrowBalance}
@@ -250,6 +203,7 @@ const Home = ({ t, router }) => {
                     <Pool
                         router={router}
                         lemdPrice={lemdPrice}
+                        info={poolInfo[1]}
                         token={OKB}
                         lToken={lOKB}
                         borrow={borrowBalance}
@@ -260,6 +214,7 @@ const Home = ({ t, router }) => {
                     <Pool
                         router={router}
                         lemdPrice={lemdPrice}
+                        info={poolInfo[2]}
                         token={USDT}
                         lToken={lUSDT}
                         borrow={borrowBalance}
@@ -270,6 +225,7 @@ const Home = ({ t, router }) => {
                     <Pool
                         router={router}
                         lemdPrice={lemdPrice}
+                        info={poolInfo[3]}
                         token={ETHK}
                         lToken={lETHK}
                         borrow={borrowBalance}
@@ -280,6 +236,7 @@ const Home = ({ t, router }) => {
                     <Pool
                         router={router}
                         lemdPrice={lemdPrice}
+                        info={poolInfo[4]}
                         token={BTCK}
                         lToken={lBTCK}
                         borrow={borrowBalance}

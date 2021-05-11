@@ -55,6 +55,7 @@
     "mysql2": "^1.7.0",
     "next-i18next": "^7.0.1",
     "next-images": "^1.6.2",
+    "node-schedule": "^2.0.0",
     "nodemon": "^2.0.6",
     "openzeppelin-solidity": "^2.5.1",
     "react-clipboard.js": "^2.0.16",

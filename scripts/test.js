@@ -65,17 +65,17 @@ async function main() {
     // console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")).toString())
 
 
-    this.priceOracle = await hre.ethers.getContractAt("SimplePriceOracle", "0x1B0e0d095A5d8721E2d3b5dcD43dE29791164FCF")
+    // this.priceOracle = await hre.ethers.getContractAt("SimplePriceOracle", "0x1B0e0d095A5d8721E2d3b5dcD43dE29791164FCF")
     // await this.priceOracle.setUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", hre.ethers.utils.parseEther("555"))
     // await this.priceOracle.setUnderlyingPrice("0x3C39Eb941db646982e4691446f6aB60d737919bc", hre.ethers.utils.parseEther("277198"))
     // await this.priceOracle.setUnderlyingPrice("0x078baA86150286CC6e29Ec6B746593c14c7A82d3", hre.ethers.utils.parseEther("1"))
     // await this.priceOracle.setUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", hre.ethers.utils.parseEther("35532"))
     // await this.priceOracle.setUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", hre.ethers.utils.parseEther("46"))
-    console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878")).toString()))
-    console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x3C39Eb941db646982e4691446f6aB60d737919bc")).toString()))
-    console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x078baA86150286CC6e29Ec6B746593c14c7A82d3")).toString()))
-    console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9")).toString()))
-    console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x3C39Eb941db646982e4691446f6aB60d737919bc")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x078baA86150286CC6e29Ec6B746593c14c7A82d3")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9")).toString()))
+    // console.log(hre.ethers.utils.formatEther((await this.priceOracle.getUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9")).toString()))
 
     // this.lemdDistribution = await hre.ethers.getContractAt("LemdDistribution", "0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")
     // await this.lemdDistribution._setEnableDistributeMintLemd(true)

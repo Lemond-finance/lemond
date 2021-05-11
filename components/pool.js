@@ -14,7 +14,7 @@ import Switch from "react-switch"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 
-const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrowRate, updateDate }) => {
+const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, borrowRate, updateDate }) => {
     const wallet = useWallet()
     const { account, ethereum } = wallet
     const [tokenBalance, setTokenBalance] = useState(0)
@@ -58,30 +58,33 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
 
     useEffect(() => {
         const timer = setInterval(async () => {
+            console.log("info", info)
+            if (JSON.stringify(info) != "{}") {
+                const { market_size, total_borrow, deposit_total_apy, borrow_total_apy, supply_apy, supply_distribution_apy, borrow_apy, borrow_distribution_apy } = info
+                setMarketSize(market_size)
+                setTotalBorrow(total_borrow)
+                setTotalSupplyAPY(deposit_total_apy)
+                setTotalBorrowAPY(borrow_total_apy)
+                setSupplyApy(supply_apy)
+                setSupplyRewardAPY(parseFloat(supply_distribution_apy == Infinity ? 0 : supply_distribution_apy))
+                setBorrowApy(borrow_apy)
+                setBorrowRewardAPY(parseFloat(borrow_distribution_apy == Infinity ? 0 : borrow_distribution_apy))
+            }
+
             if (account) {
                 var ethMantissa = 1e18
                 if (lToken.name != "OKT") {
                     ethMantissa = 1e10
                 }
-                const blocksPerDay = 17 * 60 * 24
-                const daysPerYear = 365
-                const supplyRatePerBlock = await lTokenContract.methods.supplyRatePerBlock().call()
-                const borrowRatePerBlock = await lTokenContract.methods.borrowRatePerBlock().call()
                 const tokenBalance = lToken.name != "OKT" ? await tokenContract.methods.balanceOf(account).call() : await web3.eth.getBalance(account)
                 const supplyEnable = lToken.name != "OKT" ? (await tokenContract.methods.allowance(account, lToken.address).call()) > 0 : true
                 const borrowEnable = lToken.name != "OKT" ? (await lTokenContract.methods.allowance(account, lToken.address).call()) > 0 : true
-                const supplyApy = ((Math.pow((supplyRatePerBlock / 1e18) * blocksPerDay + 1, daysPerYear) - 1) * 100).toFixed(2)
-                console.log("supplyApy", supplyApy)
-                const borrowApy = (((borrowRatePerBlock / 1e18) * blocksPerDay + 1) * 100).toFixed(2)
-                console.log("borrowApy", borrowApy)
                 const totalSupply = await lTokenContract.methods.totalSupply().call()
                 console.log("totalSupply", totalSupply)
                 const tokenPrice = await priceOracleContract.methods.getUnderlyingPrice(lToken.address).call()
                 console.log("tokenPrice", tokenPrice)
                 const exchangeRate = (await lTokenContract.methods.exchangeRateCurrent().call()) / ethMantissa
                 console.log("exchangeRate", exchangeRate)
-                const marketSize = new BigNumber(totalSupply).times(exchangeRate).times(tokenPrice).div(new BigNumber(10).pow(18)).div(new BigNumber(10).pow(18)).toFixed(2)
-                console.log("marketSize", marketSize)
                 const totalBorrowsCurrent = await lTokenContract.methods.totalBorrowsCurrent().call()
                 const totalBorrow = new BigNumber(totalBorrowsCurrent).div(new BigNumber(10).pow(digits)).times(tokenPrice).div(new BigNumber(10).pow(18)).toFixed(2)
                 console.log("totalBorrow", totalBorrow)
@@ -120,18 +123,6 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                     .div(new BigNumber(10).pow(18))
                     .div(new BigNumber(10).pow(digits))
 
-                const lemdSpeedPerBlock = new BigNumber(await lemdDistributionContract.methods.lemdSpeeds(lToken.address).call()).div(new BigNumber(10).pow(18)).times(lemdPrice)
-                console.log("lemdSpeed", lemdSpeedPerBlock.toFixed())
-                const supplyRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).times(lemdPrice).div(marketSize).times(100).toFixed(2)
-                const borrowRewardAPY = new BigNumber(lemdSpeedPerBlock).times(blocksPerDay).times(daysPerYear).times(lemdPrice).div(totalBorrow).times(100).toFixed(2)
-                console.log("supplyRewardAPY", supplyRewardAPY)
-                console.log("borrowRewardAPY", borrowRewardAPY)
-
-                const totalSupplyAPY = parseFloat(supplyApy) + parseFloat(supplyRewardAPY == Infinity ? 0 : supplyRewardAPY)
-                const totalBorrowAPY = parseFloat(borrowApy) - parseFloat(borrowRewardAPY == Infinity ? 0 : borrowRewardAPY)
-                console.log("totalSupplyAPY", totalSupplyAPY)
-                console.log("totalBorrowAPY", totalBorrowAPY)
-
                 var enterMarkets = await comptrollerContract.methods.getAssetsIn(account).call()
                 console.log("enterMarkets", enterMarkets, enterMarkets.indexOf(lToken.address))
                 if (enterMarkets.indexOf(lToken.address) != -1) {
@@ -139,24 +130,17 @@ const Pool = ({ t, router, lemdPrice, token, lToken, borrow, borrowLimit, borrow
                 } else {
                     enterMarkets = false
                 }
+
                 setEnterMarkets(enterMarkets)
                 setTokenBalance(tokenBalance)
                 setTokenPrice(tokenPrice)
                 setSupplyEnable(supplyEnable)
                 setBorrowEnable(borrowEnable)
-                setTotalBorrow(totalBorrow)
-                setSupplyApy(supplyApy)
-                setBorrowApy(borrowApy)
-                setMarketSize(marketSize)
                 setRemaining(remaining)
                 setSupplyBalance(supplyBalance)
                 setSupplyBalanceAmount(supplyBalanceAmount)
                 setBorrowBalance(borrowBalance)
                 setBorrowBalanceAmount(borrowBalanceAmount)
-                setSupplyRewardAPY(parseFloat(supplyRewardAPY == Infinity ? 0 : supplyRewardAPY))
-                setBorrowRewardAPY(parseFloat(borrowRewardAPY == Infinity ? 0 : borrowRewardAPY))
-                setTotalSupplyAPY(totalSupplyAPY)
-                setTotalBorrowAPY(totalBorrowAPY)
 
                 updateDate({
                     supplyBalance: supplyBalance,

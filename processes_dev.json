@@ -4,7 +4,7 @@
       "name": "lemond",
       "log_date_format": "YYYY-DD-MM HH:mm",
       "env": {
-          "NODE_ENV": "developer"
+          "NODE_ENV": "development"
       },
       "watch": ["./server"],
       "ignore_watch": ["node_modules"]
