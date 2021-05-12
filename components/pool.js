@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { useEffect, useState } from "react"
 import useWallet from "use-wallet"
-import { Link, withTranslation } from "../i18n"
+import { withTranslation } from "../i18n"
 import classNames from "classnames/bind"
 import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
@@ -44,11 +44,10 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
     var closeFn
 
     const web3 = new Web3(ethereum)
-    const { comptroller, lemdDistribution, priceOracle } = tokenConfig.lend.controller
+    const { comptroller, priceOracle } = tokenConfig.lend.controller
     const tokenContract = new web3.eth.Contract(token.abi, token.address)
     const lTokenContract = new web3.eth.Contract(lToken.abi, lToken.address)
     const comptrollerContract = new web3.eth.Contract(comptroller.abi, comptroller.address)
-    const lemdDistributionContract = new web3.eth.Contract(lemdDistribution.abi, lemdDistribution.address)
     const priceOracleContract = new web3.eth.Contract(priceOracle.abi, priceOracle.address)
 
     var digits = 18
@@ -149,7 +148,7 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                     exchangeRateMantissa: accountSnapshot[3],
                 })
             }
-        }, 2000)
+        }, 3000)
         return () => {
             clearInterval(timer)
         }

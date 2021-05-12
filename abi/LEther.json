@@ -507,6 +507,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_flashloan",
+        "type": "address"
+      }
+    ],
+    "name": "_setFlashloan",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "contract IInterestRateModel",
         "name": "newInterestRateModel",
         "type": "address"
@@ -841,6 +854,29 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_params",
+        "type": "bytes"
+      }
+    ],
+    "name": "flashloan",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "flashloanInstance",
     "outputs": [
@@ -1047,13 +1083,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "inviter",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "mint",
     "outputs": [],
     "stateMutability": "payable",

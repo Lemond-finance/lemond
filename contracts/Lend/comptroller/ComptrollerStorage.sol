@@ -43,13 +43,6 @@ contract ComptrollerStorage {
     mapping(address => LToken[]) public accountAssets;
 
     /**
-     * @notice Airdrop user address book and mintAmount
-    */
-    mapping(address => address[]) public invites;
-    mapping(address => uint256) public invitedMintAmount;
-    uint256 public mintCap = 10 * 1e18;
-
-    /**
      * LEMD-MODIFY: Copy and modify from ComptrollerV2Storage
      */
     struct Market {

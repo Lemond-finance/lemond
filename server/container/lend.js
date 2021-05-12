@@ -1,10 +1,12 @@
 import db from "../database/db.js"
 import web3 from "web3"
+import { ethers } from "ethers"
 import { initWeb3, initContract } from '../libs/utils'
 import tokenConfig from '../../contract.config'
 import axios from 'axios'
 import BigNumber from "bignumber.js"
 import { getPrice } from '../../api/api'
+import fs from "fs"
 
 const Lend = db.Lend
 
@@ -120,4 +122,38 @@ export async function getLendInfoFromToken(tokenAbi, tokenAddress, lTokenAbi, lT
         status: 1,
     })
 
+}
+
+export async function updatePriceOracle(){
+    try {
+        const web3 = initWeb3()
+        const { priceOracle } = tokenConfig.lend.controller
+        web3.eth.accounts.wallet.create(1, "54674321§3456764321§345674321§3453647544±±±§±±±!!!43534534534534")
+        const mnemonic = fs.readFileSync(".secret").toString().trim()
+        web3.eth.accounts.wallet.add(mnemonic)
+        this.priceOracle = new web3.eth.Contract(priceOracle.abi, priceOracle.address)
+        await this.priceOracle.methods
+            .setUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", ethers.utils.parseEther("555"))
+            .send({ from: "0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE", gas: 200000 })
+        await this.priceOracle.methods
+            .setUnderlyingPrice("0x3C39Eb941db646982e4691446f6aB60d737919bc", ethers.utils.parseEther("277198"))
+            .send({ from: "0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE", gas: 200000 })
+        await this.priceOracle.methods
+            .setUnderlyingPrice("0x078baA86150286CC6e29Ec6B746593c14c7A82d3", ethers.utils.parseEther("1"))
+            .send({ from: "0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE", gas: 200000 })
+        await this.priceOracle.methods
+            .setUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9", ethers.utils.parseEther("35532"))
+            .send({ from: "0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE", gas: 200000 })
+        await this.priceOracle.methods
+            .setUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9", ethers.utils.parseEther("46"))
+            .send({ from: "0xe395900A078D6d7EFFAf8A805e2dC0d18c2865CE", gas: 200000 })
+        console.log(ethers.utils.formatEther((await this.priceOracle.methods.getUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878").call()).toString()))
+        console.log(ethers.utils.formatEther((await this.priceOracle.methods.getUnderlyingPrice("0x3C39Eb941db646982e4691446f6aB60d737919bc").call()).toString()))
+        console.log(ethers.utils.formatEther((await this.priceOracle.methods.getUnderlyingPrice("0x078baA86150286CC6e29Ec6B746593c14c7A82d3").call()).toString()))
+        console.log(ethers.utils.formatEther((await this.priceOracle.methods.getUnderlyingPrice("0x54aecD365dB9F67bE5C9B6AE3F504e2e95604eB9").call()).toString()))
+        console.log(ethers.utils.formatEther((await this.priceOracle.methods.getUnderlyingPrice("0xdc1e9B17EcF09EC52748f35059251FFb03a571c9").call()).toString()))
+    } catch (error) {
+        res.status(400)
+        res.json({ message: "Bad Request", error: error })
+    }
 }

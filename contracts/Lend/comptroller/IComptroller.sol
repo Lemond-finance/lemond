@@ -11,17 +11,6 @@ pragma solidity 0.6.12;
 
 interface IComptroller {
 
-
-    function getInvites(address account) external view returns(address[] memory);
-
-    function getInvitedMintAmount(address account) external view returns(uint256);
-
-    function getMaxInvitedMintAmount(address account) external view returns(uint256);
-
-    function addInvites(address account, address inviter)  external;
-
-    function addInvitedMintAmount(address account, uint256 amount) external;
-
     /*** Assets You Are In ***/
 
     /**

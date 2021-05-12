@@ -18,19 +18,7 @@ contract LEther is LToken {
         super.init(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_);
     }
 
-    function mint(address inviter) external payable {
-        address[] memory inviters = comptroller.getInvites(inviter);
-        if(inviter != address(0) && inviter != msg.sender  && inviters.length <= 4){
-            bool alreadyHave = false;
-            for(uint256 i = 0 ; i < inviters.length; i++){
-                if(inviters[i] == msg.sender){
-                    alreadyHave = true;
-                }
-            }
-            if(!alreadyHave){
-                comptroller.addInvites(inviter, msg.sender);
-            }
-        }
+    function mint() external payable {
         (uint err,) = mintInternal(msg.value);
         requireNoError(err, "mint failed");
     }
@@ -101,6 +89,18 @@ contract LEther is LToken {
         fullMessage[i + 3] = byte(uint8(48 + (errCode % 10)));
         fullMessage[i + 4] = byte(uint8(41));
         require(errCode == uint(Error.NO_ERROR), string(fullMessage));
+    }
+
+    function flashloan(address _receiver, uint256 _amount, bytes memory _params) nonReentrant external {
+        uint256 cashBefore = getCashPrior();
+        doTransferOut(address(uint160(address(flashloanInstance))), _amount);
+        flashloanInstance.flashloan(address(this), _receiver, address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE), _amount, _params);
+        require(getCashPrior() >= cashBefore, "The actual balance is inconsistent");
+        accrueInterest();
+    }
+
+    function _setFlashloan(address _flashloan) public onlyOwner {
+        flashloanInstance = IFlashloan(_flashloan);
     }
 
 }

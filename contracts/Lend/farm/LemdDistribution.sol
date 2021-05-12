@@ -84,6 +84,7 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
     bool public enableDistributeSeizeLemd;
     bool public enableDistributeTransferLemd;
 
+
     /// @notice Emitted when a new LEMD speed is calculated for a market
     event LemdSpeedUpdated(LToken indexed lToken, uint newSpeed);
 
@@ -330,21 +331,11 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
      * @return The amount of LEMD which was NOT transferred to the user
      */
     function grantLemdInternal(address user, uint userAccrued, uint threshold) internal returns (uint) {
+
         if (userAccrued >= threshold && userAccrued > 0) {
             uint lemdRemaining = lemd.balanceOf(address(this));
             if (userAccrued <= lemdRemaining) {
-                uint maxMint = comptroller.getMaxInvitedMintAmount(msg.sender);
-                uint accountMint = comptroller.getInvitedMintAmount(msg.sender);
-                uint upperLimit = sub_(maxMint,accountMint);
-                if(upperLimit > 0){
-                    if(userAccrued > upperLimit){
-                        comptroller.addInvitedMintAmount(msg.sender,upperLimit);
-                        lemd.transfer(user, upperLimit);
-                    }else{
-                        comptroller.addInvitedMintAmount(msg.sender,userAccrued);
-                        lemd.transfer(user, userAccrued);
-                    }
-                }
+                lemd.transfer(user, userAccrued);
                 return 0;
             }
         }
@@ -488,9 +479,6 @@ contract LemdDistribution is ILemdDistribution, Exponential, OwnableUpgradeSafe 
             }
         }
 
-        if(pendingLemd > comptroller.getMaxInvitedMintAmount(holder)){
-            return comptroller.getMaxInvitedMintAmount(holder);
-        }
         return pendingLemd;
     }
 

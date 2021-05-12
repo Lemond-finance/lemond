@@ -1,20 +1,18 @@
 import Head from "next/head"
 import { useEffect, useState } from "react"
 import useWallet from "use-wallet"
-import { Link, withTranslation } from "../i18n"
+import { withTranslation } from "../i18n"
 import HeaderFooter from "../layout/HeaderFooter"
 import classNames from "classnames/bind"
 import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
-import { ToastContainer, toast } from "react-toastify"
-import { toastConfig } from "../libs/utils"
+import { ToastContainer } from "react-toastify"
 import tokenConfig from "../contract.config"
 import Pool from "../components/pool"
 import { formatUSDNmuber, formatNmuber } from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 import BigNumber from "bignumber.js"
-import Clipboard from "react-clipboard.js"
 import { withRouter } from "next/router"
 import { getPrice, getLendInfo } from "../api/api"
 
@@ -28,23 +26,13 @@ const Home = ({ t, router }) => {
     const [borrowBalanceLimit, setBorrowBalanceLimit] = useState(0)
     const [borrowRate, setBorrowRate] = useState(0)
     const [pendingLemd, setPendingLemd] = useState(0)
-
-    const [remainingLemd, setRemainingLemd] = useState(0)
-    const [inviteAmount, setInviteAmount] = useState(0)
-    const [invitedMintAmount, setInvitedMintAmount] = useState(0)
-    const [maxInvitedMintAmount, setMaxInvitedMintAmount] = useState(0)
-
     const [poolInfo, setPoolInfo] = useState([{},{},{},{},{}])
 
-
     const web3 = new Web3(ethereum)
-    const { lemond } = tokenConfig.token
-    const lemdContract = new web3.eth.Contract(lemond.abi, lemond.address)
     const { OKT, OKB, USDT, ETHK, BTCK } = tokenConfig.lend.tokens
     const { lEther, lOKB, lUSDT, lETHK, lBTCK } = tokenConfig.lend.lTokens
-    const { lemdDistribution, comptroller } = tokenConfig.lend.controller
+    const { lemdDistribution } = tokenConfig.lend.controller
     const lemdDistributionContract = new web3.eth.Contract(lemdDistribution.abi, lemdDistribution.address)
-    const comptrollerContract = new web3.eth.Contract(comptroller.abi, comptroller.address)
 
     const updatePoolDate = (data, index) => {
         poolDate[index] = data
@@ -76,28 +64,14 @@ const Home = ({ t, router }) => {
 
                 const pendingLemd = await lemdDistributionContract.methods.pendingLemdAccrued(account, true, true).call()
 
-                const remainingLemd = await lemdContract.methods.balanceOf(lemdDistribution.address).call()
-                console.log("RemainingLemd", remainingLemd)
-                const inviteAmount = (await comptrollerContract.methods.getInvites(account).call()).length
-                console.log("inviteAmount", inviteAmount)
-                const invitedMintAmount = await comptrollerContract.methods.getInvitedMintAmount(account).call()
-                console.log("invitedMintAmount", invitedMintAmount)
-                const maxInvitedMintAmount = await comptrollerContract.methods.getMaxInvitedMintAmount(account).call()
-                console.log("maxInvitedMintAmount", maxInvitedMintAmount)
-
                 setSupplyBalance(supplyBalance)
                 setBorrowBalance(borrowBalance)
                 setBorrowBalanceLimit(borrowBalanceLimit.toFixed(2))
                 setBorrowRate(borrowRate)
                 setPendingLemd(pendingLemd)
 
-                setRemainingLemd(remainingLemd)
-                setInviteAmount(inviteAmount)
-                setInvitedMintAmount(invitedMintAmount)
-                setMaxInvitedMintAmount(maxInvitedMintAmount)
-
             }
-        }, 5000)
+        }, 3000)
         return () => {
             clearInterval(timer)
         }
@@ -167,8 +141,7 @@ const Home = ({ t, router }) => {
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
                         <p>
-                            {/* {formatNmuber(pendingLemd, 18, 4)} */}
-                            0.0000
+                            {formatNmuber(pendingLemd, 18, 4)}
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
