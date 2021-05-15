@@ -344,7 +344,7 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
             <span className={styles.total_info}>
                 <span className={styles.icon}></span>
                 <span className={styles.left}>
-                    <p>{lToken.name}</p>
+                    <p>{lToken.name}<em>${formatNumber(tokenPrice, 18, 2)}</em></p>
                     <p className={styles.sub_title}>{lToken.description}</p>
                 </span>
                 <span>
@@ -454,7 +454,7 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                                             } else {
                                                 var value
                                                 value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                if(borrow == 0) {
+                                                if (borrow == 0) {
                                                     value = supplyBalanceAmount
                                                 }
                                                 var supplyValues = parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value
@@ -563,8 +563,11 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                                         onClick={() => {
                                             if (checkWallet()) return
                                             if (switchBorrow) {
-                                                var value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18))).times(0.8)
-                                                console.log("switchBorrow",new BigNumber(borrowLimit).minus(borrow).toString())
+                                                var value = new BigNumber(borrowLimit)
+                                                    .minus(borrow)
+                                                    .div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                    .times(0.8)
+                                                console.log("switchBorrow", new BigNumber(borrowLimit).minus(borrow).toString())
                                                 value = lToken.name == "OKT" ? formatDecimals(value, 18) : formatDecimals(value, 10)
                                                 setBorrowValue(value)
                                             } else {

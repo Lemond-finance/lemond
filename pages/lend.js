@@ -61,6 +61,7 @@ const Home = ({ t, router }) => {
                     }
                 }
                 borrowRate = new BigNumber(borrowBalance).div(borrowBalanceLimit).times(100).toFixed(2)
+                borrowRate = isNaN(borrowRate) ? 0 : borrowRate
 
                 const pendingLemd = await lemdDistributionContract.methods.pendingLemdAccrued(account, true, true).call()
 
