@@ -32,7 +32,6 @@ const HeaderFooter = (props) => {
           <meta name="keywords" content="lemond.money" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
           <link rel="stylesheet" href="/ReactToastify.css" />
-          <script src="/viewport.js" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JVC00MHTC"></script>
           <script
             dangerouslySetInnerHTML={{

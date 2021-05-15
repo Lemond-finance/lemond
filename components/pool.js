@@ -7,7 +7,7 @@ import styles from "../styles/lend.less"
 import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer, toast } from "react-toastify"
 import { toastConfig } from "../libs/utils"
-import { formatUSDNmuber, formatThousandNumber, formatAverageNumber, formatNmuber, unFormatNumber, formatStringNumber } from "../libs/utils"
+import { formatUSDNmuber, formatThousandNumber, formatAverageNumber, formatNumber, formatDecimals, unFormatNumber, formatStringNumber } from "../libs/utils"
 import tokenConfig from "../contract.config"
 import BigNumber from "bignumber.js"
 import Switch from "react-switch"
@@ -225,7 +225,16 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
     }
 
     const checkBorrowingLimit = () => {
-        if (new BigNumber(supplyBalanceAmount).times(tokenPrice).div(new BigNumber(10).pow(18)) < new BigNumber(borrowLimit).minus(borrow)) {
+        const borrowLimitAmount = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+        console.log(
+            "checkBorrowingLimit",
+            supplyBalanceAmount,
+            tokenPrice,
+            borrowLimit,
+            borrow,
+            borrowLimitAmount.toString(),
+        )
+        if (new BigNumber(supplyBalanceAmount) >= borrowLimitAmount) {
             confirmAlert({
                 customUI: ({ onClose }) => {
                     return (
@@ -256,11 +265,10 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
         loading()
         const value = lToken.name == "OKT" ? unFormatNumber(supplyValue, 18) : unFormatNumber(supplyValue, 10)
         console.log(value, "OKT", lToken.name)
-        var inviter = router.query?.inviter ? router.query?.inviter : "0x0000000000000000000000000000000000000000"
         if (lToken.name == "OKT") {
-            await lTokenContract.methods.mint(inviter).send({ from: account, value: value })
+            await lTokenContract.methods.mint().send({ from: account, value: value })
         } else {
-            await lTokenContract.methods.mint(value, inviter).send({ from: account })
+            await lTokenContract.methods.mint(value).send({ from: account })
         }
         setSupplyValue(0)
         closeFn()
@@ -439,12 +447,18 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                                     <input type="text" placeholder="0" value={supplyValue} onChange={(e) => setSupplyValue(e.target.value)} />
                                     <button
                                         onClick={() => {
+                                            if (checkWallet()) return
                                             if (switchSupply) {
                                                 const value = lToken.name == "OKT" ? formatStringNumber(tokenBalance, 18) : formatStringNumber(tokenBalance, 10)
                                                 setSupplyValue(value)
                                             } else {
-                                                const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                const supplyValues = enterMarkets ? (parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value) : supplyBalanceAmount
+                                                var value
+                                                value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
+                                                if(borrow == 0) {
+                                                    value = supplyBalanceAmount
+                                                }
+                                                var supplyValues = parseFloat(value) > parseFloat(supplyBalanceAmount) ? supplyBalanceAmount : value
+                                                supplyValues = lToken.name == "OKT" ? formatDecimals(value, 18) : formatDecimals(value, 10)
                                                 console.log("supplyValues", supplyValues)
                                                 setSupplyValue(supplyValues)
                                             }
@@ -506,7 +520,7 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                             </span>
                             <span className={styles.balance}>
                                 <h1>
-                                    {switchSupply && (lToken.name == "OKT" ? formatNmuber(tokenBalance, 18, 8) : formatNmuber(tokenBalance, 10, 8))}
+                                    {switchSupply && (lToken.name == "OKT" ? formatNumber(tokenBalance, 18, 8) : formatNumber(tokenBalance, 10, 8))}
                                     {!switchSupply && formatThousandNumber(supplyBalanceAmount, 8)} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
@@ -547,10 +561,12 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                                     <input type="text" placeholder="0" value={borrowValue} onChange={(e) => setBorrowValue(e.target.value)} />
                                     <button
                                         onClick={() => {
+                                            if (checkWallet()) return
                                             if (switchBorrow) {
-                                                const value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18)))
-                                                // setBorrowValue(remaining < value ? remaining.times(0.8) : value.times(0.8))
-                                                setBorrowValue(value.times(0.8))
+                                                var value = new BigNumber(borrowLimit).minus(borrow).div(new BigNumber(tokenPrice).div(new BigNumber(10).pow(18))).times(0.8)
+                                                console.log("switchBorrow",new BigNumber(borrowLimit).minus(borrow).toString())
+                                                value = lToken.name == "OKT" ? formatDecimals(value, 18) : formatDecimals(value, 10)
+                                                setBorrowValue(value)
                                             } else {
                                                 setBorrowValue(borrowBalanceAmount)
                                             }
@@ -614,7 +630,7 @@ const Pool = ({ t, router, lemdPrice, info, token, lToken, borrow, borrowLimit, 
                             <span className={cx(styles.balance, styles.fr)}>
                                 <h1>
                                     {switchBorrow && formatThousandNumber(borrowBalanceAmount, 8)}
-                                    {!switchBorrow && (lToken.name == "OKT" ? formatNmuber(tokenBalance, 18, 8) : formatNmuber(tokenBalance, 10, 8))} <b>{lToken.name}</b>
+                                    {!switchBorrow && (lToken.name == "OKT" ? formatNumber(tokenBalance, 18, 8) : formatNumber(tokenBalance, 10, 8))} <b>{lToken.name}</b>
                                 </h1>
                                 <p>
                                     {switchBorrow && "Currently Borrowing"}

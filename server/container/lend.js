@@ -124,7 +124,7 @@ export async function getLendInfoFromToken(tokenAbi, tokenAddress, lTokenAbi, lT
 
 }
 
-export async function updatePriceOracle(){
+export async function updatePriceOracle(req, res) {
     try {
         const web3 = initWeb3()
         const { priceOracle } = tokenConfig.lend.controller

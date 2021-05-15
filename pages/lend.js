@@ -9,7 +9,7 @@ import { confirmAlert } from "react-confirm-alert"
 import { ToastContainer } from "react-toastify"
 import tokenConfig from "../contract.config"
 import Pool from "../components/pool"
-import { formatUSDNmuber, formatNmuber } from "../libs/utils"
+import { formatUSDNmuber, formatNumber } from "../libs/utils"
 const cx = classNames.bind(styles)
 import Web3 from "web3"
 import BigNumber from "bignumber.js"
@@ -141,7 +141,7 @@ const Home = ({ t, router }) => {
                     <div className={cx(styles.borrowText, styles.price)}>
                         <h3>Pending LEMD</h3>
                         <p>
-                            {formatNmuber(pendingLemd, 18, 4)}
+                            {formatNumber(pendingLemd, 18, 4)}
                             <button onClick={() => claim()}>Claim</button>
                         </p>
                     </div>
