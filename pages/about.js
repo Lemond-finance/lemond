@@ -8,6 +8,7 @@ import styles from "../styles/faq.less"
 import { confirmAlert } from 'react-confirm-alert'
 import { ToastContainer, toast } from 'react-toastify'
 import { toastConfig } from '../libs/utils'
+import tokenConfig from "../contract.config"
 const cx = classNames.bind(styles)
 import Web3 from 'web3'
 
@@ -48,9 +49,24 @@ const Home = ({ t }) => {
         ]
     });
   }
+  
+  const addLEMDtoWallet = async () => {
+      let ethereum = window.ethereum
 
-  const showAlert = () => {
-      toast.dark('🚀 Waiting for open!', toastConfig)
+      const { lemond } = tokenConfig.token
+
+      const tx2 = await ethereum.request({
+          method: "wallet_watchAsset",
+          params: {
+              type: "ERC20", // Initially only supports ERC20, but eventually more!
+              options: {
+                  address: lemond.address, // The address that the token is at.
+                  symbol: "LEMD", // A ticker symbol or shorthand, up to 5 chars.
+                  decimals: 18, // The number of decimals in the token
+                  image: "https://www.lemond.money/img/logo.svg", // A string url of the token logo
+              },
+          },
+      })
   }
 
   return (
@@ -82,6 +98,9 @@ const Home = ({ t }) => {
                       Token: LEMD
                       <br />
                       Total Supply: <b>1,000,000,000</b>
+                      <br />
+                      <button onClick={() => addLEMDtoWallet()}>Add LEMD to Wallet</button>
+                      <br />
                       <br />
                       <b>60%</b> Loan Mining + Liquidity Mining
                       <br />

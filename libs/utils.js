@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import numbro from "numbro"
 
 
-export function formatNmuber(number, digits, decimals){
+export function formatNumber(number, digits, decimals){
   const bn = new BigNumber(String(number))
   return numbro(bn.div(new BigNumber(10).pow(digits))).format({
       thousandSeparated: true,
@@ -45,6 +45,14 @@ export function unFormatNumber(number, decimals) {
         mantissa: 0,
     })
 }
+
+export function formatDecimals(number, decimals) {
+    const bn = new BigNumber(String(number))
+    return numbro(bn).format({
+        mantissa: decimals,
+    })
+}
+
 
 export const toastConfig = {
     position: "bottom-left",

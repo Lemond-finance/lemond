@@ -9,6 +9,33 @@ const cx = classNames.bind(styles)
 const Header = (props) => {
     const { activeIndex } = props
     const [toggleNav, setToggleNav] = useState(true)
+
+    useEffect(async () => {
+        initNetWork()
+    }, [])
+
+    const initNetWork = async () => {
+        let ethereum = window.ethereum
+        const data = [
+            {
+                chainId: "0x41",
+                chainName: "OKExChain",
+                nativeCurrency: {
+                    name: "OKT",
+                    symbol: "OKT",
+                    decimals: 18,
+                },
+                rpcUrls: ["https://exchaintestrpc.okex.org"],
+                blockExplorerUrls: ["https://www.oklink.com/okexchain-test"],
+            },
+        ]
+        /* eslint-disable */
+        const tx = await ethereum.request({ method: "wallet_addEthereumChain", params: data }).catch()
+        if (tx) {
+            console.log(tx)
+        }
+    }
+
     return ( 
         <header className={styles.header}>
             <div className={styles.inner}>

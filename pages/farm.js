@@ -16,7 +16,7 @@ import '../styles/react-confirm-alert.less'
 const cx = classNames.bind(styles)
 import Web3 from 'web3'
 import {
-  formatNmuber,
+  formatNumber,
   unFormatNumber,
   formatStringNumber,
 } from '../libs/utils'
@@ -270,12 +270,12 @@ const Home = ({ t,router }) => {
                         <h2 onClick={() => window.open(oktConfig.link)}>
                         {oktConfig.description}
                         </h2>
-                        <h3>{formatNmuber(stakeNum,18,8)}</h3>
+                        <h3>{formatNumber(stakeNum,18,8)}</h3>
                         <h4>Staked OKT Tokens</h4>
                         <div className={styles.claim}>
                         <div className={styles.claimText}>
                             <h3>
-                            {formatNmuber(earnedNum,18,8)}
+                            {formatNumber(earnedNum,18,8)}
                             </h3>
                             <h4>Unclaimed LEMD in pool</h4>
                         </div>
