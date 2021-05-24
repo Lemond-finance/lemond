@@ -15,8 +15,8 @@ const Home = ({ t }) => {
   const [totalValueLocked, setTotalValueLocked] = useState(0)
 
   useEffect(async () => {
-      const { data } = await getTotalValueLocked()
-      setTotalValueLocked(data.data)
+    //   const { data } = await getTotalValueLocked()
+    //   setTotalValueLocked(data.data)
   }, [])
 
   return (
@@ -45,6 +45,49 @@ const Home = ({ t }) => {
                       </Link>
                   </p>
               </div>
+              <div className={styles.multiple_chain}>
+                  <h1>Lemond Protocol</h1>
+                  <h2>
+                      Money Markets built on
+                      <br />
+                      <b>Binance Smart Chain</b>
+                  </h2>
+                  <p>
+                      You can now tokenize your assets utilizing the Binance Smart Chain and receive portable vTokens that you can freely move around to cold storage,transfer to other user and more.
+                  </p>
+              </div>
+              <div className={styles.feature}>
+                  <ul>
+                      <li className={styles.cross_chain}>
+                          <h1>
+                              <img src="/img/cross_chain_title.png" height="35" />
+                          </h1>
+                          <h2>Cross chain</h2>
+                          <p>Support okexchain, BSC, ETH main network, cross chain mortgage loan assets.</p>
+                      </li>
+                      <li className={styles.dao}>
+                          <h1>
+                              <img src="/img/dao_title.png" height="35" />
+                          </h1>
+                          <h2>DAO</h2>
+                          <p>Ltoken can be used to pledge liquidity and improve asset income.</p>
+                      </li>
+                      <li className={styles.nft}>
+                          <h1>
+                              <img src="/img/nft_title.png" height="35" />
+                          </h1>
+                          <h2>NFT</h2>
+                          <p>NFT pledge lending supports the function of erc721 asset lending.</p>
+                      </li>
+                      <li className={styles.aggregate}>
+                          <h1>
+                              <img src="/img/aggregate_title.png" height="35" />
+                          </h1>
+                          <h2>Aggregate income</h2>
+                          <p>Holding lemd allows voting and project governance.</p>
+                      </li>
+                  </ul>
+              </div>
               <div className={styles.airdrop}>
                   <div className={styles.airdrop_box}></div>
                   <h1>
@@ -67,11 +110,11 @@ const Home = ({ t }) => {
                   </p>
                   <p className={styles.btns}>
                       Episode ②{" "}
-                      <Link href="/lend">
-                          <button>Get Airdrop >></button>
+                      <Link href="/lend" disabled>
+                          <button>Ended</button>
                       </Link>
                   </p>
-                  <p className={styles.btns} >
+                  <p className={styles.btns}>
                       Episode ③ <button disabled>Comming soon</button>{" "}
                   </p>
               </div>
