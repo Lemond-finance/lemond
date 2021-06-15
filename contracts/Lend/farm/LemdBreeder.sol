@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../token/LemdToken.sol";
+import "hardhat/console.sol";
 
 // Copied and modified from sushiswap code:
 // https://github.com/sushiswap/sushiswap/blob/master/contracts/MasterChef.sol
@@ -407,6 +408,7 @@ contract LemdBreeder is Ownable {
         }
 
         if (_amount > 0) {
+            console.log("_amount",_amount);
             pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);
             user.amount = user.amount.add(_amount);
             pool.totalDeposit = pool.totalDeposit.add(_amount);

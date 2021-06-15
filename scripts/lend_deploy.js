@@ -133,6 +133,22 @@ async function main() {
     // await this.comptroller._setDistributeLemdPaused(false)
     await this.lemdDistribution._setEnableAll(true)
 
+    /** Stake Pool Test **/
+    // Add Stake Pool
+    await this.lEther.mint({ value: hre.ethers.utils.parseEther("10") })
+    await this.lemdToken.addMinter(this.deployer)
+    await this.lemdToken.addMinter(this.lemdBreeder.address)
+    await this.lemdToken.mint(this.lemdBreeder.address, hre.ethers.utils.parseEther("1000"))
+    const ZERO_ADDR = "0x0000000000000000000000000000000000000000"
+    await this.lemdBreeder.add("1000", this.lEther.address, ZERO_ADDR, true)
+    const lEtherBalance = (await this.lEther.balanceOf(this.deployer)).toString()
+    console.log("lEtherBalance", lEtherBalance)
+    await this.lEther.approve(this.lemdBreeder.address, hre.ethers.utils.parseEther("100"))
+    console.log((await this.lEther.allowance(this.deployer, this.lemdBreeder.address)).toString())
+    console.log(JSON.parse(JSON.stringify(await this.lemdBreeder.poolInfo(0))))
+    console.log("lEther address", this.lEther.address)
+    await this.lemdBreeder.stake(0, "10000")
+
     console.log("End")
 }
 

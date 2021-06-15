@@ -9,6 +9,15 @@ module.exports = {
             abi: require("./abi/OKTPool.json"),
             speed: "Genesis",
         },
+        lp: {
+            name: "LEMD-OKT LP Pool",
+            description: "Get LEMD-OKT LP Token",
+            icon: "icon_domo_eth",
+            link: "https://gitter.im/okexchain-testnet/faucet",
+            address: "0x2c91AA5F6586e9E13D4EC50dA16b336beC448BCf",
+            abi: require("./abi/OKTPool.json"),
+            speed: "Genesis",
+        },
     },
     token: {
         lemond: {

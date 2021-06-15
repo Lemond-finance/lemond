@@ -70,7 +70,7 @@ const Home = ({ t }) => {
   }
 
   return (
-      <HeaderFooter activeIndex={4}>
+      <HeaderFooter activeIndex={5}>
           <ToastContainer />
           <Head>
               <title>{t("title")}</title>

@@ -1,0 +1,132 @@
+.wrapper{
+    .across_chain{
+        background: url(../public/img/across_chain_bg.png) no-repeat center;
+        height: 500px;
+        background-size: auto 60%;
+        position: relative;
+        .content{
+             width: 500px;
+             position: absolute;
+             left: 50%;
+             top: 50%;
+             margin-top: -200px;
+             h1{
+                 font-size: 22px;
+                 color: #F5BA5D;
+                 margin-bottom: 10px;
+             }
+            .swap{
+                border: 1px solid #515151;
+                border-radius: 14px;
+                box-sizing: border-box;
+                padding: 10px 20px;
+                backdrop-filter: blur(8px);
+                h2{
+                    font-size: 24px;
+                    color: #56627b;
+                    margin-bottom: 10px;
+                }
+                .box{
+                    border: 1px solid #3F3F3F;
+                    overflow: hidden;
+                    background: #101215;
+                    padding: 10px 20px;
+                    border-radius: 10px;
+                    i.icon_swap{
+                        background: url(../public/img/icon_swap.svg) no-repeat center #4F5968;
+                        width: 70px;
+                        height: 25px;
+                        background-size: auto 50%;
+                        border-radius: 15px;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        margin: -27px 0 0 -35px;
+                    }
+                    ul{
+                        li{
+                            overflow: hidden;
+                            padding:15px  0;
+                            &:first-child{
+                                border-bottom: 1px solid #383838;
+                            }
+                            img{
+                                width: 50px;
+                            }
+                            input{
+                                color: #485160;
+                                float: right;
+                                font-size: 30px;
+                                font-weight: bold;
+                                background: none;
+                                border: none;
+                                height: 50px;
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+                .balance{
+                    overflow: hidden;
+                    padding:10px 0 ;
+                    .balance_content{
+                        float: left;
+                        span{
+                            display: block;
+                            color: #56627b;
+                            &.num{
+                                font-size: 22px;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                    button{
+                        align-items: center;
+                        float: right;
+                        background: #ffb033;
+                        border: 0px;
+                        border-radius: 5px;
+                        box-sizing: border-box;
+                        color: #ffffff;
+                        cursor: pointer;
+                        display: flex;
+                        font-size: 15px;
+                        font-weight: 700;
+                        height: 38px;
+                        -webkit-box-pack: center;
+                        justify-content: center;
+                        margin: 0px;
+                        line-height: 32px;
+                        min-width: 48px;
+                        outline: none;
+                        padding-left: 24px;
+                        padding-right: 24px;
+                        white-space: nowrap;
+                        width: 140px;
+                        margin-top: 10px;
+                        &:disabled{
+                            background: #999;
+                        }
+                    }
+                }
+                .cover{
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    background: #00000024;
+                    backdrop-filter: blur(2px);
+                    border-radius: 14px;
+                    overflow: hidden;
+                    z-index: 999;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

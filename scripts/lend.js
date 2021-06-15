@@ -40,7 +40,7 @@ async function main() {
     console.log("lemdToken", this.lemdToken.address)
 
     // LemdBreeder
-    this.lemdBreeder = await LemdBreeder.new(this.lemdToken.address, this.deployer, "1000000000000000000", "0", "100", "5760", "999", "39")
+    this.lemdBreeder = await LemdBreeder.new(this.lemdToken.address, this.deployer, "1000000000000000000", "0", "0", "5760", "999", "39")
     console.log("lemdBreeder", this.lemdBreeder.address)
 
     // Grant miner role to lemdBreeder
@@ -97,7 +97,7 @@ async function main() {
     // LemdDistribution
     this.lemdDistribution = await LemdDistribution.new()
     await this.lemdDistribution.initialize(this.lemdToken.address, this.lemdBreeder.address, this.comptroller.address)
-    console.log("lemdDistribution",this.lemdDistribution.address)
+    console.log("lemdDistribution", this.lemdDistribution.address)
 
     // comptroller Config
     await this.comptroller._setMaxAssets("20")
@@ -158,18 +158,30 @@ async function main() {
 
     /** Stake Pool Test **/
     // Add Stake Pool
-    // const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
-    // await this.lemdBreeder.add('1000', this.lEther.address, ZERO_ADDR, false)
-    // console.log(JSON.parse(JSON.stringify(await this.lemdBreeder.poolInfo(0))))
-    // await this.lemdBreeder.add('1000', this.lDAI.address, ZERO_ADDR, false)
-    // await this.lemdBreeder.add('1000', this.lUSDT.address, ZERO_ADDR, false)
-    // await this.lemdBreeder.add('1000', this.lUSDC.address, ZERO_ADDR, false)
-    // await this.lemdBreeder.add('1000', this.lwBTC.address, ZERO_ADDR, false)
+    await this.lemdToken.mint(this.lemdBreeder.address, hre.ethers.utils.parseEther("1000"))
+    const ZERO_ADDR = "0x0000000000000000000000000000000000000000"
+    await this.lemdBreeder.add("1000", this.lEther.address, ZERO_ADDR, true)
+    // await this.lemdBreeder.add("1000", this.lDAI.address, ZERO_ADDR, true)
+    // await this.lemdBreeder.add("1000", this.lUSDT.address, ZERO_ADDR, true)
+    // await this.lemdBreeder.add("1000", this.lUSDC.address, ZERO_ADDR, true)
+    // await this.lemdBreeder.add("1000", this.lwBTC.address, ZERO_ADDR, true)
 
+    const lEtherBalance = (await this.lEther.balanceOf(this.deployer)).toString()
+    console.log("lEtherBalance", lEtherBalance)
+    await this.lEther.approve(this.lemdBreeder.address, hre.ethers.utils.parseEther("100"))
+    console.log((await this.lEther.allowance(this.deployer, this.lemdBreeder.address)).toString())
+    console.log(JSON.parse(JSON.stringify(await this.lemdBreeder.poolInfo(0))))
+    console.log("lEther address", this.lEther.address)
+    await this.lemdBreeder.stake(0,"1")
+    // await this.lDAI.approve(this.lemdBreeder.address, "1000000000000000000000000000000")
+    // await this.lUSDT.approve(this.lemdBreeder.address, "1000000000000000000000000000000")
+    // await this.lwBTC.approve(this.lemdBreeder.address, "1000000000000000000000000000000")
+    // await this.lUSDC.approve(this.lemdBreeder.address, "1000000000000000000000000000000")
+    // await this.lemdBreeder.stake(0, "1")
     // await this.lemdDistribution.claimLemd(this.deployer)
-    // console.log("pendingLemd",(await this.lemdBreeder.allPendingLemd(this.lemdDistribution.address)).toString())
-    // console.log("pendingLemd",(await this.lemdBreeder.allPendingLemd(this.deployer)).toString())
-    // console.log("lemdAccrued",(await this.lemdDistribution.lemdAccrued(this.deployer)).toString())
+    // console.log("pendingLemd", (await this.lemdBreeder.allPendingLemd(this.lemdDistribution.address)).toString())
+    // console.log("pendingLemd", (await this.lemdBreeder.allPendingLemd(this.deployer)).toString())
+    // console.log("lemdAccrued", (await this.lemdDistribution.lemdAccrued(this.deployer)).toString())
 
     console.log("End")
 }

@@ -57,6 +57,10 @@ module.exports = {
             url: "https://mainnet.infura.io/v3/3970ae72d3db40f6a6dfad8544b4da1c",
             accounts: [mnemonic],
         },
+        ethmain: {
+            url: "https://bsc-dataseed.binance.org",
+            accounts: [mnemonic],
+        },
     },
     solidity: {
         compilers: [

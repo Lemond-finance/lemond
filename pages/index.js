@@ -9,14 +9,15 @@ import styles from "../styles/home.less";
 import CountUp from 'react-countup';
 import axios from 'axios';
 import { getLendInfo, getTotalValueLocked } from "../api/api"
+import ReactTypingEffect from "react-typing-effect"
 const cx = classNames.bind(styles);
 
 const Home = ({ t }) => {
   const [totalValueLocked, setTotalValueLocked] = useState(0)
 
   useEffect(async () => {
-      const { data } = await getTotalValueLocked()
-      setTotalValueLocked(data.data)
+      //   const { data } = await getTotalValueLocked()
+      //   setTotalValueLocked(data.data)
   }, [])
 
   return (
@@ -45,6 +46,50 @@ const Home = ({ t }) => {
                       </Link>
                   </p>
               </div>
+              <div className={styles.multiple_chain}>
+                  <h1>Lemond Protocol</h1>
+                  <h2>
+                      Money Markets built on
+                      <br />
+                      <b>
+                          <ReactTypingEffect typingDelay={300} eraseSpeed={0} text={["Ethereum","Binance Smart Chain", "OKExChain"]} />
+                      </b>
+                  </h2>
+                  <p>Multiple loan choices on multiple chains with easy access and juicy liquidity.</p>
+              </div>
+              <div className={styles.feature}>
+                  <ul>
+                      <li className={styles.cross_chain}>
+                          <h1>
+                              <img src="/img/cross_chain_title.png" height="35" />
+                          </h1>
+                          <h2>Cross chain</h2>
+                          <p>Cross chain mortgage loan assets, supporting ETH, BSC, OKExChain main network.</p>
+                      </li>
+                      <li className={styles.dao}>
+                          <h1>
+                              <img src="/img/dao_title.png" height="35" />
+                          </h1>
+                          <h2>DAO</h2>
+                          <p>Ltoken can be used to pledge liquidity, improve income and govern.</p>
+                      </li>
+                      <li className={styles.nft}>
+                          <h1>
+                              <img src="/img/nft_title.png" height="35" />
+                          </h1>
+                          <h2>NFT</h2>
+                          <p>NFT pledge lending supports the function of erc721 asset lending.</p>
+                      </li>
+                      <li className={styles.aggregate}>
+                          <h1>
+                              <img src="/img/aggregate_title.png" height="35" />
+                          </h1>
+                          <h2>Aggregate Income</h2>
+                          <p>Simply Hodl LEMD to</p>
+                          <p>Vote, Govern, and More.</p>
+                      </li>
+                  </ul>
+              </div>
               <div className={styles.airdrop}>
                   <div className={styles.airdrop_box}></div>
                   <h1>
@@ -67,11 +112,11 @@ const Home = ({ t }) => {
                   </p>
                   <p className={styles.btns}>
                       Episode ②{" "}
-                      <Link href="/lend">
-                          <button>Get Airdrop >></button>
+                      <Link href="/lend" disabled>
+                          <button>Ended</button>
                       </Link>
                   </p>
-                  <p className={styles.btns} >
+                  <p className={styles.btns}>
                       Episode ③ <button disabled>Comming soon</button>{" "}
                   </p>
               </div>
