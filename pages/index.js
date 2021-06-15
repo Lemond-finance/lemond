@@ -85,8 +85,7 @@ const Home = ({ t }) => {
                               <img src="/img/aggregate_title.png" height="35" />
                           </h1>
                           <h2>Aggregate Income</h2>
-                          <p>Simply Hodl LEMD to</p>
-                          <p>Vote, Govern, and More.</p>
+                          <p>Simply Hodl LEMD to<br/>Vote, Govern, and More.</p>
                       </li>
                   </ul>
               </div>
