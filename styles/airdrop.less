@@ -1,0 +1,245 @@
+.wrapper {
+    background: url(../public/img/airdrop_land.png) no-repeat center 170px;
+    background-size: 3000px auto;
+    .bg {
+        background: url(../public/img/airdrop_person.png) no-repeat center;
+        background-size: auto 100%;
+        height: 300px;
+    }
+    .steps {
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 50px;
+        li {
+            width: 200px;
+            height: 220px;
+            display: inline-block;
+            background: url(../public/img/airdrop_step2.svg) no-repeat center;
+            background-size: 100% 100%;
+            vertical-align: top;
+            p{
+                color: #F5BA5D;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 1.2em;
+                text-align: left;
+                padding-left: 30px;
+            }
+            button{
+                color: #1F2227;
+                font-size: 14px;
+                font-weight: bold;
+                background: #F5BA5D;
+                border: none;
+                border-radius: 20px;
+                padding: 5px 15px;
+                margin-top: 20px;
+                cursor: pointer;
+            }
+            i {
+                display: block;
+                width: 40px;
+                height: 40px;
+                margin: 30px 0 0 30px;
+                margin-bottom: 30px;
+            }
+            &.active{
+                background-image: url(../public/img/airdrop_step2_active.svg) ;
+                 &:nth-child(2){
+                    i{
+                        background-image: url(../public/img/icon_setp2_active.svg);
+                    }
+                }
+                &:nth-child(3){
+                    i{
+                        background-image: url(../public/img/icon_setp3_active.svg);
+                    }
+                }
+                p{
+                    color: #1F2227;
+                }
+                button{
+                    color: #F5BA5D;
+                    background: #1F2227;
+                }
+                &:first-child {
+                    background-image: url(../public/img/airdrop_step1_active.svg) ;
+                    i{
+                        background-image: url(../public/img/icon_setp1_active.svg) ;
+                    }
+                }
+                &:last-child{
+                    background-image: url(../public/img/airdrop_step3_active.png) ;
+                    i{
+                        background-image: url(../public/img/icon_setp4_active.svg) ;
+                    }
+                }
+            }
+            &:first-child {
+                background: url(../public/img/airdrop_step1_inactive.svg) no-repeat center;
+                background-size: 100% 100%;
+                i{
+                    background: url(../public/img/icon_setp1_inactive.svg) no-repeat center;
+                    background-size: cover;
+                }
+            }
+            &:nth-child(2){
+                i{
+                    background: url(../public/img/icon_setp2_inactive.svg) no-repeat center;
+                    background-size: cover;
+                }
+            }
+            &:nth-child(3){
+                i{
+                    background: url(../public/img/icon_setp3_inactive.svg) no-repeat center;
+                    background-size: cover;
+                }
+            }
+            &:last-child {
+                background: url(../public/img/airdrop_step3_inactive.png) no-repeat center;
+                background-size: 100% 100%;
+                margin-left: -5px;
+                width: 180px;
+                i{
+                    background: url(../public/img/icon_setp4_inactive.svg) no-repeat center;
+                    background-size: 100% auto;
+                }
+            }
+        }
+    }
+    .rules{
+        width: 1100px;
+        margin: 50px auto 0 auto;
+        background: #262A31;
+        border-radius: 9px;
+        box-sizing: border-box;
+        padding:15px 30px;
+        font-size: 15px;
+        color: #485160;
+        p{
+            margin: 10px 0;
+        }
+        .hight_light{
+            background: #383E47;
+            color: #F5BA5D;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            b{
+                color: #1F2227;
+                background:#F5BA5D ;
+                border-radius: 15px;
+                padding: 0 10px;
+                margin-left: 10px;
+            }
+        }
+    }
+    .prize{
+        width: 1100px;
+        margin: 30px auto 0 auto;
+        .left{
+            width: 48%;
+            margin: 0 1%;
+            background: url(../public/img/prize_title.png) no-repeat center top;
+            background-size:100% auto ;
+            padding-top: 50px;
+            float: left;
+            ul{
+                background: #262A31;
+                border-radius: 9px;
+                padding:20px ;
+                box-sizing: border-box;
+                li{
+                    background: #17191E;
+                    border: 1px solid #F37321;
+                    border-radius: 9px;
+                    padding:15px 20px;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    margin-bottom: 10px;
+                    img{
+                        float: left;
+                        width: 40px;
+                        margin-right: 20px;
+                    }
+                    .title{
+                        float: left;
+                        h1{
+                            color: #F37321;
+                            font-size: 20px;
+                            line-height: 1em;
+                        }
+                        p{
+                            color: #485160;
+                        }
+                    }
+                    .num{
+                        float: left;
+                        color: #fff;
+                        margin-left:100px;
+                        h1{
+                            font-size: 20px;
+                            line-height: 1em;
+                        }
+                    }
+                }
+            }
+        }
+        .right{
+            width: 48%;
+            margin: 0 1%;
+            float: left;
+            .ticket{
+                background: url(../public/img/ticket_bg.png) no-repeat center #17191E;
+                background-size: 100% 100%;
+                border: 1px solid #363636;
+                border-radius: 9px;
+                width: 100%;
+    height: 260px;
+    box-sizing: border-box;
+    padding: 30px ;
+    margin-bottom: 20px;
+    h1{
+        color: #F5BA5D;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    h2{
+        color: #F5BA5D;
+        font-size: 70px;
+        padding-left: 200px ;
+    }
+    p{
+         padding-left: 200px ;
+        font-size: 30px;
+        font-weight: bold;
+    }
+            }
+            .winner{
+                background: #262A31;
+                padding:20px ;
+                border-radius: 9px;
+                h1{
+                    font-size: 20px;
+                    color: #fff;
+                    border-bottom: 1px solid #485160;
+                    text-align: center;
+                    padding-bottom: 10px;
+                }
+                ul{
+                    li{
+                        padding:20px 10px ;
+                        span{
+                            &:first-child{
+                                float: left;
+                            }
+                            &:last-child{
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

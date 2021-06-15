@@ -1,21 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="63px" height="63px" viewBox="0 0 63 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组</title>
-    <defs>
-        <polygon id="path-1" points="0.00027 0.873 62.127 0.873 62.127 63 0.00027 63"></polygon>
-    </defs>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="桌面端-HD" transform="translate(-130.000000, -782.000000)">
-            <g id="编组" transform="translate(130.000000, 782.000000)">
-                <g>
-                    <mask id="mask-2" fill="white">
-                        <use xlink:href="#path-1"></use>
-                    </mask>
-                    <g id="Clip-2"></g>
-                    <path d="M62.12727,31.93605 C62.12727,49.09185 48.21957,63.00045 31.06377,63.00045 C13.90797,63.00045 0.00027,49.09185 0.00027,31.93605 C0.00027,14.78025 13.90797,0.87255 31.06377,0.87255 C48.21957,0.87255 62.12727,14.78025 62.12727,31.93605" id="Fill-1" fill="#48708C" mask="url(#mask-2)"></path>
-                </g>
-                <path d="M45,36.5472102 L31.3897922,54 L31.3897922,43.2387102 L45,36.5472102 Z M17,36.5472102 L30.5616555,43.2387102 L30.5616555,54 L17,36.5472102 Z M45,35.5405962 L31.3897922,42.5760603 L31.3897922,8 L45,35.5405962 Z M17,35.5405962 L30.5616555,8.00993072 L30.5616555,42.5760603 L17,35.5405962 Z" id="Fill-3" fill="#FEFEFE"></path>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DFF2FE;}
+	.st1{fill:#77A9FF;}
+	.st2{fill:#87FFF7;}
+	.st3{fill:#D4AFFF;}
+	.st4{fill:#D3C4FF;}
+</style>
+<circle class="st0" cx="100" cy="100" r="100"/>
+<path class="st1" d="M100,165.7v-37.7l-39.2-21.6L100,165.7z"/>
+<polygon class="st2" points="100,34.3 100,88.6 139.2,100.7 "/>
+<path class="st3" d="M139.2,100.7L100,82.5V120L139.2,100.7z"/>
+<polygon class="st4" points="100,34.3 100,88.6 60.8,100.7 "/>
+<polygon class="st1" points="60.8,100.7 100,82.5 100,120 "/>
+<polygon class="st3" points="100,165.7 100,127.9 139.2,106.3 "/>
 </svg>

@@ -39,6 +39,7 @@ const Home = ({ t,router }) => {
   const poolConfig = tokenConfig.pool.okt_pool
   const lemondConfig = tokenConfig.token.lemond
   const oktConfig = tokenConfig.stake.okt
+  const lpConfig = tokenConfig.stake.lp
   const lemondContract = new web3.eth.Contract(
     lemondConfig.abi,
     lemondConfig.address
@@ -233,109 +234,135 @@ const Home = ({ t,router }) => {
   }
 
   return (
-    <HeaderFooter  activeIndex={3}>
-      <ToastContainer />
-      <Head>
-        <title>{t('title')}</title>
-      </Head>
-      <div className={styles.wrapper}>
-        <div className={styles.farm_top}>
-            <div className={styles.farm_text}>
-                <h1>LEMD Genesis Mining</h1>
-                <h2>Get your Lemond Box fulfilled with Juicy APY.</h2>
-                <h3>Total Value Locked</h3>
-                <h4>$<CountUp start={0} end={7254094987.10} separator=","  decimal="."  decimal="," prefix=""/></h4>
-            </div>
-            <div className={styles.farm_car}></div>
-            <div className={styles.compound_time}>Tanked up</div>
-        </div>
-        <div className={styles.farm_list}>
-            <h1>
-                <p className={styles.title}>Now!</p>
-                <p>Store goods in Lemond box!</p>
-            </h1>
-            <h2>
+      <HeaderFooter activeIndex={3}>
+          <ToastContainer />
+          <Head>
+              <title>{t("title")}</title>
+          </Head>
+          <div className={styles.wrapper}>
+              <div className={styles.farm_top}>
+                  <div className={styles.farm_text}>
+                      <h1>LEMD Genesis Mining</h1>
+                      <h2>Get your Lemond Box fulfilled with Juicy APY.</h2>
+                      <h3>Total Value Locked</h3>
+                      <h4>
+                          $<CountUp start={0} end={7254094987.1} separator="," decimal="." decimal="," prefix="" />
+                      </h4>
+                  </div>
+                  <div className={styles.farm_car}></div>
+                  <div className={styles.compound_time}>Tanked up</div>
+              </div>
+              <div className={styles.farm_list}>
+                  <h1>
+                      <p className={styles.title}>Now!</p>
+                      <p>Store goods in Lemond box!</p>
+                  </h1>
+                  {/* <h2>
               <i className={styles.speed}>Notice</i>
               <p className={styles.title}>Last Call ！！！</p>
               <p>Time of Snapshot : <b>12.00 UTC Mar 24th</b></p>
               <p>Approx. Block Height: <b>1,565,421</b></p>
               <p>Do remember to claim your <b>LEMD</b> test tokens to your wallet before it’s too late!</p>
-            </h2>
-            <ul className={styles.pool_content}>
-                <li>
-                    <i className={styles.speed}>{oktConfig.speed}</i>
-                    <span  className={styles.pool}>
-                        <i className={styles.icon}></i>
-                        <h1>{oktConfig.name}</h1>
-                        <h2 onClick={() => window.open(oktConfig.link)}>
-                        {oktConfig.description}
-                        </h2>
-                        <h3>{formatNumber(stakeNum,18,8)}</h3>
-                        <h4>Staked OKT Tokens</h4>
-                        <div className={styles.claim}>
-                        <div className={styles.claimText}>
-                            <h3>
-                            {formatNumber(earnedNum,18,8)}
-                            </h3>
-                            <h4>Unclaimed LEMD in pool</h4>
-                        </div>
-                        <button
-                            disabled={stakeNum == 0}
-                            onClick={() => showConfirm('getReward')}
-                            className={styles.stake}
-                        >
-                            Claim
-                        </button>
-                        </div>
-                        <dl className={styles.btns}>
-                        <dt>
-                            <p>
-                            <input
-                                type="text"
-                                value={userStakeNum}
-                                onChange={(e) => setUserStakeNum(e.target.value)}
-                            />
-                            <i className={styles.balance}>{formatStringNumber(unStakeNum,18)}</i>
-                            <i
-                                onClick={() => setUserStakeNum(formatStringNumber(unStakeNum,18))}
-                                className={styles.max}
-                            >
-                                MAX
-                            </i>
-                            <b></b>
-                            <button className={styles.stake} onClick={() => deposit()}>
-                              Stake
-                            </button>
-                            </p>
-                        </dt>
-                        <dt>
-                            <p>
-                            <input
-                                type="text"
-                                value={userUnstakeNum}
-                                onChange={(e) => setUserUnstakeNum(e.target.value)}
-                            />
-                            <i className={styles.balance}>{formatStringNumber(stakeNum,18)}</i>
-                            <i
-                                onClick={() => setUserUnstakeNum(formatStringNumber(stakeNum,18))}
-                                className={styles.max}
-                            >
-                                MAX
-                            </i>
-                            <b></b>
-                            <button
-                                disabled={stakeNum == 0}
-                                className={styles.withdraw}
-                                onClick={() => showConfirm('withdraw')}
-                            >
-                                Withdraw
-                            </button>
-                            </p>
-                        </dt>
-                        </dl>
-                    </span>
-                    </li>
-                    <li>
+            </h2> */}
+                  <ul className={styles.pool_content}>
+                      <li>
+                          <i className={styles.speed}>{lpConfig.speed}</i>
+                          <span className={styles.pool}>
+                              <i className={styles.icon}></i>
+                              <h1>{lpConfig.name}</h1>
+                              <h2 onClick={() => window.open(lpConfig.link)}>{lpConfig.description}</h2>
+                              <h3>{formatNumber(stakeNum, 18, 8)}</h3>
+                              <h4>Staked LEMD-OKT LP Tokens</h4>
+                              <div className={styles.claim}>
+                                  <div className={styles.claimText}>
+                                      <h3>{formatNumber(earnedNum, 18, 8)}</h3>
+                                      <h4>Unclaimed LEMD in pool</h4>
+                                  </div>
+                                  <button disabled={stakeNum == 0} onClick={() => showConfirm("getReward")} className={styles.stake}>
+                                      Claim
+                                  </button>
+                              </div>
+                              <dl className={styles.btns}>
+                                  <dt>
+                                      <p>
+                                          <input type="text" value={userStakeNum} onChange={(e) => setUserStakeNum(e.target.value)} />
+                                          <i className={styles.balance}>{formatStringNumber(unStakeNum, 18)}</i>
+                                          <i onClick={() => setUserStakeNum(formatStringNumber(unStakeNum, 18))} className={styles.max}>
+                                              MAX
+                                          </i>
+                                          <b></b>
+                                          <button className={styles.stake} onClick={() => deposit()}>
+                                              Stake
+                                          </button>
+                                      </p>
+                                  </dt>
+                                  <dt>
+                                      <p>
+                                          <input type="text" value={userUnstakeNum} onChange={(e) => setUserUnstakeNum(e.target.value)} />
+                                          <i className={styles.balance}>{formatStringNumber(stakeNum, 18)}</i>
+                                          <i onClick={() => setUserUnstakeNum(formatStringNumber(stakeNum, 18))} className={styles.max}>
+                                              MAX
+                                          </i>
+                                          <b></b>
+                                          <button disabled={stakeNum == 0} className={styles.withdraw} onClick={() => showConfirm("withdraw")}>
+                                              Withdraw
+                                          </button>
+                                      </p>
+                                  </dt>
+                              </dl>
+                          </span>
+                      </li>
+                      <li>
+                          <span className={styles.stop_cover}>
+                              <span>End of the mining.</span>
+                          </span>
+                          <i className={styles.speed}>{oktConfig.speed}</i>
+                          <span className={styles.pool}>
+                              <i className={styles.icon}></i>
+                              <h1>{oktConfig.name}</h1>
+                              <h2 onClick={() => window.open(oktConfig.link)}>{oktConfig.description}</h2>
+                              <h3>{formatNumber(stakeNum, 18, 8)}</h3>
+                              <h4>Staked OKT Tokens</h4>
+                              <div className={styles.claim}>
+                                  <div className={styles.claimText}>
+                                      <h3>{formatNumber(earnedNum, 18, 8)}</h3>
+                                      <h4>Unclaimed LEMD in pool</h4>
+                                  </div>
+                                  <button disabled={stakeNum == 0} onClick={() => showConfirm("getReward")} className={styles.stake}>
+                                      Claim
+                                  </button>
+                              </div>
+                              <dl className={styles.btns}>
+                                  <dt>
+                                      <p>
+                                          <input type="text" value={userStakeNum} onChange={(e) => setUserStakeNum(e.target.value)} />
+                                          <i className={styles.balance}>{formatStringNumber(unStakeNum, 18)}</i>
+                                          <i onClick={() => setUserStakeNum(formatStringNumber(unStakeNum, 18))} className={styles.max}>
+                                              MAX
+                                          </i>
+                                          <b></b>
+                                          <button className={styles.stake} onClick={() => deposit()}>
+                                              Stake
+                                          </button>
+                                      </p>
+                                  </dt>
+                                  <dt>
+                                      <p>
+                                          <input type="text" value={userUnstakeNum} onChange={(e) => setUserUnstakeNum(e.target.value)} />
+                                          <i className={styles.balance}>{formatStringNumber(stakeNum, 18)}</i>
+                                          <i onClick={() => setUserUnstakeNum(formatStringNumber(stakeNum, 18))} className={styles.max}>
+                                              MAX
+                                          </i>
+                                          <b></b>
+                                          <button disabled={stakeNum == 0} className={styles.withdraw} onClick={() => showConfirm("withdraw")}>
+                                              Withdraw
+                                          </button>
+                                      </p>
+                                  </dt>
+                              </dl>
+                          </span>
+                      </li>
+                      {/* <li>
                       <span className={styles.rules}>
                         <h1>Airdrop Episode I</h1>
                         <p>Total LEMD to be airdropped : <b>1,000,000 LEMD</b><br/>
@@ -361,11 +388,11 @@ const Home = ({ t,router }) => {
                         </p>
                         <p>Click for <a target="_blank" href="https://lemondfinance.medium.com/lemond-x-okexchain-test-to-get-airdrop-cc48c26812f">detailed instructions.</a></p>
                       </span>
-                    </li>
-            </ul>
-        </div>
-      </div>
-    </HeaderFooter>
+                    </li> */}
+                  </ul>
+              </div>
+          </div>
+      </HeaderFooter>
   )
 };
 

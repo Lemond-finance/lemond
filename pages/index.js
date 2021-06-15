@@ -9,14 +9,15 @@ import styles from "../styles/home.less";
 import CountUp from 'react-countup';
 import axios from 'axios';
 import { getLendInfo, getTotalValueLocked } from "../api/api"
+import ReactTypingEffect from "react-typing-effect"
 const cx = classNames.bind(styles);
 
 const Home = ({ t }) => {
   const [totalValueLocked, setTotalValueLocked] = useState(0)
 
   useEffect(async () => {
-    //   const { data } = await getTotalValueLocked()
-    //   setTotalValueLocked(data.data)
+      //   const { data } = await getTotalValueLocked()
+      //   setTotalValueLocked(data.data)
   }, [])
 
   return (
@@ -50,11 +51,11 @@ const Home = ({ t }) => {
                   <h2>
                       Money Markets built on
                       <br />
-                      <b>Binance Smart Chain</b>
+                      <b>
+                          <ReactTypingEffect typingDelay={300} eraseSpeed={0} text={["Ethereum","Binance Smart Chain", "OKExChain"]} />
+                      </b>
                   </h2>
-                  <p>
-                      You can now tokenize your assets utilizing the Binance Smart Chain and receive portable vTokens that you can freely move around to cold storage,transfer to other user and more.
-                  </p>
+                  <p>Multiple loan choices on multiple chains with easy access and juicy liquidity.</p>
               </div>
               <div className={styles.feature}>
                   <ul>
@@ -63,14 +64,14 @@ const Home = ({ t }) => {
                               <img src="/img/cross_chain_title.png" height="35" />
                           </h1>
                           <h2>Cross chain</h2>
-                          <p>Support okexchain, BSC, ETH main network, cross chain mortgage loan assets.</p>
+                          <p>Cross chain mortgage loan assets, supporting ETH, BSC, OKExChain main network.</p>
                       </li>
                       <li className={styles.dao}>
                           <h1>
                               <img src="/img/dao_title.png" height="35" />
                           </h1>
                           <h2>DAO</h2>
-                          <p>Ltoken can be used to pledge liquidity and improve asset income.</p>
+                          <p>Ltoken can be used to pledge liquidity, improve income and govern.</p>
                       </li>
                       <li className={styles.nft}>
                           <h1>
@@ -83,8 +84,9 @@ const Home = ({ t }) => {
                           <h1>
                               <img src="/img/aggregate_title.png" height="35" />
                           </h1>
-                          <h2>Aggregate income</h2>
-                          <p>Holding lemd allows voting and project governance.</p>
+                          <h2>Aggregate Income</h2>
+                          <p>Simply Hodl LEMD to</p>
+                          <p>Vote, Govern, and More.</p>
                       </li>
                   </ul>
               </div>
