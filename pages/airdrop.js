@@ -22,20 +22,153 @@ import {
 } from '../libs/utils'
 import tokenConfig from '../contract.config.js'
 import CountUp from 'react-countup';
+import axios from 'axios';
 
 const Home = ({ t,router }) => {
   const wallet = useWallet()
   const { account, ethereum } = wallet
+  const [activeTelegram, setActiveTelegram] = useState(false)
+  const [activeTwitter, setActiveTwitter] = useState(false)
+  const [activeSubmit, setActiveSubmit] = useState(false)
+  const [luckyNumber, setLuckyNumber] = useState(0)
+  const [prize, setPrize] = useState(0)
+  
+  const { bsc } = tokenConfig.airdrop
+  const web3 = new Web3(ethereum)
+  const airdropContract = new web3.eth.Contract(bsc.abi, bsc.address)
 
   useEffect(() => {
     const timer = setInterval(async () => {
       if (account) {
+          const ticketID = await airdropContract.methods.ticketIDs(account).call()
+          console.log("ticketID", ticketID)
+          setLuckyNumber(ticketID)
+          const prize = await airdropContract.methods.amounts(account).call()
+          setPrize(prize)
       }
     }, 3000)
     return () => {
       clearInterval(timer)
     }
   }, [account])
+
+  const checkWallet = () => {
+      if (!account) {
+          confirmAlert({
+              customUI: ({ onClose }) => {
+                  return (
+                      <div className={styles.confirmAlert}>
+                          <h1>Please connect wallet</h1>
+                          <p className={styles.center}>
+                              <button
+                                  onClick={() => {
+                                      wallet.connect()
+                                      onClose()
+                                  }}
+                              >
+                                  OK
+                              </button>
+                              <button onClick={onClose}>Cancel</button>
+                          </p>
+                      </div>
+                  )
+              },
+          })
+          return true
+      }
+      return false
+  }
+
+  const showWarning = () => {
+
+          confirmAlert({
+              customUI: ({ onClose }) => {
+                  return (
+                      <div className={styles.confirmAlert}>
+                          <h1>Please finish the previous step first.</h1>
+                          <p className={styles.center}>
+                              <button
+                                  onClick={() => {
+                                      onClose()
+                                  }}
+                              >
+                                  OK
+                              </button>
+                          </p>
+                      </div>
+                  )
+              },
+          })
+  }
+
+  const onSubmit = async (e, onClose) => {
+      if(luckyNumber == 0){
+          let result = await axios.get(
+              "/api/airdrop?address=" +
+                  account +
+                  "&telegram=" +
+                  e.target.getElementsByTagName("input")[0].value +
+                  "&twitter=" +
+                  e.target.getElementsByTagName("input")[1].value +
+                  "&tweet=" +
+                  e.target.getElementsByTagName("input")[2].value,
+          )
+          console.log(result)
+          const { data } = result
+          if (data.success) {
+              onClose()
+              toast.dark("🚀 Submit success!", toastConfig)
+              await airdropContract.methods.getAirdrop().send({ from: account })
+          } else {
+              onClose()
+              toast.dark("🚀 Submit fail!", toastConfig)
+          }
+      }else{
+          onClose()
+          toast.dark("🚀 Submit fail!", toastConfig)
+      }
+
+      
+  }
+
+  const showAirdropForm = () => {
+      if (checkWallet()) return
+      confirmAlert({
+          customUI: ({ onClose }) => {
+              return (
+                  <div className={styles.confirmAlert}>
+                      <h1>Airdrop Form</h1>
+                      <p>🎁 Get airdrop.</p>
+                      <form
+                          onSubmit={(e) => {
+                              e.preventDefault()
+                              onSubmit(e, onClose)
+                          }}
+                      >
+                          <dt>
+                              <dl>
+                                  <label>Telegram:</label>
+                                  <input name="telegram" type="text" placeholder="Enter your telegram username (with@)" required />
+                              </dl>
+                              <dl>
+                                  <label>Twitter:</label>
+                                  <input name="twitter" type="text" placeholder="Enter your twitter username (with@)" required />
+                              </dl>
+                              <dl>
+                                  <label>Tweet link:</label>
+                                  <input name="email" type="text" placeholder="Enter your tweet link（start with https://)" required />
+                              </dl>
+                          </dt>
+                          <p className={styles.center}>
+                              <button type="submit">Submit</button>
+                              <button onClick={onClose}>Cancel</button>
+                          </p>
+                      </form>
+                  </div>
+              )
+          },
+      })
+  }
 
   return (
       <HeaderFooter activeIndex={3}>
@@ -45,44 +178,116 @@ const Home = ({ t,router }) => {
           </Head>
           <div className={styles.wrapper}>
               <div className={styles.bg}></div>
-              <ul className={styles.steps}>
-                  <li className={styles.active}>
-                      <i></i>
-                      <p>Connect</p>
-                      <p>Your wallet</p>
-                      <p>
-                          <button>Connect</button>
-                      </p>
-                  </li>
-                  <li className={styles.active}>
-                      <i></i>
-                      <p>Go to Telegram</p>
-                      <p>Join Group.</p>
-                      <p>
-                          <button>Go to Telegram</button>
-                      </p>
-                  </li>
-                  <li className={styles.active}>
-                      <i></i>
-                      <p>Connect</p>
-                      <p>Your wallet</p>
-                      <p>
-                          <button>Connect</button>
-                      </p>
-                  </li>
-                  <li className={styles.active}>
-                      <i></i>
-                      <p>Connect</p>
-                      <p>Your wallet</p>
-                      <p>
-                          <button>Connect</button>
-                      </p>
-                  </li>
-              </ul>
+              {luckyNumber != 0 ? (
+                  <div className={styles.tickets}>
+                      <h1>Congratulations! </h1>
+                      <h1>You have been awarded {formatNumber(prize, 18, 2)} lemd</h1>
+                      <p>Please keep the lucky draw code on your right 👉</p>
+                      <i>
+                          Lucky Number: <br />
+                          {luckyNumber}
+                      </i>
+                  </div>
+              ) : (
+                  <ul className={styles.steps}>
+                      <li className={cx({ active: !!account })}>
+                          <i></i>
+                          <p>Connect</p>
+                          <p>Your wallet</p>
+                          <p>
+                              <button
+                                  onClick={() => {
+                                      if (!account) {
+                                          checkWallet()
+                                      }
+                                  }}
+                              >
+                                  {!account ? "Connect" : "Connected"}
+                              </button>
+                          </p>
+                      </li>
+                      <li className={cx({ active: activeTelegram })}>
+                          <i></i>
+                          <p>Join Our </p>
+                          <p>Telegroup Group</p>
+                          <p>
+                              <button
+                                  onClick={() => {
+                                      if (account) {
+                                          window.open("https://t.me/lemondok")
+                                          setActiveTelegram(true)
+                                      } else {
+                                          showWarning()
+                                      }
+                                  }}
+                              >
+                                  Go to Telegram
+                              </button>
+                          </p>
+                      </li>
+                      <li className={cx({ active: activeTwitter })}>
+                          <i></i>
+                          <p>Follow</p>
+                          <p>Our Twitter</p>
+                          <p>
+                              <button
+                                  onClick={() => {
+                                      if (activeTelegram) {
+                                          window.open("https://twitter.com/LemondFinance")
+                                          setActiveTwitter(true)
+                                      } else {
+                                          showWarning()
+                                      }
+                                  }}
+                              >
+                                  @LemondFinance
+                              </button>
+                          </p>
+                      </li>
+                      <li className={cx({ active: activeSubmit })}>
+                          <i></i>
+                          <p>Post</p>
+                          <p>a Tweet</p>
+                          <p>
+                              <button
+                                  onClick={() => {
+                                      if (activeTwitter) {
+                                          window.open("https://twitter.com/intent/tweet?text=Become%20Lemondary!%20%23LemondFinance%20$LEMD%20@LemondFinance%20@BinanceChain")
+                                          setActiveSubmit(true)
+                                      } else {
+                                          showWarning()
+                                      }
+                                  }}
+                              >
+                                  Post
+                              </button>
+                          </p>
+                      </li>
+                      <li>
+                          <i></i>
+                          <p>Compose</p>
+                          <p>a Tweet</p>
+                          <p>
+                              <button
+                                  onClick={() => {
+                                      if (activeSubmit) {
+                                          showAirdropForm()
+                                      } else {
+                                          showWarning()
+                                      }
+                                  }}
+                              >
+                                  Submit
+                              </button>
+                          </p>
+                      </li>
+                  </ul>
+              )}
               <div className={styles.rules}>
-                  <p>1. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
+                  <p>1. Maxium number of participants : 100,000. First Come, First Served. </p>
+                  <p>2. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
                   <p>
-                      2. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number.
+                      3. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number.
                   </p>
                   <p className={styles.hight_light}>
                       The whole lottery process is open source on the chain. Open source address:
@@ -99,7 +304,7 @@ const Home = ({ t,router }) => {
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>20</h1>
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
@@ -110,37 +315,37 @@ const Home = ({ t,router }) => {
                           <li>
                               <img src="/img/prize_melon.svg" />
                               <span className={styles.title}>
-                                  <h1>Orange</h1>
+                                  <h1>Apple</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>50</h1>
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>200</h1>
                                   <p>copies</p>
                               </span>
                           </li>
                           <li>
                               <img src="/img/prize_pineapple.svg" />
                               <span className={styles.title}>
-                                  <h1>Orange</h1>
+                                  <h1>Banana</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>100</h1>
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>100</h1>
                                   <p>copies</p>
                               </span>
                           </li>
                           <li>
                               <img src="/img/prize_banana.svg" />
                               <span className={styles.title}>
-                                  <h1>Orange</h1>
+                                  <h1>Pineapple</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
@@ -148,37 +353,37 @@ const Home = ({ t,router }) => {
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>10</h1>
                                   <p>copies</p>
                               </span>
                           </li>
                           <li>
                               <img src="/img/prize_apple.svg" />
                               <span className={styles.title}>
-                                  <h1>Orange</h1>
+                                  <h1>Melon</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>1,000</h1>
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>5</h1>
                                   <p>copies</p>
                               </span>
                           </li>
                           <li>
                               <img src="/img/prize_orange.svg" />
                               <span className={styles.title}>
-                                  <h1>Orange</h1>
+                                  <h1>Lemond</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>10,000</h1>
                                   <p>lemd</p>
                               </span>
                               <span className={styles.num}>
-                                  <h1>500</h1>
+                                  <h1>1</h1>
                                   <p>copies</p>
                               </span>
                           </li>
@@ -186,40 +391,16 @@ const Home = ({ t,router }) => {
                   </div>
                   <div className={styles.right}>
                       <div className={styles.ticket}>
-                          <h1>Lemond Airdrop Limit</h1>
-                          <h2>2000</h2>
+                          <h1>My LEMD Balance</h1>
+                          <h2>{formatNumber(prize, 18, 2)}</h2>
                           <p>LEMD</p>
                       </div>
                       <div className={styles.winner}>
                           <h1>List of winners</h1>
                           <ul>
                               <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
-                              </li>
-                              <li>
-                                  <span>0x00a0ad21321j321v312c3</span>
-                                  <span>34234</span>
+                                  <span></span>
+                                  <span></span>
                               </li>
                           </ul>
                       </div>
