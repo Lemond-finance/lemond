@@ -21,7 +21,7 @@ module.exports = {
     },
     token: {
         lemond: {
-            address: "0xB99129484F5c2f8cDa62C4A3Ec577387Fb3c1E17",
+            address: "0xC0E8C16E54653736F9B96ddCc206Bc1D9aE63508",
             abi: require("./abi/LEMD.json"),
         },
     },
@@ -120,7 +120,7 @@ module.exports = {
             abi: require("./abi/ONOTAirdrop.json"),
         },
         bsc: {
-            address: "0xe6A6ff8d635E2F0a08D765ECe7Ba2776D37b6c6e",
+            address: "0xe287982d82b2b6d27dB3a41BD7179DeF69503106",
             abi: require("./abi/Airdrop.json"),
         },
     },
