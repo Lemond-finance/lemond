@@ -11,33 +11,37 @@ contract Airdrop is Ownable {
     using SafeERC20 for IERC20;
 
     ILemd public token;
+    uint256 public starttime;
     uint256 ticketID = 1;
     uint256 public totalAmount = 0;
     mapping(address=>uint256) public amounts;
     mapping(uint256=>address) public tickets;
+    mapping(address=>uint256) public ticketIDs;
     uint256[] public prizeArr = [500, 200, 100, 10, 5, 1];
-    uint256[] public prizeRank1 = [];
-    uint256[] public prizeRank2 = [];
-    uint256[] public prizeRank3 = [];
-    uint256[] public prizeRank4 = [];
-    uint256[] public prizeRank5 = [];
-    uint256[] public prizeRank6 = [];
+    uint256[] public prizeRank1;
+    uint256[] public prizeRank2;
+    uint256[] public prizeRank3;
+    uint256[] public prizeRank4;
+    uint256[] public prizeRank5;
+    uint256[] public prizeRank6;
 
-    constructor(address _token) public{
+    constructor(address _token, uint256 _starttime) public{
         token = ILemd(_token);
+        starttime = _starttime;
     }
 
     function getAirdrop() public returns(uint256){
         require(amounts[msg.sender] == 0, "Have to attend.");
-        require(totalAmount >= 45000 ** 18, "The airdrop is end.");
+        require(totalAmount <= 45000 * 10 ** 18, "The airdrop is end.");
         uint256 amount = 0;
-        amount = (importSeedFromThird(9**18,block.difficulty).add(1**18));
+        amount = (importSeedFromThird(9 * 10 **18,block.difficulty).add(1 * 10 **18));
         tickets[ticketID] = msg.sender;
+        ticketIDs[msg.sender] = ticketID;
         amounts[msg.sender] = amount;
         console.log(amount,ticketID);
         ticketID = ticketID.add(1);
         totalAmount = totalAmount.add(amount);
-        if(totalAmount >= 45000 ** 18){
+        if(totalAmount >= 45000 * 10 ** 18){
             if(prizeArr[0] != 0){
                 uint256 rand =  importSeedFromThird(1000,block.difficulty);
                 if(rand <= 1){
@@ -90,9 +94,15 @@ contract Airdrop is Ownable {
         return randomNumber % upper;
     }
 
-    function getPrize() public {
-        require(tickets[msg.sender] != 0, "Did not attend");
+    modifier checkStart() {
+        require(block.timestamp >= starttime, 'Not start');
+        _;
+    }
+
+    function getPrize() public checkStart{
+        require(amounts[msg.sender] != 0, "Did not attend");
         token.mint(msg.sender, amounts[msg.sender]);
+        amounts[msg.sender] = 0;
     }
 
 }

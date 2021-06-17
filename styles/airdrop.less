@@ -6,6 +6,36 @@
         background-size: auto 100%;
         height: 300px;
     }
+    .tickets{
+        background: url(../public/img/ticket.svg) no-repeat center;
+        background-size: 100% 100%;
+        width: 1000px;
+        margin: 60px auto 0 auto;
+        height: 287px;
+        box-sizing: border-box;
+        padding:40px ;
+        position: relative;
+        h1{
+            color: #fdf5e7;
+            font-size: 30px;
+        }
+        p{
+            margin: 30px 0;
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        i{
+              position: absolute;
+    font-style: normal;
+    color: #000;
+    font-weight: bold;
+    font-size: 22px;
+    left: 690px;
+    top: 134px;
+    width: 190px;
+    text-align: center;
+        }
+    }
     .steps {
         margin: 0 auto;
         text-align: center;
@@ -27,7 +57,7 @@
             }
             button{
                 color: #1F2227;
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: bold;
                 background: #F5BA5D;
                 border: none;
@@ -90,6 +120,12 @@
                 }
             }
             &:nth-child(3){
+                i{
+                    background: url(../public/img/icon_setp3_inactive.svg) no-repeat center;
+                    background-size: cover;
+                }
+            }
+            &:nth-child(4){
                 i{
                     background: url(../public/img/icon_setp3_inactive.svg) no-repeat center;
                     background-size: cover;
@@ -174,9 +210,10 @@
                         }
                     }
                     .num{
-                        float: left;
+                        float: right;
                         color: #fff;
-                        margin-left:100px;
+                        text-align: right;
+                        width: 140px;
                         h1{
                             font-size: 20px;
                             line-height: 1em;
@@ -239,6 +276,59 @@
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+
+.confirmAlert {
+    background: #181c21;
+    border-radius: 6.666px;
+    box-sizing: border-box;
+    padding: 20px 20px;
+    width: 460px;
+    text-align: center;
+    font-size: 13px;
+    h1 {
+        font-size: 18px;
+        padding: 10px 0;
+    }
+    p {
+        b {
+            font-weight: normal;
+            color: #f6ba5e;
+        }
+    }
+    button {
+        color: #ffffff;
+        border: 1px solid #fff;
+        background: none;
+        font-size: 14px;
+        text-decoration: none;
+        padding: 8px 25px;
+        border-radius: 4px;
+        margin: 10px 10px 20px 10px;
+        width: auto;
+        cursor: pointer;
+        display: inline-block;
+    }
+    dt{
+        dl{
+            padding: 10px 10px;
+            label{
+                width: 100px;
+                text-align: right;
+                display: inline-block;
+                margin-right: 1em;
+            }
+            input{
+                background: rgba(0,0,0,0.4);
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 3px;
+                padding: 5px 10px;
+                width: 250px;
+                color: #fff;
             }
         }
     }

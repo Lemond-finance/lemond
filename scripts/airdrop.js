@@ -25,10 +25,10 @@ async function main() {
     console.log("AIRDROP", this.AIRDROP.address)
     
     this.LEMD.addMinter(this.AIRDROP.address);
-    await this.AIRDROP.getAirdrop()
+    // await this.AIRDROP.getAirdrop()
 
-    console.log("amount", (await this.AIRDROP.amounts(this.deployer)).toString())
-    console.log("ticket", (await this.AIRDROP.tickets(this.deployer)).toString())
+    // console.log("amount", (await this.AIRDROP.amounts(this.deployer)).toString())
+    // console.log("ticket", (await this.AIRDROP.tickets(1)).toString())
 
     console.log("End")
 }

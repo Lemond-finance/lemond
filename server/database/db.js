@@ -31,6 +31,7 @@ const db = {
 
 //user table model
 db.Lend = db.sequelize.import("../model/lend.js")
+db.Airdrop = db.sequelize.import("../model/airdrop.js")
 db.Op = Op;
 
 export default db;

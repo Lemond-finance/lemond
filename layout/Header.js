@@ -16,19 +16,23 @@ const Header = (props) => {
 
     const initNetWork = async () => {
         let ethereum = window.ethereum
+       
         const data = [
             {
-                chainId: "0x41",
-                chainName: "OKExChain",
+                chainId: "0x61",
+                // chainId: "0x38",
+                chainName: "BSC Mainnet",
                 nativeCurrency: {
-                    name: "OKT",
-                    symbol: "OKT",
+                    name: "BNB",
+                    symbol: "BNB",
                     decimals: 18,
                 },
-                rpcUrls: ["https://exchaintestrpc.okex.org"],
-                blockExplorerUrls: ["https://www.oklink.com/okexchain-test"],
+                rpcUrls: ["https://data-seed-prebsc-2-s1.binance.org:8545"],
+                // rpcUrls: ["https://bsc-dataseed.binance.org"],
+                blockExplorerUrls: ["https://bscscan.com/"],
             },
         ]
+        
         /* eslint-disable */
         const tx = await ethereum.request({ method: "wallet_addEthereumChain", params: data }).catch()
         if (tx) {

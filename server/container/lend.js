@@ -8,7 +8,49 @@ import BigNumber from "bignumber.js"
 import { getPrice } from '../../api/api'
 import fs from "fs"
 
+const Op = db.Op
 const Lend = db.Lend
+const Airdrop = db.Airdrop
+
+
+export async function airdrop(req, res) {
+    const { address, telegram, twitter, tweet } = req.query
+
+    const findResult = await Airdrop.findAll({
+        where: {
+            [Op.or]: [{ address: address }, { telegram: telegram }, { twitter: twitter }, { tweet: tweet }],
+        },
+    })
+
+    let callBackData = {
+        success: true,
+        status: 200,
+        message: "Success",
+        data: null,
+    }
+
+    if(findResult.length > 0){
+        callBackData = {
+            success: false,
+            status: 200,
+            message: "Fail",
+            data: null,
+        }
+        res.status(200)
+        res.json(callBackData)
+        return
+    }
+
+    const result = await Airdrop.create({
+        address: address,
+        telegram: telegram,
+        twitter: twitter,
+        tweet: tweet,
+        status: 1,
+    })
+    res.status(200)
+    res.json(callBackData)
+}
 
 export async function getTotalValueLocked(req, res) {
     const result = await Lend.sum("market_size")
