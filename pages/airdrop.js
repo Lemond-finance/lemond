@@ -298,7 +298,7 @@ const Home = ({ t,router }) => {
                               <button
                                   onClick={() => {
                                       if (activeTwitter) {
-                                          window.open("https://twitter.com/intent/tweet?text=Become%20Lemondary!%20%23LemondFinance%20$LEMD%20@LemondFinance%20@BinanceChain")
+                                          window.open("https://twitter.com/intent/tweet?text=Lemond%20on%20Binance!%20%23LemondFinance%20$LEMD%20@LemondFinance%20@BinanceChain%20%23LemondonBinance")
                                           setActiveSubmit(true)
                                       } else {
                                           showWarning()
