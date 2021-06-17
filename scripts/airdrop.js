@@ -21,14 +21,16 @@ async function main() {
     this.LEMD = await LEMD.new()
     console.log("LEMD", this.LEMD.address)
 
-    this.AIRDROP = await AIRDROP.new(this.LEMD.address)
+    this.AIRDROP = await AIRDROP.new(this.LEMD.address, 0) //1624626000
     console.log("AIRDROP", this.AIRDROP.address)
-    
-    this.LEMD.addMinter(this.AIRDROP.address);
-    // await this.AIRDROP.getAirdrop()
 
-    // console.log("amount", (await this.AIRDROP.amounts(this.deployer)).toString())
-    // console.log("ticket", (await this.AIRDROP.tickets(1)).toString())
+    await this.LEMD.addMinter(this.AIRDROP.address)
+    await this.AIRDROP.getAirdrop()
+    await this.AIRDROP.getPrize()
+
+    console.log("amount", (await this.AIRDROP.amounts(this.deployer)).toString())
+    console.log("ticket", (await this.AIRDROP.tickets(1)).toString())
+    console.log("getPrize", (await this.LEMD.balanceOf(this.deployer)).toString())
 
     console.log("End")
 }

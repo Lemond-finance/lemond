@@ -29,6 +29,8 @@ export async function airdrop(req, res) {
         data: null,
     }
 
+    console.log("findResult.length", findResult.length)
+
     if(findResult.length > 0){
         callBackData = {
             success: false,

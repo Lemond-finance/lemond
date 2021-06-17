@@ -96,7 +96,7 @@ const Wallet = ({t}) => {
         {wallet.account && (<span className={styles.account}>{formatAddress(wallet.account)}</span>)}
 
         {wallet.account && (
-            <span className={styles.balance}> {wallet.balance === '-1' ? '...' : `${parseFloat(ethersUtils.formatEther(wallet.balance)).toFixed(2)} OKT`} </span>
+            <span className={styles.balance}> {wallet.balance === '-1' ? '...' : `${parseFloat(ethersUtils.formatEther(wallet.balance)).toFixed(2)} BNB`} </span>
         )}
 
         {(() => {

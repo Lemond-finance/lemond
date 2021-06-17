@@ -4,7 +4,7 @@ import { UseWalletProvider } from 'use-wallet'
 
 const MyApp = ({ Component, pageProps }) => (
     <UseWalletProvider
-        chainId={0x61}
+        chainId={0x38}
         connectors={{
             walletconnect: { rpcUrl: "https://bsc-dataseed.binance.org" },
         }}
