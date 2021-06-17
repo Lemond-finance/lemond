@@ -52,7 +52,7 @@ const Home = ({ t }) => {
                       Money Markets built on
                       <br />
                       <b>
-                          <ReactTypingEffect typingDelay={300} eraseSpeed={0} text={["Ethereum","Binance Smart Chain", "OKExChain"]} />
+                          <ReactTypingEffect typingDelay={300} eraseSpeed={0} text={["Ethereum", "Binance Smart Chain", "OKExChain"]} />
                       </b>
                   </h2>
                   <p>Multiple loan choices on multiple chains with easy access and juicy liquidity.</p>
@@ -85,7 +85,11 @@ const Home = ({ t }) => {
                               <img src="/img/aggregate_title.png" height="35" />
                           </h1>
                           <h2>Aggregate Income</h2>
-                          <p>Simply Hodl LEMD to<br/>Vote, Govern, and More.</p>
+                          <p>
+                              Simply Hodl LEMD to
+                              <br />
+                              Vote, Govern, and More.
+                          </p>
                       </li>
                   </ul>
               </div>
@@ -116,7 +120,10 @@ const Home = ({ t }) => {
                       </Link>
                   </p>
                   <p className={styles.btns}>
-                      Episode ③ <button disabled>Comming soon</button>{" "}
+                      Episode ③{" "}
+                      <Link href="/airdrop">
+                          <button>Get Airdrop >> </button>
+                      </Link>
                   </p>
               </div>
               <div className={styles.partners}>

@@ -19,16 +19,16 @@ const Header = (props) => {
        
         const data = [
             {
-                chainId: "0x61",
-                // chainId: "0x38",
+                // chainId: "0x61",
+                chainId: "0x38",
                 chainName: "BSC Mainnet",
                 nativeCurrency: {
                     name: "BNB",
                     symbol: "BNB",
                     decimals: 18,
                 },
-                rpcUrls: ["https://data-seed-prebsc-2-s1.binance.org:8545"],
-                // rpcUrls: ["https://bsc-dataseed.binance.org"],
+                // rpcUrls: ["https://data-seed-prebsc-2-s1.binance.org:8545"],
+                rpcUrls: ["https://bsc-dataseed.binance.org"],
                 blockExplorerUrls: ["https://bscscan.com/"],
             },
         ]

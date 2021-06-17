@@ -32,6 +32,7 @@ const Home = ({ t,router }) => {
   const [activeSubmit, setActiveSubmit] = useState(false)
   const [luckyNumber, setLuckyNumber] = useState(0)
   const [prize, setPrize] = useState(0)
+  const [totalTicket, setTotalTicket] = useState(0)
   
   const { bsc } = tokenConfig.airdrop
   const web3 = new Web3(ethereum)
@@ -45,6 +46,9 @@ const Home = ({ t,router }) => {
           setLuckyNumber(ticketID)
           const prize = await airdropContract.methods.amounts(account).call()
           setPrize(prize)
+          console.log("prize", prize)
+          const totalTicketID = await airdropContract.methods.getTotalNumberTicketID().call()
+          setTotalTicket(totalTicketID)
       }
     }, 3000)
     return () => {
@@ -101,6 +105,27 @@ const Home = ({ t,router }) => {
           })
   }
 
+  const showNotStart = () => {
+      confirmAlert({
+          customUI: ({ onClose }) => {
+              return (
+                  <div className={styles.confirmAlert}>
+                      <h1>Not Start</h1>
+                      <p className={styles.center}>
+                          <button
+                              onClick={() => {
+                                  onClose()
+                              }}
+                          >
+                              OK
+                          </button>
+                      </p>
+                  </div>
+              )
+          },
+      })
+  }
+
   const onSubmit = async (e, onClose) => {
       if(luckyNumber == 0){
           let result = await axios.get(
@@ -148,15 +173,34 @@ const Home = ({ t,router }) => {
                           <dt>
                               <dl>
                                   <label>Telegram:</label>
-                                  <input name="telegram" type="text" placeholder="Enter your telegram username (with@)" required />
+                                  <input
+                                      pattern="^@\w+$"
+                                      title="Please enter username, not nickname (e.g @Steven)"
+                                      name="telegram"
+                                      type="text"
+                                      placeholder="Enter your telegram username (with@)"
+                                      required
+                                  />
                               </dl>
                               <dl>
                                   <label>Twitter:</label>
-                                  <input name="twitter" type="text" placeholder="Enter your twitter username (with@)" required />
+                                  <input
+                                      pattern="^@\w+$"
+                                      title="Please enter username, not nickname (e.g @Steven)"
+                                      name="twitter"
+                                      type="text"
+                                      placeholder="Enter your twitter username (with@)"
+                                      required
+                                  />
                               </dl>
                               <dl>
                                   <label>Tweet link:</label>
-                                  <input name="email" type="text" placeholder="Enter your tweet link（start with https://)" required />
+                                  <input
+                                      name="tweet"
+                                      type="text"
+                                      placeholder="Enter your tweet link（start with https://)"
+                                      required
+                                  />
                               </dl>
                           </dt>
                           <p className={styles.center}>
@@ -177,7 +221,9 @@ const Home = ({ t,router }) => {
               <title>{t("title")}</title>
           </Head>
           <div className={styles.wrapper}>
-              <div className={styles.bg}></div>
+              <div className={styles.bg}>
+                  <h1>Current number of participants: {totalTicket}</h1>
+              </div>
               {luckyNumber != 0 ? (
                   <div className={styles.tickets}>
                       <h1>Congratulations! </h1>
@@ -284,11 +330,13 @@ const Home = ({ t,router }) => {
                   </ul>
               )}
               <div className={styles.rules}>
-                  <p>1. Maxium number of participants : 100,000. First Come, First Served. </p>
-                  <p>2. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
-                  <p>
-                      3. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number.
-                  </p>
+                <p>1. Maxium number of participants : 100,000. First Come, First Served. </p>
+                <p>2. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
+                <p>3. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number. </p>
+                <p>4. Same Telegram or Twitter account could only apply once.</p>
+                <p>5. Tweet must be visible to all.</p>
+                <p>6. Any unqualified action would be treated as invalid.</p>
+                <p>7. Withdrawal of LEMD would be available after official deployment to Binance Smart Chain. Accurate time to be announced.</p>
                   <p className={styles.hight_light}>
                       The whole lottery process is open source on the chain. Open source address:
                       <b>0x00a0ad21321j321v312c3</b>
@@ -298,7 +346,7 @@ const Home = ({ t,router }) => {
                   <div className={styles.left}>
                       <ul>
                           <li>
-                              <img src="/img/prize_lemon.svg" />
+                              <img src="/img/prize_orange.svg" />
                               <span className={styles.title}>
                                   <h1>Orange</h1>
                                   <p>bonus</p>
@@ -313,14 +361,14 @@ const Home = ({ t,router }) => {
                               </span>
                           </li>
                           <li>
-                              <img src="/img/prize_melon.svg" />
+                              <img src="/img/prize_apple.svg" />
                               <span className={styles.title}>
                                   <h1>Apple</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>50</h1>
-                                  <p>lemd</p>
+                                  <p>lemon bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>200</h1>
@@ -328,14 +376,14 @@ const Home = ({ t,router }) => {
                               </span>
                           </li>
                           <li>
-                              <img src="/img/prize_pineapple.svg" />
+                              <img src="/img/prize_banana.svg" />
                               <span className={styles.title}>
                                   <h1>Banana</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>100</h1>
-                                  <p>lemd</p>
+                                  <p>lemon bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>100</h1>
@@ -343,14 +391,14 @@ const Home = ({ t,router }) => {
                               </span>
                           </li>
                           <li>
-                              <img src="/img/prize_banana.svg" />
+                              <img src="/img/prize_pineapple.svg" />
                               <span className={styles.title}>
                                   <h1>Pineapple</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>500</h1>
-                                  <p>lemd</p>
+                                  <p>lemon bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>10</h1>
@@ -358,14 +406,14 @@ const Home = ({ t,router }) => {
                               </span>
                           </li>
                           <li>
-                              <img src="/img/prize_apple.svg" />
+                              <img src="/img/prize_melon.svg" />
                               <span className={styles.title}>
                                   <h1>Melon</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>1,000</h1>
-                                  <p>lemd</p>
+                                  <p>lemon bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>5</h1>
@@ -373,14 +421,14 @@ const Home = ({ t,router }) => {
                               </span>
                           </li>
                           <li>
-                              <img src="/img/prize_orange.svg" />
+                              <img src="/img/prize_lemon.svg" />
                               <span className={styles.title}>
                                   <h1>Lemond</h1>
                                   <p>bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>10,000</h1>
-                                  <p>lemd</p>
+                                  <p>lemon bonus</p>
                               </span>
                               <span className={styles.num}>
                                   <h1>1</h1>
@@ -394,12 +442,16 @@ const Home = ({ t,router }) => {
                           <h1>My LEMD Balance</h1>
                           <h2>{formatNumber(prize, 18, 2)}</h2>
                           <p>LEMD</p>
+                          <button onClick={async ()=>{
+                              showNotStart()
+                            //   await airdropContract.methods.getPrize().send({ from: account })
+                          }}>Claim</button>
                       </div>
                       <div className={styles.winner}>
                           <h1>List of winners</h1>
                           <ul>
                               <li>
-                                  <span></span>
+                                  <span>Coming soon</span>
                                   <span></span>
                               </li>
                           </ul>
