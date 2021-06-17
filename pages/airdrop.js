@@ -292,7 +292,7 @@ const Home = ({ t,router }) => {
                       </li>
                       <li className={cx({ active: activeSubmit })}>
                           <i></i>
-                          <p>Post</p>
+                          <p>Compose</p>
                           <p>a Tweet</p>
                           <p>
                               <button
@@ -311,8 +311,8 @@ const Home = ({ t,router }) => {
                       </li>
                       <li>
                           <i></i>
-                          <p>Compose</p>
-                          <p>a Tweet</p>
+                          <p>Airdrop</p>
+                          <p>Application</p>
                           <p>
                               <button
                                   onClick={() => {
@@ -330,13 +330,15 @@ const Home = ({ t,router }) => {
                   </ul>
               )}
               <div className={styles.rules}>
-                <p>1. Maxium number of participants : 100,000. First Come, First Served. </p>
-                <p>2. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
-                <p>3. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number. </p>
-                <p>4. Same Telegram or Twitter account could only apply once.</p>
-                <p>5. Tweet must be visible to all.</p>
-                <p>6. Any unqualified action would be treated as invalid.</p>
-                <p>7. Withdrawal of LEMD would be available after official deployment to Binance Smart Chain. Accurate time to be announced.</p>
+                  <p>1. Maxium number of participants : 100,000. First Come, First Served. </p>
+                  <p>2. Each participant who has completed all tasks and submitted information will receive a random reward of 1-10 lemd and a submission number.</p>
+                  <p>
+                      3. After the activity, the system will use the random algorithm in Ethereum virtual machine to extract the bond user list on the chain according to the user's submission number.{" "}
+                  </p>
+                  <p>4. Same Telegram or Twitter account could only apply once.</p>
+                  <p>5. Tweet must be visible to all.</p>
+                  <p>6. Any unqualified action would be treated as invalid.</p>
+                  <p>7. Withdrawal of LEMD would be available after official deployment to Binance Smart Chain. Accurate time to be announced.</p>
                   <p className={styles.hight_light}>
                       The whole lottery process is open source on the chain. Open source address:
                       <b>0x00a0ad21321j321v312c3</b>
@@ -442,10 +444,14 @@ const Home = ({ t,router }) => {
                           <h1>My LEMD Balance</h1>
                           <h2>{formatNumber(prize, 18, 2)}</h2>
                           <p>LEMD</p>
-                          <button onClick={async ()=>{
-                              showNotStart()
-                            //   await airdropContract.methods.getPrize().send({ from: account })
-                          }}>Claim</button>
+                          <button
+                              onClick={async () => {
+                                  showNotStart()
+                                  //   await airdropContract.methods.getPrize().send({ from: account })
+                              }}
+                          >
+                              Claim
+                          </button>
                       </div>
                       <div className={styles.winner}>
                           <h1>List of winners</h1>
