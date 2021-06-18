@@ -30,11 +30,11 @@ async function main() {
     console.log("deployer address", this.deployer)
 
     // Mock ERC20s
-    // const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
-    const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
-    const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
-    const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
-    const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
+    const { OKB, USDT, ETHK, BTCK } = config.lend.tokens
+    // const OKB = await MockErc20.new("OKB", "OKB", hre.ethers.utils.parseEther("100000000"), 8)
+    // const USDT = await MockErc20.new("USDT", "USDT", hre.ethers.utils.parseEther("100000000"), 18)
+    // const ETHK = await MockErc20.new("ETHK", "ETHK", hre.ethers.utils.parseEther("100000000"), 6)
+    // const BTCK = await MockErc20.new("BTCK", "BTCK", hre.ethers.utils.parseEther("100000000"), 6)
     console.log("ERC20s", OKB.address, USDT.address, ETHK.address, BTCK.address)
 
     // LEMD Token
