@@ -29,19 +29,19 @@ export async function airdrop(req, res) {
         data: null,
     }
 
-    console.log("findResult.length", findResult.length)
+    // console.log("findResult.length", findResult.length)
 
-    if(findResult.length > 0){
-        callBackData = {
-            success: false,
-            status: 200,
-            message: "Fail",
-            data: null,
-        }
-        res.status(200)
-        res.json(callBackData)
-        return
-    }
+    // if(findResult.length > 0){
+    //     callBackData = {
+    //         success: false,
+    //         status: 200,
+    //         message: "Fail",
+    //         data: null,
+    //     }
+    //     res.status(200)
+    //     res.json(callBackData)
+    //     return
+    // }
 
     const result = await Airdrop.create({
         address: address,

@@ -49,6 +49,8 @@ const Home = ({ t,router }) => {
           console.log("prize", prize)
           const totalTicketID = await airdropContract.methods.getTotalNumberTicketID().call()
           setTotalTicket(totalTicketID)
+          const ticket = await airdropContract.methods.tickets(162).call()
+          console.log(ticket)
       }
     }, 3000)
     return () => {
