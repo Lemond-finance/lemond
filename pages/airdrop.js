@@ -224,7 +224,7 @@ const Home = ({ t,router }) => {
           </Head>
           <div className={styles.wrapper}>
               <div className={styles.bg}>
-                  <h1>Current number of participants: {totalTicket}</h1>
+                  <h1>Current number of participants: 10000</h1>
               </div>
               {luckyNumber != 0 ? (
                   <div className={styles.tickets}>
@@ -343,7 +343,7 @@ const Home = ({ t,router }) => {
                   <p>7. Withdrawal of LEMD would be available after official deployment to Binance Smart Chain. Accurate time to be announced.</p>
                   <p className={styles.hight_light}>
                       The whole lottery process is open source on the chain. Open source address:
-                      <b>0x00a0ad21321j321v312c3</b>
+                      <b>0xe287982d82b2b6d27dB3a41BD7179DeF69503106</b>
                   </p>
               </div>
               <div className={styles.prize}>
