@@ -14,12 +14,39 @@ const LEther = artifacts.require("LEther")
 const LERC20 = artifacts.require("LERC20")
 const SimplePriceOracle = artifacts.require("SimplePriceOracle")
 
+const Airdrop = artifacts.require("Airdrop")
+
+let addressArr = []
+let addressIndex = 1
 
 async function main() {
+
+    async function getAddress(contract) {
+        if(addressIndex >= 7266){
+            console.log(addressArr)
+        }else{
+            const address = await contract.tickets(addressIndex)
+            const amount = (await contract.amounts(address)).toString()
+            addressArr.push({
+                address: address,
+                amount: amount,
+            })
+            addressIndex++
+            console.log({
+                address: address,
+                amount: amount,
+            })
+            await getAddress(contract)
+        }
+    }
+
     await hre.run("compile")
 
     this.deployer = (await ethers.getSigners())[0].address
     console.log("deployer address", this.deployer)
+
+    const contract = await hre.ethers.getContractAt("Airdrop", "0xe287982d82b2b6d27dB3a41BD7179DeF69503106")
+    await getAddress(contract)
 
     // const contract = await hre.ethers.getContractAt("Comptroller", "0x4E51117Fc621408A418444681694Fb26a597e8a1")
     // await contract
@@ -63,7 +90,6 @@ async function main() {
     // await LEMD.addMinter(this.deployer)
     // await LEMD.mint("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8", hre.ethers.utils.parseEther("500000"))
     // console.log("LemdBreeder lemdToken", (await this.lemdToken.balanceOf("0xd4ac6586e85B9d2DD64f7BD5597C54996f13abe8")).toString())
-
 
     // this.priceOracle = await hre.ethers.getContractAt("SimplePriceOracle", "0x1B0e0d095A5d8721E2d3b5dcD43dE29791164FCF")
     // await this.priceOracle.setUnderlyingPrice("0x01b2E0845E2F711509b664CD0aD0b85E43d01878", hre.ethers.utils.parseEther("555"))

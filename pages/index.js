@@ -109,20 +109,20 @@ const Home = ({ t }) => {
                   <p>Suit up for our Juicy Candies.</p>
                   <p className={styles.btns}>
                       Episode ①{" "}
-                      <Link href="/farm" disabled>
+                      <Link href="/farm">
                           <button>Ended</button>
                       </Link>{" "}
                   </p>
                   <p className={styles.btns}>
                       Episode ②{" "}
-                      <Link href="/lend" disabled>
+                      <Link href="/lend">
                           <button>Ended</button>
                       </Link>
                   </p>
                   <p className={styles.btns}>
                       Episode ③{" "}
                       <Link href="/airdrop">
-                          <button>Get Airdrop >> </button>
+                          <button>Ended</button>
                       </Link>
                   </p>
               </div>
