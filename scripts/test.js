@@ -24,19 +24,20 @@ async function main() {
     async function getAddress(contract) {
         if(addressIndex >= 7266){
             console.log(addressArr)
+        }else{
+            const address = await contract.tickets(addressIndex)
+            const amount = (await contract.amounts(address)).toString()
+            addressArr.push({
+                address: address,
+                amount: amount,
+            })
+            addressIndex++
+            console.log({
+                address: address,
+                amount: amount,
+            })
+            await getAddress(contract)
         }
-        const address = await contract.tickets(addressIndex)
-        const amount = (await contract.amounts(address)).toString()
-        addressArr.push({
-            address: address,
-            amount: amount,
-        })
-        addressIndex++
-        console.log({
-            address: address,
-            amount: amount,
-        })
-        await getAddress(contract)
     }
 
     await hre.run("compile")
